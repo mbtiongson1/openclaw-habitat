@@ -1,0 +1,67 @@
+/* Agent Animations */
+
+@keyframes idle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes walk-cycle {
+  0% { transform: translateX(0) scaleX(1); }
+  25% { transform: translateX(2px) scaleX(0.95); }
+  50% { transform: translateX(0) scaleX(1); }
+  75% { transform: translateX(-2px) scaleX(0.95); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+
+@keyframes sleep-breathe {
+  0%, 100% { transform: scaleY(1); opacity: 0.7; }
+  50% { transform: scaleY(1.03); opacity: 0.85; }
+}
+
+@keyframes z-float {
+  0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translate(12px, -24px) scale(1); opacity: 0; }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(74, 124, 40, 0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(74, 124, 40, 0.6)); }
+}
+
+@keyframes feed-particles {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-30px) scale(0.3); opacity: 0; }
+}
+
+@keyframes zone-slide-in {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes steam-rise {
+  0% { transform: translateY(0) scaleX(1); opacity: 0.6; }
+  50% { transform: translateY(-10px) scaleX(1.3); opacity: 0.3; }
+  100% { transform: translateY(-20px) scaleX(0.8); opacity: 0; }
+}
+
+@keyframes garden-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+/* Toast slide in */
+@keyframes toast-in {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes toast-out {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
+}
