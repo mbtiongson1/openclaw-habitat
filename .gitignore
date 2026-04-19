@@ -122,3 +122,11 @@ dist-ssr/
 
 # macOS files
 .DS_Store
+
+# npm cache
+.npm-cache
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
