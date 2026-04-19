@@ -68,11 +68,32 @@
   background-size: 64px 64px;
 }
 
+.bg-blueprint {
+  background-image: 
+      linear-gradient(to right, rgba(192, 200, 196, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(192, 200, 196, 0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
 .bg-floor-pattern {
   background-image: linear-gradient(45deg, rgba(192, 200, 196, 0.05) 25%, transparent 25%, transparent 75%, rgba(192, 200, 196, 0.05) 75%, rgba(192, 200, 196, 0.05)), 
                     linear-gradient(45deg, rgba(192, 200, 196, 0.05) 25%, transparent 25%, transparent 75%, rgba(192, 200, 196, 0.05) 75%, rgba(192, 200, 196, 0.05));
   background-size: 20px 20px;
   background-position: 0 0, 10px 10px;
+}
+
+.ambient-shadow {
+  box-shadow: 0 8px 24px rgba(27, 28, 25, 0.06);
+}
+
+.glass-eggshell {
+  background-color: rgba(251, 249, 244, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.sage-gradient {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
 }
 
 .btn-gradient {

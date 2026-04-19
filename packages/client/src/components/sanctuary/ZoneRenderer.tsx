@@ -62,14 +62,15 @@ export function ZoneRenderer({ id, name, label, color, agents, onSelectAgent }: 
               }}
             >
               <div className="relative group/agent">
-                {/* Simplified Agent Representation for Hub View */}
-                <div className={`w-10 h-10 md:w-12 md:h-12 bg-surface-container-lowest border-2 flex items-center justify-center font-headline font-bold shadow-md transition-colors duration-200
-                  ${id === 'kitchen' ? 'border-tertiary text-tertiary' : 
-                    id === 'garden' ? 'border-[#8c3b0f] text-[#8c3b0f]' : 
-                    'border-primary text-primary'}
-                `}>
-                  {agent.config.name.substring(0, 2).toUpperCase()}
-                </div>
+                <AgentSVG
+                  size={80}
+                  head={agent.config.svgParts.head}
+                  body={agent.config.svgParts.body}
+                  hands={agent.config.svgParts.hands}
+                  feet={agent.config.svgParts.feet}
+                  state={agent.state as any}
+                />
+
                 
                 {/* Agent Detail Hover */}
                 <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-surface px-2 py-0.5 font-headline font-bold text-[8px] border border-outline opacity-0 group-hover/agent:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest z-50">
