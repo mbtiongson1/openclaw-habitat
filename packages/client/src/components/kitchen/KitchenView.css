@@ -1,0 +1,99 @@
+.kitchen-view {
+  padding: var(--space-xl);
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 80px; /* Space for bottom nav */
+}
+
+.kitchen-view__header {
+  margin-bottom: var(--space-xl);
+}
+
+.kitchen-view__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  color: var(--on-surface);
+  margin: 0;
+  margin-bottom: var(--space-xs);
+}
+
+.kitchen-view__subtitle {
+  font-size: 0.9rem;
+  color: var(--on-surface);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.kitchen-view__snack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-md);
+}
+
+.snack-card {
+  background-color: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius); /* 0px */
+  padding: var(--space-lg);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.snack-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+}
+
+.snack-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.snack-card__tier {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.snack-card__tier--gold { color: #d4af37; }
+.snack-card__tier--silver { color: #c0c0c0; }
+.snack-card__tier--bronze { color: #cd7f32; }
+
+.snack-card__emoji {
+  font-size: 1.5rem;
+}
+
+.snack-card__task {
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--on-surface);
+}
+
+.snack-card__footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  opacity: 0.8;
+  border-top: 1px solid var(--outline-variant);
+  padding-top: var(--space-sm);
+  margin-top: auto;
+}
+
+.snack-card__agent {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-2xl) 0;
+  color: var(--on-surface);
+  opacity: 0.5;
+}

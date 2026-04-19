@@ -1,0 +1,55 @@
+.boost-meter-wrapper {
+  margin-bottom: var(--space-md);
+}
+
+.boost-meter__label-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  color: var(--on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.boost-meter {
+  position: relative;
+  background-color: var(--surface-container-high);
+  height: 12px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius); /* 0px per design system */
+  border: 1px solid var(--outline-variant);
+  display: flex;
+}
+
+.boost-meter__fill {
+  background: linear-gradient(90deg, var(--primary), var(--primary-container));
+  height: 100%;
+  transition: width 0.3s ease;
+  position: relative;
+  border-right: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.boost-meter__fill--active {
+  animation: glow-pulse 2s infinite ease-in-out;
+}
+
+.boost-meter__ticks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  pointer-events: none;
+}
+
+.boost-meter__tick {
+  flex: 1;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+.boost-meter__tick:last-child {
+  border-right: none;
+}
