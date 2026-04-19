@@ -3,7 +3,8 @@ import { useWebSocket } from './hooks/useWebSocket';
 import { useAgents } from './hooks/useAgents';
 import { BottomNav } from './components/ui/BottomNav';
 import { SanctuaryHub } from './components/sanctuary/SanctuaryHub';
-
+import { KitchenView } from './components/kitchen/KitchenView';
+import { AgentPage } from './components/agent/AgentPage';
 // Define the port depending on dev/prod
 const WS_URL = import.meta.env.PROD 
   ? `ws://${window.location.host}/ws`
@@ -11,7 +12,7 @@ const WS_URL = import.meta.env.PROD
 
 export function App() {
   const ws = useWebSocket(WS_URL);
-  const { agents, selectedAgentId, setSelectedAgentId } = useAgents(ws);
+  const { agents, selectedAgent, selectedAgentId, setSelectedAgentId, feedAgent } = useAgents(ws);
   const [activeTab, setActiveTab] = useState<'hub' | 'kitchen' | 'nursery' | 'garden'>('hub');
 
   if (!ws.connected && agents.length === 0) {
@@ -30,10 +31,7 @@ export function App() {
           <SanctuaryHub agents={agents} onSelectAgent={setSelectedAgentId} />
         )}
         {activeTab === 'kitchen' && (
-          <div style={{ padding: 'var(--space-2xl)', textAlign: 'center' }}>
-            <h2>Kitchen View</h2>
-            <p>Coming in Phase 3</p>
-          </div>
+          <KitchenView agents={agents} onFeedAgent={feedAgent} />
         )}
         {activeTab === 'nursery' && (
           <div style={{ padding: 'var(--space-2xl)', textAlign: 'center' }}>
@@ -49,16 +47,14 @@ export function App() {
         )}
 
         {/* Temporary Agent Detail Overlay */}
-        {selectedAgentId && (
-          <div className="glass" style={{
-            position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)',
-            padding: '24px', zIndex: 1000, minWidth: '300px', boxShadow: 'var(--shadow-float)'
-          }}>
-            <h3 style={{ margin: '0 0 16px 0' }}>Agent Profile Shell</h3>
-            <p><b>ID:</b> {selectedAgentId.split('-')[0]}</p>
-            <p>Coming in Phase 3</p>
-            <button className="btn btn--primary" style={{ marginTop: '16px' }} onClick={() => setSelectedAgentId(null)}>Close</button>
-          </div>
+        {selectedAgent && (
+          <AgentPage 
+            agent={selectedAgent} 
+            onClose={() => setSelectedAgentId(null)} 
+            onChat={(agentId, text) => {
+              ws.send({ type: 'send_chat', payload: { agentId, text } });
+            }}
+          />
         )}
       </main>
 
