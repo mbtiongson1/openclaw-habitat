@@ -1,0 +1,20 @@
+{
+  "name": "openclaw-habitat",
+  "version": "1.0.0",
+  "description": "A Tamagotchi-style mobile interface for Openclaw AI agents.",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w packages/server\" \"npm run dev -w packages/client\"",
+    "build": "npm run build -w packages/shared && npm run build -w packages/server && npm run build -w packages/client",
+    "start": "npm run start -w packages/server",
+    "dev:mock": "./scripts/dev.sh"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "typescript": "^5.3.3"
+  }
+}

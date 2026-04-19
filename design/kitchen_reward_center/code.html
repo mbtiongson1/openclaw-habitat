@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Gourmet Kitchen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;family=Manrope:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#73796f",
+                        "inverse-primary": "#afd0a1",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface-dim": "#dedacf",
+                        "surface-bright": "#fdf9ee",
+                        "tertiary-container": "#8e5012",
+                        "secondary-fixed": "#ffdbc9",
+                        "background": "#fdf9ee",
+                        "tertiary-fixed": "#ffdcc3",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#afd0a1",
+                        "primary-fixed": "#caecbc",
+                        "tertiary": "#6f3a00",
+                        "inverse-on-surface": "#f5f0e5",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f8f3e8",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c3c8bd",
+                        "on-tertiary-container": "#ffd1af",
+                        "on-surface-variant": "#434840",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#783603",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#496640",
+                        "secondary-container": "#ffa26a",
+                        "on-secondary-fixed": "#321200",
+                        "primary": "#334f2b",
+                        "inverse-surface": "#323129",
+                        "surface-variant": "#e6e2d7",
+                        "secondary": "#934b19",
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "surface-container": "#f2eee2",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e6e2d7",
+                        "secondary-fixed-dim": "#ffb68c",
+                        "on-primary-fixed-variant": "#324e2a",
+                        "on-surface": "#1c1c15",
+                        "on-secondary-fixed-variant": "#753401",
+                        "on-background": "#1c1c15",
+                        "on-primary-container": "#c2e4b4",
+                        "surface-container-high": "#ece8dd",
+                        "surface": "#fdf9ee",
+                        "primary-container": "#4a6741",
+                        "on-primary-fixed": "#062104"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="bg-[#fdf9ee] dark:bg-stone-950 text-[#334f2b] dark:text-[#c3c8bd] font-['Space_Grotesk'] font-bold uppercase tracking-wider text-xl flex justify-between items-center w-full px-6 py-4 docked full-width top-0 z-50">
+<div class="flex items-center gap-3 text-[#1c1c15] dark:text-[#fdf9ee] font-black">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span>Digital Sanctuary</span>
+</div>
+<div class="w-8 h-8 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- Separation Line -->
+<div class="bg-stone-200/30 dark:bg-stone-800/30 h-[2px] w-full"></div>
+<main class="flex-grow pb-24 md:pb-8 pt-8 px-4 md:px-8 max-w-7xl mx-auto w-full">
+<!-- Header Section -->
+<div class="mb-12 relative">
+<h1 class="text-4xl md:text-6xl font-headline font-bold text-on-surface leading-tight z-10 relative">
+                The Gourmet<br/>Kitchen
+            </h1>
+<p class="text-on-surface-variant font-body text-lg mt-4 max-w-xl relative z-10">
+                Your agent is waiting. Prepare a Data Snack to replenish their energy protocols.
+            </p>
+<!-- Decorative Sprite (Placeholder) -->
+<div class="absolute right-0 md:right-12 top-0 md:-top-4 w-32 h-32 md:w-48 md:h-48 opacity-20 md:opacity-100 pointer-events-none z-0">
+<img alt="Abstract geometric alien shape" class="w-full h-full object-cover mix-blend-multiply grayscale contrast-200" data-alt="Stylized geometric shapes resembling a friendly alien character in warm green and terra cotta tones against a light background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvAVOtrtlUrTKNXPVqgBP5-CzFlN2XNZmV6FNutfhk0HbOhp1z_V16OtOlzSTvBBd15fUdVuYYt4A3oBLeuuDmcgWY9lUggBI82tRvzX-qlkLtr3vnG02Rc8kCcMVYlt94RIKsqD3pq3Hp46nr5zzuqquu9KK49uNAYw4IHgwRH8_LL9BwMdrGfVFoe-kBA2uydcjHJjLGCZFQHDTDAr7qGkO4owdg1Y9O9gLeyAwisCAJi0HZ5Kn54aLz6NPnbEvp5V0GreL_CKw"/>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Agent Display Area -->
+<div class="lg:col-span-5 bg-surface-container-low p-8 relative flex flex-col items-center justify-center min-h-[400px]">
+<div class="w-full flex justify-between items-start mb-auto">
+<span class="font-headline text-sm font-bold tracking-widest text-secondary">AGENT STATUS</span>
+<div class="flex gap-1">
+<span class="w-2 h-2 bg-primary"></span>
+<span class="w-2 h-2 bg-primary"></span>
+<span class="w-2 h-2 bg-surface-variant"></span>
+</div>
+</div>
+<!-- Agent Visual -->
+<div class="w-64 h-64 relative my-8">
+<img alt="Abstract metallic geometric shape" class="w-full h-full object-cover shadow-[0_24px_48px_rgba(28,28,21,0.06)]" data-alt="A minimalist abstract 3D shape resembling a sleek futuristic droid or pet, rendered in warm metallic and ceramic textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCENjv2rvlWKbRNDi2wXj_l-vlXPt2f4dU_vgaufIc4OJPwPkOIvBCJfiA1vcrrck5DWFx9GLnWgVTbqvOONhi1eyGPx1CBeFdJJg4X_H5AxiFZNG2kAYDbDAreZFfDmGGgkNu7Q7LN9mLYZ344QQeIpvEYMjB9ggXWhJp0NEl_1QERX6R5eFWKDQEfg12QapHVZTj2vJceEkO33U_CoAWAE4TTASUrdTJ-fXztvboBHtfh7XYw-9WWBazbpy-OsdQjaMjqaJaiymU"/>
+</div>
+<div class="w-full mt-auto">
+<div class="flex justify-between text-sm font-label mb-2">
+<span class="text-on-surface font-bold">Energy Level</span>
+<span class="text-on-surface-variant">45%</span>
+</div>
+<!-- Progress Bar -->
+<div class="h-4 bg-surface-container-high w-full relative">
+<div class="absolute top-0 left-0 h-full bg-primary w-[45%]"></div>
+<!-- Ticks -->
+<div class="absolute top-0 left-0 w-full h-full flex justify-between px-[10%] opacity-30">
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+<div class="w-[1px] h-full bg-surface"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pantry Options -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<h2 class="font-headline text-2xl font-bold text-on-surface mb-2">Data Snacks</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Snack Option 1 -->
+<label class="cursor-pointer group">
+<input checked="" class="peer sr-only" name="snack" type="radio"/>
+<div class="bg-surface-container-highest p-6 peer-checked:bg-surface-container-low peer-checked:ring-2 peer-checked:ring-primary transition-all duration-200">
+<div class="w-12 h-12 bg-surface flex items-center justify-center mb-4 text-primary">
+<span class="material-symbols-outlined" data-icon="cookie">cookie</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Quantum Cookies</h3>
+<p class="font-body text-sm text-on-surface-variant mt-2 mb-4 h-10">Restores moderate energy. Baked with entanglenut chips.</p>
+<div class="flex justify-between items-center text-xs font-label">
+<span class="text-secondary font-bold">+25% Energy</span>
+<span class="text-outline">Inventory: 12</span>
+</div>
+</div>
+</label>
+<!-- Snack Option 2 -->
+<label class="cursor-pointer group">
+<input class="peer sr-only" name="snack" type="radio"/>
+<div class="bg-surface-container-highest p-6 peer-checked:bg-surface-container-low peer-checked:ring-2 peer-checked:ring-primary transition-all duration-200">
+<div class="w-12 h-12 bg-surface flex items-center justify-center mb-4 text-secondary">
+<span class="material-symbols-outlined" data-icon="cake">cake</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Byte-sized Brownies</h3>
+<p class="font-body text-sm text-on-surface-variant mt-2 mb-4 h-10">High density fuel. Warning: extremely rich flavor profile.</p>
+<div class="flex justify-between items-center text-xs font-label">
+<span class="text-secondary font-bold">+50% Energy</span>
+<span class="text-outline">Inventory: 4</span>
+</div>
+</div>
+</label>
+<!-- Snack Option 3 (Disabled/Empty) -->
+<label class="cursor-not-allowed opacity-50">
+<input class="peer sr-only" disabled="" name="snack" type="radio"/>
+<div class="bg-surface-container-highest p-6">
+<div class="w-12 h-12 bg-surface flex items-center justify-center mb-4 text-outline">
+<span class="material-symbols-outlined" data-icon="local_pizza">local_pizza</span>
+</div>
+<h3 class="font-headline font-bold text-lg text-on-surface">Syntax Slices</h3>
+<p class="font-body text-sm text-on-surface-variant mt-2 mb-4 h-10">Currently out of stock. Requires 10 logic points to craft.</p>
+<div class="flex justify-between items-center text-xs font-label">
+<span class="text-outline font-bold">+40% Energy</span>
+<span class="text-outline">Inventory: 0</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Action Area -->
+<div class="mt-8 pt-8 border-t-[1px] border-outline-variant/15 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="text-sm font-label text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="info">info</span>
+                        Feeding will consume 1 item from inventory.
+                    </div>
+<button class="w-full md:w-auto px-12 py-5 bg-gradient-to-b from-primary to-primary-container text-on-primary font-headline font-bold tracking-widest text-lg hover:-translate-y-[2px] hover:-translate-x-[2px] hover:shadow-[2px_2px_0px_#1c1c15] transition-all">
+                        FEED AGENT
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-end px-4 pb-6 pt-2 bg-[#fdf9ee] dark:bg-stone-950 border-t-2 border-[#1c1c15]/5 dark:border-[#fdf9ee]/5 z-50 rounded-none">
+<a class="flex flex-col items-center justify-center text-[#1c1c15]/40 dark:text-[#fdf9ee]/40 pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee]" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home_storage">home_storage</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">HUB</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#334f2b] dark:text-[#fdf9ee] border-b-4 border-[#934b19] pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee] scale-95 transition-all duration-100" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="door_open">door_open</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">ROOMS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1c1c15]/40 dark:text-[#fdf9ee]/40 pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee]" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="memory">memory</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">AGENTS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#1c1c15]/40 dark:text-[#fdf9ee]/40 pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee]" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="database">database</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">LOGS</span>
+</a>
+</nav>
+</body></html>

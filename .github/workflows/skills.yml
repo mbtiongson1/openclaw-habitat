@@ -1,0 +1,33 @@
+name: Validate Skills
+on:
+  push:
+    paths: ['skills/**']
+  pull_request:
+    paths: ['skills/**']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Validate SKILL.md files
+        run: |
+          find skills -name "SKILL.md" | while read file; do
+            echo "Validating: $file"
+            # Check YAML frontmatter exists
+            if ! head -1 "$file" | grep -q "^---"; then
+              echo "ERROR: $file missing YAML frontmatter"
+              exit 1
+            fi
+            # Check required fields
+            for field in name description version author; do
+              if ! grep -q "^${field}:" "$file"; then
+                echo "ERROR: $file missing required field: ${field}"
+                exit 1
+              fi
+            done
+            echo "  ✅ $file valid"
+          done

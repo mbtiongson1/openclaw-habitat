@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Sanctuary - Office Lounge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#655c1c",
+                        "on-surface": "#2e2f2d",
+                        "surface-bright": "#f8f6f2",
+                        "surface-container": "#e9e8e4",
+                        "surface-variant": "#deddd8",
+                        "primary-container": "#9deec4",
+                        "on-primary-fixed-variant": "#056545",
+                        "on-secondary-fixed-variant": "#4e506f",
+                        "surface-tint": "#0e6848",
+                        "on-secondary-container": "#454666",
+                        "surface": "#f8f6f2",
+                        "tertiary-fixed-dim": "#eee193",
+                        "surface-container-high": "#e4e2de",
+                        "surface-container-low": "#f2f1ec",
+                        "on-secondary": "#f4f1ff",
+                        "secondary": "#585979",
+                        "outline-variant": "#aeadaa",
+                        "error": "#b31b25",
+                        "primary-fixed": "#9deec4",
+                        "on-tertiary-container": "#625919",
+                        "inverse-primary": "#9deec4",
+                        "surface-container-highest": "#deddd8",
+                        "error-dim": "#9f0519",
+                        "on-background": "#2e2f2d",
+                        "surface-dim": "#d5d4d0",
+                        "inverse-on-surface": "#9e9d99",
+                        "on-tertiary-fixed-variant": "#6d6323",
+                        "on-tertiary-fixed": "#4f4706",
+                        "error-container": "#fb5151",
+                        "tertiary-fixed": "#fdef9f",
+                        "on-primary-container": "#005a3d",
+                        "primary-fixed-dim": "#8fdfb7",
+                        "on-primary": "#c8ffe0",
+                        "secondary-fixed-dim": "#c3c3e9",
+                        "inverse-surface": "#0e0e0d",
+                        "tertiary-container": "#fdef9f",
+                        "on-primary-fixed": "#00452e",
+                        "outline": "#777774",
+                        "on-secondary-fixed": "#323451",
+                        "primary-dim": "#005c3e",
+                        "on-error-container": "#570008",
+                        "primary": "#0e6848",
+                        "secondary-fixed": "#d1d1f7",
+                        "secondary-dim": "#4c4d6c",
+                        "secondary-container": "#d1d1f7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffefee",
+                        "on-tertiary": "#fff4b9",
+                        "background": "#f8f6f2",
+                        "tertiary-dim": "#595010",
+                        "on-surface-variant": "#5b5c59"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Be Vietnam Pro", "sans-serif"],
+                        "label": ["Be Vietnam Pro", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full px-6 py-4 bg-[#f8f6f2] dark:bg-slate-900 bg-gradient-to-b from-[#f2f1ec] to-transparent z-40">
+<div class="flex justify-between items-center w-full max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<span aria-hidden="true" class="material-symbols-outlined text-[#0e6848] dark:text-[#9deec4] text-2xl">cottage</span>
+<span class="font-headline font-bold tracking-tight text-2xl text-[#0e6848] dark:text-[#9deec4]">Digital Sanctuary</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full overflow-hidden bg-surface-container-high border-2 border-surface-container-lowest hover:opacity-80 transition-opacity">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a young woman with natural makeup in soft diffused lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkq3HUagQsAQx5x_BLBK2h49C0238DXhqJLBboiEUju8BIDv93jc9yhcW-L12-puJK7LNsyGl2CH_ei5uxXZ_1ijkg_Az092Q0-M1SO-r_dIcBOrWFAg0VcwTYXsJar4evMrOoQzQRFC1tdG-BX02msx12Si2e40C_XN2cXCWyHCiCVERG0cWKnMsmZJD6yPBxSsKafjO1RTGplF1Iu1z6HSWiQBZLKen9og3Ah5sLxdY6bfcRTaFUGDXrTa3sAy7v66z3piQfK4I"/>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto px-6 pt-8 pb-12 flex flex-col md:flex-row gap-8">
+<!-- Agent Habitat Card -->
+<section class="w-full md:w-1/3 flex flex-col gap-6 relative">
+<div class="bg-surface-container-lowest rounded-xl p-8 relative shadow-[0px_20px_40px_rgba(46,47,45,0.06)] overflow-hidden">
+<!-- Decorative background pattern -->
+<div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#aeadaa 2px, transparent 2px); background-size: 20px 20px;"></div>
+<div class="relative z-10 flex flex-col items-center text-center pt-16">
+<!-- Agent Avatar overlapping edge -->
+<div class="absolute -top-16 left-1/2 transform -translate-x-1/2 w-40 h-40">
+<img alt="Agent Avatar" class="w-full h-full object-cover rounded-full shadow-[0px_20px_40px_rgba(46,47,45,0.1)] border-4 border-surface-container-lowest" data-alt="cute 3D rendered miniature robot character with large expressive glowing eyes sitting at a tiny glowing holographic desk in a cozy dimly lit room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM67SbQH0ueq7KhjPlDI7J-wXxL6S7XEQNtRR1c26J6Pg76EFR7BDgPdyhfZWsX5qnrOyvjRiG1srYp4OL2LZ-Pg4sV7Aryw8oglOFWCGmcJRy4ZkxUeXOA8c-ZI8qtSt0dMvbJkOP9TyurVvJp89OQ6y7rGzrXlUx8On5s11pWKJZofTHHayUfXMOZq990bDqwfuF9S9_RwduA5uWC1nxteqGwOrpQzISki67s5Ta2r1KzosT_ORnxPy033COghO98BU_j8DeP6M"/>
+</div>
+<h2 class="font-headline text-3xl font-extrabold text-on-surface mt-10">Bloop</h2>
+<p class="font-body text-secondary mt-2">Data Analyst Assistant</p>
+<div class="mt-6 flex flex-wrap justify-center gap-2">
+<span class="bg-tertiary-container text-on-tertiary-container px-4 py-1.5 rounded-full text-sm font-medium flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span> Online
+                        </span>
+<span class="bg-surface-container text-on-surface px-4 py-1.5 rounded-full text-sm font-medium">Focus Mode</span>
+</div>
+<button class="mt-8 w-full bg-gradient-to-r from-primary-dim to-primary text-on-primary rounded-full py-4 px-6 font-bold text-lg hover:scale-[0.98] transition-transform flex items-center justify-center gap-2 shadow-[0px_10px_20px_rgba(14,104,72,0.2)]">
+<span class="material-symbols-outlined">chat</span>
+                        Chat with Bloop
+                    </button>
+</div>
+</div>
+<!-- Agent Stats -->
+<div class="bg-surface-container-low rounded-lg p-6 flex flex-col gap-4">
+<h3 class="font-headline font-bold text-lg text-on-surface">Agent Status</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant font-medium">Processing Power</span>
+<span class="text-primary font-bold">85%</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-sm mb-1">
+<span class="text-on-surface-variant font-medium">Memory Usage</span>
+<span class="text-secondary font-bold">42%</span>
+</div>
+<div class="w-full bg-surface-container-highest rounded-full h-2">
+<div class="bg-secondary h-2 rounded-full" style="width: 42%"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Task Area -->
+<section class="w-full md:w-2/3 flex flex-col gap-8">
+<h1 class="font-headline text-4xl font-black text-on-background">Current Swarm Task</h1>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Task Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0px_20px_40px_rgba(46,47,45,0.06)] flex flex-col justify-between min-h-[250px]">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<span class="bg-surface-container text-on-surface text-xs font-bold px-3 py-1 rounded-full">In Progress</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Q3 Financial Parsing</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2">Analyzing raw CSV dumps from regional branches to identify anomalies in expense reports.</p>
+</div>
+<div class="mt-6">
+<div class="flex justify-between text-sm mb-2">
+<span class="font-medium text-secondary">Progress</span>
+<span class="font-bold text-on-surface">68%</span>
+</div>
+<div class="w-full bg-surface-container h-3 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary-dim to-primary h-full rounded-full" style="width: 68%"></div>
+</div>
+</div>
+</div>
+<!-- Task Card 2 -->
+<div class="bg-surface-container-low rounded-xl p-8 flex flex-col justify-between min-h-[250px]">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dataset</span>
+</div>
+<span class="bg-surface-container-highest text-on-surface text-xs font-bold px-3 py-1 rounded-full">Queued</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Dataset Normalization</h3>
+<p class="text-on-surface-variant text-sm line-clamp-2">Standardizing date formats and currency symbols across the legacy database tables.</p>
+</div>
+<div class="mt-6 flex items-center gap-2 text-sm text-secondary font-medium">
+<span class="material-symbols-outlined text-base">schedule</span>
+                        Waiting for dependencies
+                    </div>
+</div>
+</div>
+<!-- Recent Logs Bento Box -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0px_20px_40px_rgba(46,47,45,0.06)] mt-4">
+<h3 class="font-headline text-2xl font-bold text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span> Activity Logs
+                </h3>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="w-3 h-3 rounded-full bg-primary mt-1.5"></div>
+<div class="w-0.5 h-full bg-surface-container mt-2"></div>
+</div>
+<div class="pb-4">
+<p class="font-medium text-on-surface">Successfully parsed 14,000 rows from `eu_expenses.csv`</p>
+<p class="text-sm text-secondary mt-1">10 mins ago</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="w-3 h-3 rounded-full bg-tertiary mt-1.5"></div>
+<div class="w-0.5 h-full bg-surface-container mt-2"></div>
+</div>
+<div class="pb-4">
+<p class="font-medium text-on-surface">Identified 3 anomalies in travel budgets.</p>
+<p class="text-sm text-secondary mt-1">45 mins ago</p>
+<div class="mt-3 bg-tertiary-container text-on-tertiary-container p-3 rounded-md text-sm">
+                                Flagged entries require manual review in the Dashboard.
+                            </div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<div class="w-3 h-3 rounded-full bg-secondary mt-1.5"></div>
+</div>
+<div>
+<p class="font-medium text-on-surface">Initiated Focus Mode.</p>
+<p class="text-sm text-secondary mt-1">2 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full rounded-t-[3rem] px-8 pb-8 pt-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-3xl shadow-[0px_-20px_40px_rgba(46,47,45,0.06)] md:hidden z-50">
+<div class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-4">
+<!-- Lounge (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#9deec4] dark:bg-[#0e6848] text-[#0e6848] dark:text-[#9deec4] rounded-full px-6 py-2 transition-all hover:scale-105 duration-300" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">weekend</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Lounge</span>
+</a>
+<!-- Kitchen -->
+<a class="flex flex-col items-center justify-center text-[#585979] dark:text-slate-400 px-6 py-2 hover:scale-105 duration-300 transition-all hover:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1">soup_kitchen</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Kitchen</span>
+</a>
+<!-- Nursery -->
+<a class="flex flex-col items-center justify-center text-[#585979] dark:text-slate-400 px-6 py-2 hover:scale-105 duration-300 transition-all hover:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1">potted_plant</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Nursery</span>
+</a>
+<!-- Garden -->
+<a class="flex flex-col items-center justify-center text-[#585979] dark:text-slate-400 px-6 py-2 hover:scale-105 duration-300 transition-all hover:opacity-80" href="#">
+<span class="material-symbols-outlined mb-1">local_florist</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Garden</span>
+</a>
+</div>
+</nav>
+<!-- Web Nav Cluster (Hidden on Mobile) -->
+<div class="hidden md:flex fixed top-4 right-24 z-50 bg-white/70 backdrop-blur-md rounded-full shadow-[0px_10px_20px_rgba(46,47,45,0.05)] px-2 py-2 gap-2">
+<a class="bg-primary-container text-primary-dim px-4 py-2 rounded-full text-sm font-bold flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">weekend</span> Lounge
+        </a>
+<a class="text-secondary px-4 py-2 rounded-full text-sm font-semibold hover:bg-surface-container-low transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm">soup_kitchen</span> Kitchen
+        </a>
+<a class="text-secondary px-4 py-2 rounded-full text-sm font-semibold hover:bg-surface-container-low transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm">potted_plant</span> Nursery
+        </a>
+<a class="text-secondary px-4 py-2 rounded-full text-sm font-semibold hover:bg-surface-container-low transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm">local_florist</span> Garden
+        </a>
+</div>
+</body></html>

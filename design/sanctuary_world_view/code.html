@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Sanctuary</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;family=Manrope:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e6e2d7",
+                        "on-secondary-fixed": "#321200",
+                        "on-secondary-container": "#783603",
+                        "on-primary-container": "#c2e4b4",
+                        "primary-fixed": "#caecbc",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#6f3a00",
+                        "on-primary": "#ffffff",
+                        "surface": "#fdf9ee",
+                        "surface-container": "#f2eee2",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#ffb68c",
+                        "surface-dim": "#dedacf",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "primary-fixed-dim": "#afd0a1",
+                        "surface-container-highest": "#e6e2d7",
+                        "on-tertiary-fixed": "#2f1500",
+                        "outline-variant": "#c3c8bd",
+                        "outline": "#73796f",
+                        "surface-tint": "#496640",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#8e5012",
+                        "primary-container": "#4a6741",
+                        "on-primary-fixed": "#062104",
+                        "background": "#fdf9ee",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffdbc9",
+                        "inverse-on-surface": "#f5f0e5",
+                        "inverse-surface": "#323129",
+                        "on-tertiary-container": "#ffd1af",
+                        "on-background": "#1c1c15",
+                        "on-surface-variant": "#434840",
+                        "on-primary-fixed-variant": "#324e2a",
+                        "secondary-container": "#ffa26a",
+                        "secondary": "#934b19",
+                        "surface-bright": "#fdf9ee",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#753401",
+                        "surface-container-high": "#ece8dd",
+                        "on-surface": "#1c1c15",
+                        "inverse-primary": "#afd0a1",
+                        "tertiary-fixed": "#ffdcc3",
+                        "primary": "#334f2b",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f8f3e8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": [
+                            "Space Grotesk"
+                        ],
+                        "body": [
+                            "Manrope"
+                        ],
+                        "label": [
+                            "Manrope"
+                        ]
+                    }
+                },
+            },
+        }
+    </script>
+<style>body {
+    background-color: #fdf9ee;
+    color: #1c1c15;
+    font-family: "Manrope", sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden
+    }
+h1, h2, h3, h4, h5, h6, .font-headline {
+    font-family: "Space Grotesk", sans-serif
+    }
+.bg-house {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDzgFRGxuFNpMaNl4Uo8DopEbTqm2I_Dn0RBzyoqyCIRaTNbcrr0NXmBOPePgRSKaSM15QhadZ5xr4gio2srwCxvYa_OEceO7CWiCH-QjQ2G5EUiAakDP7bBwciwIeJBmBG9mRUBYzw00pSSgFw_UgX0muZlN6C6Ee7Cnsym_ylfHGrUvlVubB8K2fNcBi6BhDNfk-gFBiU8_G7u07loJyRWInqHhW1YD76SnWvuMcS2bMvImgMVSM8CKtl3qnveZCeDJ_zMs0yKPs);
+    background-size: cover;
+    background-position: center
+    }
+.agent-sprite {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBmDGBALLlALvS73EAugdoJmHopafW4GDz_cucWnDEjJasq8X8wgr2T_z6JFA_I9hegBZ5tvBQn4h7GAgESrPGJC95GZht44wHrABQzjN_oD6rEaRYGPMR5XMdmRSYODIZxn-3TlZ8HdrUc3bK4PnKPYIs-SvR9p2PjiQSNcVcfLMcZ6ZUhLI5DYX7Q3fPQ3cSRDrkwhU3zPJHOqGgmGvQu09fT4_CkHcG2Z7XNCr_8Gkfrxhj5VlYFaUJiA6gn5VjOijPuhlidFPw);
+    background-size: cover;
+    background-position: center
+    }
+.speech-bubble {
+    position: relative;
+    background: rgba(253, 249, 238, 0.9);
+    border: 1px solid #1c1c15;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-family: "Space Grotesk", sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap
+    }
+.speech-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+    border-style: solid;
+    border-color: #1c1c15 transparent transparent transparent
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-6 py-4 bg-[#fdf9ee] dark:bg-[#1c1c15] text-[#334f2b] dark:text-[#c3c8bd] fixed top-0 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">architecture</span>
+<h1 class="font-['Space_Grotesk'] text-xl font-bold tracking-tighter text-[#1c1c15] dark:text-[#fdf9ee]">Sanctuary Status</h1>
+</div>
+<div>
+<span class="font-headline font-bold text-sm">Lv. 12 World</span>
+</div>
+</header>
+<!-- Main Content Area (Isometric Map) -->
+<main class="flex-grow relative mt-16 pb-20 w-full h-[calc(100vh-64px-80px)] overflow-hidden bg-surface-container">
+<!-- Draggable Map Container -->
+<div class="absolute top-0 left-0 w-[150%] h-[150%] bg-house cursor-grab active:cursor-grabbing" data-alt="isometric view of a warm, wooden digital sanctuary house interior with multiple rooms, nostalgic pixel art aesthetic mixed with modern architectural design, mossy greens and sun-bleached woods">
+<!-- Agent 1: Lounge -->
+<div class="absolute top-[30%] left-[20%] flex flex-col items-center">
+<div class="speech-bubble mb-2 text-on-surface">Analyzing Logs</div>
+<div class="w-12 h-12 agent-sprite rounded-none border-2 border-on-surface" data-alt="high-contrast pixel art sprite of a character in warm secondary colors, retro aesthetic"></div>
+</div>
+<!-- Agent 2: Kitchen -->
+<div class="absolute top-[50%] left-[60%] flex flex-col items-center">
+<div class="speech-bubble mb-2 text-on-surface">Brewing Logic Latte</div>
+<div class="w-12 h-12 agent-sprite rounded-none border-2 border-on-surface" data-alt="high-contrast pixel art sprite of a character in warm secondary colors, retro aesthetic"></div>
+</div>
+<!-- Agent 3: Garden -->
+<div class="absolute top-[70%] left-[30%] flex flex-col items-center">
+<div class="speech-bubble mb-2 text-on-surface">Tending Nodes</div>
+<div class="w-12 h-12 agent-sprite rounded-none border-2 border-on-surface" data-alt="high-contrast pixel art sprite of a character in warm secondary colors, retro aesthetic"></div>
+</div>
+<!-- Environmental Interaction Hint -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl mb-2 text-on-surface" style="font-variation-settings: 'FILL' 0;">pinch</span>
+<span class="font-headline text-sm font-bold tracking-widest uppercase text-on-surface">Pinch to Zoom / Drag Map</span>
+</div>
+</div>
+<!-- HUD Overlays -->
+<!-- Top Left HUD -->
+<div class="absolute top-6 left-6 bg-surface/90 backdrop-blur-xl p-4 border border-outline-variant/15 flex flex-col gap-1 shadow-[0_4px_24px_rgba(28,28,21,0.06)] z-10">
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-wider">House Harmony</span>
+<div class="flex items-end gap-2">
+<span class="font-headline text-2xl font-bold text-on-surface">98%</span>
+<span class="material-symbols-outlined text-primary text-sm mb-1" style="font-variation-settings: 'FILL' 1;">arrow_upward</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-32 h-2 bg-surface-container-high mt-2 relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary w-[98%]"></div>
+<!-- Pixel Ticks -->
+<div class="absolute top-0 left-[10%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[20%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[30%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[40%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[50%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[60%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[70%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[80%] h-full w-px bg-surface-container"></div>
+<div class="absolute top-0 left-[90%] h-full w-px bg-surface-container"></div>
+</div>
+</div>
+<!-- Top Right HUD -->
+<div class="absolute top-6 right-6 bg-surface/90 backdrop-blur-xl p-4 border border-outline-variant/15 flex flex-col gap-1 shadow-[0_4px_24px_rgba(28,28,21,0.06)] z-10 items-end">
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-wider">Swarms Active</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-headline text-2xl font-bold text-on-surface">4</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">hive</span>
+</div>
+</div>
+<!-- Bottom Right Action -->
+<div class="absolute bottom-6 right-6 z-10">
+<button class="bg-gradient-to-b from-primary to-primary-container text-on-primary font-label text-md uppercase px-6 py-4 flex items-center gap-2 hover:-translate-y-[2px] hover:-translate-x-[2px] transition-transform shadow-[2px_2px_0px_#1c1c15]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                Summon Agent
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center border-none h-20 bg-[#fdf9ee]/90 dark:bg-[#1c1c15]/90 backdrop-blur-xl shadow-[0_-4px_24px_rgba(28,28,21,0.06)] z-50">
+<!-- Active Item -->
+<div class="flex flex-col items-center justify-center bg-[#4a6741] text-[#fdf9ee] px-6 py-2 translate-y-[-2px] translate-x-[-2px] shadow-[2px_2px_0px_#1c1c15] w-1/4 h-full cursor-pointer">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home_pin</span>
+<span class="text-[11px] font-bold uppercase tracking-widest font-['Space_Grotesk']">Sanctuary</span>
+</div>
+<!-- Inactive Items -->
+<div class="flex flex-col items-center justify-center text-[#4a6741] px-6 py-2 opacity-70 hover:bg-[#e5dec5] dark:hover:bg-[#33332d] w-1/4 h-full cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">smart_toy</span>
+<span class="text-[11px] font-bold uppercase tracking-widest font-['Space_Grotesk']">Agents</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#4a6741] px-6 py-2 opacity-70 hover:bg-[#e5dec5] dark:hover:bg-[#33332d] w-1/4 h-full cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">assignment</span>
+<span class="text-[11px] font-bold uppercase tracking-widest font-['Space_Grotesk']">Quests</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#4a6741] px-6 py-2 opacity-70 hover:bg-[#e5dec5] dark:hover:bg-[#33332d] w-1/4 h-full cursor-pointer transition-colors duration-150">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 0;">storefront</span>
+<span class="text-[11px] font-bold uppercase tracking-widest font-['Space_Grotesk']">Shop</span>
+</div>
+</nav>
+</body></html>

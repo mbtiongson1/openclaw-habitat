@@ -1,0 +1,66 @@
+.feeding-panel__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  animation: fade-in 0.2s ease-out;
+}
+
+.feeding-panel__modal {
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius); /* 0px */
+  padding: var(--space-xl);
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.15);
+  transform: translateY(20px);
+  animation: modal-up 0.3s forwards ease-out;
+}
+
+@keyframes modal-up {
+  to { transform: translateY(0); }
+}
+
+.feeding-panel__title {
+  font-family: 'Space Grotesk', sans-serif;
+  margin: 0 0 var(--space-lg) 0;
+  color: var(--primary);
+}
+
+.feeding-panel__content {
+  margin-bottom: var(--space-xl);
+  line-height: 1.5;
+}
+
+.feeding-panel__boost-preview {
+  margin-top: var(--space-md);
+  padding: var(--space-md);
+  background-color: var(--surface-container-low);
+  border: 1px solid var(--outline-variant);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.feeding-panel__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+.text-secondary {
+  opacity: 0.7;
+  font-size: 0.85rem;
+}
+
+.z-index-modal {
+  z-index: 1000;
+}
