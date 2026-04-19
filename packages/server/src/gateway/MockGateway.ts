@@ -2,6 +2,11 @@ import { AGENT_STATES, type AgentStateType } from '@habitat/shared';
 import { AgentStateManager } from '../bridge/AgentStateManager.js';
 
 const STATES = Object.values(AGENT_STATES);
+const NODE_TYPES = [
+  'plan', 'code_interpreter', 'critique', 'router', 'ensemble',
+  'memory', 'tool', 'loop', 'transform', 'parallel'
+];
+
 const MOCK_TASKS = [
   'CSV parsing batch',
   'Log file rotation',
@@ -61,6 +66,7 @@ export class MockGateway {
 
       const agent = agents[Math.floor(Math.random() * agents.length)];
       const task = MOCK_TASKS[Math.floor(Math.random() * MOCK_TASKS.length)];
+      const nodeType = NODE_TYPES[Math.floor(Math.random() * NODE_TYPES.length)];
       const score = Math.floor(Math.random() * 5) + 5; // 5-10 range
 
       agent.stats.tasksCompleted++;
@@ -70,6 +76,7 @@ export class MockGateway {
       this.stateManager.emit('task_complete', {
         agentId: agent.config.id,
         taskDescription: task,
+        nodeType,
         score,
         timestamp: Date.now(),
       });

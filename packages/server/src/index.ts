@@ -50,8 +50,8 @@ feedingEngine.on('boost_applied', (event) => {
 
 // Wire task completions → feeding engine snack generation
 stateManager.on('task_complete', (event: any) => {
-  const snack = feedingEngine.grantSnack(event.agentId, event.taskDescription, event.score);
-  console.log(`🍬 Snack granted to ${event.agentId}: ${snack.tier} (score: ${event.score}/10)`);
+  const snack = feedingEngine.grantSnack(event.agentId, event.taskDescription, event.score, event.nodeType);
+  console.log(`🍬 Snack granted to ${event.agentId}: ${snack.tier} (score: ${event.score}/10, node: ${event.nodeType || 'none'})`);
 });
 
 // Decay boosts every 30 seconds
