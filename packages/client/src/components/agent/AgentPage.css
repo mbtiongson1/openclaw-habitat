@@ -1,0 +1,211 @@
+.agent-page-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  padding: var(--space-md);
+}
+
+.agent-page {
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 800px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 12px 12px 0 rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.agent-page__header {
+  display: flex;
+  align-items: center;
+  padding: var(--space-xl);
+  background-color: var(--surface-container-high);
+  border-bottom: 1px solid var(--outline-variant);
+  position: relative;
+}
+
+.agent-page__avatar {
+  background-color: var(--surface-container-highest);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius);
+  width: 140px;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  margin-right: var(--space-xl);
+}
+
+.agent-page__title-area {
+  flex: 1;
+}
+
+.agent-page__name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5rem;
+  margin: 0 0 var(--space-md) 0;
+  color: var(--on-surface);
+}
+
+.agent-page__badges {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.badge {
+  padding: 4px 12px;
+  border-radius: var(--radius);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.badge--zone { background: var(--surface-variant); color: var(--on-surface); border: 1px solid var(--outline-variant); }
+.badge--state { background: var(--primary); color: white; border: 1px solid var(--primary-container); }
+
+.agent-page__close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--on-surface);
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 0 var(--space-sm);
+}
+
+.agent-page__close:hover {
+  opacity: 1;
+}
+
+.agent-page__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+  gap: var(--space-xl);
+  padding: var(--space-xl);
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* On small screens, stack columns */
+@media (max-width: 768px) {
+  .agent-page__content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.agent-page__stats, .agent-page__history, .agent-page__chat {
+  background-color: var(--surface-container-low);
+  padding: var(--space-lg);
+  border: 1px solid var(--outline-variant);
+}
+
+.agent-page__history {
+  grid-row: span 2;
+}
+
+.agent-page h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  margin-top: 0;
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--outline-variant);
+  padding-bottom: var(--space-sm);
+  color: var(--primary);
+}
+
+.agent-page__log-container {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.agent-page__log-container h4 {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xs);
+  color: var(--on-surface);
+}
+
+.feeding-log-item {
+  position: relative;
+  padding-left: var(--space-md);
+  margin-bottom: var(--space-xs);
+}
+.feeding-log-item::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  opacity: 0.5;
+}
+
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+}
+
+.chat-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  margin-bottom: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.chat-message {
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  max-width: 80%;
+  font-size: 0.95rem;
+}
+
+.chat-message--user {
+  background-color: var(--surface-variant);
+  align-self: flex-end;
+}
+
+.chat-message--agent {
+  background-color: var(--primary);
+  color: white;
+  align-self: flex-start;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.chat-input {
+  flex: 1;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--outline-variant);
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: inherit;
+  border-radius: var(--radius);
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
