@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agent Detail - Bloop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700;900&amp;family=Manrope:wght@400;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#73796f",
+                        "inverse-primary": "#afd0a1",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface-dim": "#dedacf",
+                        "surface-bright": "#fdf9ee",
+                        "tertiary-container": "#8e5012",
+                        "secondary-fixed": "#ffdbc9",
+                        "background": "#fdf9ee",
+                        "tertiary-fixed": "#ffdcc3",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#afd0a1",
+                        "primary-fixed": "#caecbc",
+                        "tertiary": "#6f3a00",
+                        "inverse-on-surface": "#f5f0e5",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f8f3e8",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c3c8bd",
+                        "on-tertiary-container": "#ffd1af",
+                        "on-surface-variant": "#434840",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#783603",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#496640",
+                        "secondary-container": "#ffa26a",
+                        "on-secondary-fixed": "#321200",
+                        "primary": "#334f2b",
+                        "inverse-surface": "#323129",
+                        "surface-variant": "#e6e2d7",
+                        "secondary": "#934b19",
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "surface-container": "#f2eee2",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e6e2d7",
+                        "secondary-fixed-dim": "#ffb68c",
+                        "on-primary-fixed-variant": "#324e2a",
+                        "on-surface": "#1c1c15",
+                        "on-secondary-fixed-variant": "#753401",
+                        "on-background": "#1c1c15",
+                        "on-primary-container": "#c2e4b4",
+                        "surface-container-high": "#ece8dd",
+                        "surface": "#fdf9ee",
+                        "primary-container": "#4a6741",
+                        "on-primary-fixed": "#062104"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body min-h-screen pb-24 md:pb-0 pt-20">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#fdf9ee] dark:bg-stone-950 flex justify-between items-center px-6 py-4 h-[72px]">
+<div class="flex items-center gap-4">
+<button class="text-primary hover:bg-[#4a6741]/10 p-2 transition-transform hover:translate-y-[-2px] hover:translate-x-[-2px]">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-headline font-bold uppercase tracking-wider text-[#334f2b] dark:text-[#c3c8bd] text-xl">Digital Sanctuary</h1>
+</div>
+<div class="text-[#1c1c15] dark:text-[#fdf9ee] font-black text-xl">
+<!-- Avatar placeholder -->
+<div class="w-8 h-8 bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">person</span>
+</div>
+</div>
+<!-- Separation Logic -->
+<div class="absolute bottom-0 left-0 bg-stone-200/30 dark:bg-stone-800/30 h-[2px] w-full"></div>
+</header>
+<main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Agent Visual & Primary Info (Left Column) -->
+<section class="lg:col-span-5 flex flex-col gap-8 relative">
+<!-- Isometric Agent Canvas -->
+<div class="bg-surface-container-low p-8 relative flex items-center justify-center min-h-[400px]">
+<!-- Decorative Isometric Elements -->
+<div class="absolute top-4 left-4 text-outline-variant opacity-30">
+<span class="material-symbols-outlined text-4xl" data-icon="polyline">polyline</span>
+</div>
+<div class="absolute bottom-4 right-4 text-outline-variant opacity-30">
+<span class="material-symbols-outlined text-4xl" data-icon="grid_4x4">grid_4x4</span>
+</div>
+<!-- Agent Image -->
+<img alt="Stylized pixel art or isometric 3D render of a friendly, large octopus named Bloop in an earthy green and cream environment" class="w-full h-auto max-w-[300px] object-cover mix-blend-multiply z-10 hover:-translate-y-2 hover:-translate-x-2 transition-transform duration-300" data-alt="Stylized pixel art or isometric 3D render of a friendly, large octopus named Bloop in an earthy green and cream environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0txlHEDYOuInHk1d5ye0SH6_wGgr8bcUoFJ6FpQRReoWuOuk1ffhX45QBUNnDYs9FOAN-TVbxGET74BD1dE68ufHub80tDv4KIvxiO7vw-iXSM3A08feG2nEycKvhw2Dtt8nn1m0S8AdCc8xpFU50gaRRvspkpdULapOCzjnSb7Jx1ijY6MKhEJJfNahRACMDRcMnKRhhCGGSf_1vJJdiDmua38gXpzoWsWZdqoLVeNiX8sstxxURxLGmmx3HFflQ-1GirvtHuTg"/>
+<!-- Ambient Shadow -->
+<div class="absolute bottom-12 w-[200px] h-[20px] bg-on-surface/5 blur-xl rounded-full"></div>
+</div>
+<!-- Agent Details Header -->
+<div>
+<h2 class="font-headline text-5xl font-black text-on-surface mb-2 uppercase">Bloop</h2>
+<div class="flex items-center gap-2 text-primary font-bold text-sm tracking-widest uppercase">
+<span class="material-symbols-outlined text-base" data-icon="workspaces">workspaces</span>
+<span>Lounge Operations</span>
+</div>
+<p class="mt-4 text-on-surface-variant leading-relaxed">
+                    Bloop manages multi-threaded conversations and deep data retrieval tasks simultaneously. Specialized in parallel processing and ambient monitoring within the Lounge sector.
+                </p>
+</div>
+<!-- Actions -->
+<div class="flex gap-4">
+<button class="flex-1 bg-gradient-to-b from-primary to-primary-container text-on-primary font-label text-sm uppercase py-4 px-6 hover:-translate-y-[2px] hover:-translate-x-[2px] transition-all relative before:absolute before:-inset-0 before:bg-black/20 before:opacity-0 hover:before:opacity-100 before:transition-opacity shadow-[2px_2px_0px_rgba(28,28,21,1)]">
+                    Chat with Bloop
+                </button>
+<button class="bg-surface-container-highest border-[1.5px] border-outline-variant/30 text-on-surface p-4 hover:-translate-y-[2px] hover:-translate-x-[2px] transition-transform shadow-[2px_2px_0px_rgba(28,28,21,1)] flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</section>
+<!-- Stats & Active Tasks (Right Column) -->
+<section class="lg:col-span-7 flex flex-col gap-8">
+<!-- System Status -->
+<div class="bg-surface-container-low p-8">
+<div class="border-b-[1.5px] border-surface-variant pb-4 mb-6 flex justify-between items-end">
+<h3 class="font-headline text-2xl font-bold uppercase text-on-surface">System Core</h3>
+<span class="text-xs font-bold text-secondary tracking-widest uppercase">Online</span>
+</div>
+<div class="space-y-6">
+<!-- Processing Power -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="font-label text-sm font-bold text-on-surface-variant uppercase tracking-wider">Processing Power</span>
+<span class="font-headline font-bold text-primary">84%</span>
+</div>
+<div class="h-4 bg-surface-container-high relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary w-[84%]"></div>
+<!-- Pixel ticks -->
+<div class="absolute inset-0 flex justify-between px-1">
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+</div>
+</div>
+</div>
+<!-- Memory -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="font-label text-sm font-bold text-on-surface-variant uppercase tracking-wider">Memory Allocation</span>
+<span class="font-headline font-bold text-primary">62%</span>
+</div>
+<div class="h-4 bg-surface-container-high relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary w-[62%]"></div>
+<!-- Pixel ticks -->
+<div class="absolute inset-0 flex justify-between px-1">
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+<div class="w-[1px] h-full bg-surface-container/50"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Swarming Tasks -->
+<div class="bg-surface-container p-8">
+<div class="border-b-[1.5px] border-surface-variant pb-4 mb-6 flex justify-between items-end">
+<h3 class="font-headline text-2xl font-bold uppercase text-on-surface">Active Swarm</h3>
+<span class="text-xs font-bold text-on-surface-variant tracking-widest uppercase">3 Threads</span>
+</div>
+<div class="space-y-4">
+<!-- Task 1 -->
+<div class="bg-surface-container-highest p-4 hover:-translate-y-[1px] hover:-translate-x-[1px] transition-transform flex items-start gap-4">
+<div class="text-primary mt-1">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline font-bold text-on-surface uppercase mb-1">Index Lounge Archives</h4>
+<p class="text-sm text-on-surface-variant">Scanning historical logs for recurring patterns in user sentiment.</p>
+</div>
+<div class="text-secondary">
+<span class="material-symbols-outlined animate-spin" data-icon="sync">sync</span>
+</div>
+</div>
+<!-- Task 2 -->
+<div class="bg-surface-container-highest p-4 hover:-translate-y-[1px] hover:-translate-x-[1px] transition-transform flex items-start gap-4">
+<div class="text-primary mt-1">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline font-bold text-on-surface uppercase mb-1">Ambient Moderation</h4>
+<p class="text-sm text-on-surface-variant">Monitoring real-time chat streams for policy violations.</p>
+</div>
+<div class="text-secondary">
+<span class="material-symbols-outlined animate-spin" data-icon="sync">sync</span>
+</div>
+</div>
+<!-- Task 3 -->
+<div class="bg-surface-container-highest p-4 hover:-translate-y-[1px] hover:-translate-x-[1px] transition-transform flex items-start gap-4 opacity-70">
+<div class="text-outline mt-1">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+</div>
+<div class="flex-1">
+<h4 class="font-headline font-bold text-on-surface uppercase mb-1">Dataset Expansion</h4>
+<p class="text-sm text-on-surface-variant">Queued: Awaiting memory allocation release.</p>
+</div>
+<div class="text-outline">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-end px-4 pb-6 pt-2 bg-[#fdf9ee] dark:bg-stone-950 border-t-2 border-[#1c1c15]/5 dark:border-[#fdf9ee]/5 z-50 md:hidden">
+<button class="flex flex-col items-center justify-center text-[#1c1c15]/40 dark:text-[#fdf9ee]/40 pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee]">
+<span class="material-symbols-outlined mb-1" data-icon="home_storage">home_storage</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">HUB</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#1c1c15]/40 dark:text-[#fdf9ee]/40 pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee]">
+<span class="material-symbols-outlined mb-1" data-icon="door_open">door_open</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">ROOMS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#334f2b] dark:text-[#fdf9ee] border-b-4 border-[#934b19] pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee] scale-95 transition-all duration-100">
+<span class="material-symbols-outlined mb-1" data-icon="memory">memory</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">AGENTS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#1c1c15]/40 dark:text-[#fdf9ee]/40 pb-1 hover:text-[#334f2b] dark:hover:text-[#fdf9ee]">
+<span class="material-symbols-outlined mb-1" data-icon="database">database</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">LOGS</span>
+</button>
+</nav>
+</body></html>

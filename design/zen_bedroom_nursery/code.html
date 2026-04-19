@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Sanctuary - Nursery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800;900&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#655c1c",
+                        "on-surface": "#2e2f2d",
+                        "surface-bright": "#f8f6f2",
+                        "surface-container": "#e9e8e4",
+                        "surface-variant": "#deddd8",
+                        "primary-container": "#9deec4",
+                        "on-primary-fixed-variant": "#056545",
+                        "on-secondary-fixed-variant": "#4e506f",
+                        "surface-tint": "#0e6848",
+                        "on-secondary-container": "#454666",
+                        "surface": "#f8f6f2",
+                        "tertiary-fixed-dim": "#eee193",
+                        "surface-container-high": "#e4e2de",
+                        "surface-container-low": "#f2f1ec",
+                        "on-secondary": "#f4f1ff",
+                        "secondary": "#585979",
+                        "outline-variant": "#aeadaa",
+                        "error": "#b31b25",
+                        "primary-fixed": "#9deec4",
+                        "on-tertiary-container": "#625919",
+                        "inverse-primary": "#9deec4",
+                        "surface-container-highest": "#deddd8",
+                        "error-dim": "#9f0519",
+                        "on-background": "#2e2f2d",
+                        "surface-dim": "#d5d4d0",
+                        "inverse-on-surface": "#9e9d99",
+                        "on-tertiary-fixed-variant": "#6d6323",
+                        "on-tertiary-fixed": "#4f4706",
+                        "error-container": "#fb5151",
+                        "tertiary-fixed": "#fdef9f",
+                        "on-primary-container": "#005a3d",
+                        "primary-fixed-dim": "#8fdfb7",
+                        "on-primary": "#c8ffe0",
+                        "secondary-fixed-dim": "#c3c3e9",
+                        "inverse-surface": "#0e0e0d",
+                        "tertiary-container": "#fdef9f",
+                        "on-primary-fixed": "#00452e",
+                        "outline": "#777774",
+                        "on-secondary-fixed": "#323451",
+                        "primary-dim": "#005c3e",
+                        "on-error-container": "#570008",
+                        "primary": "#0e6848",
+                        "secondary-fixed": "#d1d1f7",
+                        "secondary-dim": "#4c4d6c",
+                        "secondary-container": "#d1d1f7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffefee",
+                        "on-tertiary": "#fff4b9",
+                        "background": "#f8f6f2",
+                        "tertiary-dim": "#595010",
+                        "on-surface-variant": "#5b5c59"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Be Vietnam Pro", "sans-serif"],
+                        "label": ["Be Vietnam Pro", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-secondary-dim font-body text-on-surface min-h-screen overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container pb-32">
+<!-- TopAppBar -->
+<header class="w-full top-0 px-6 py-4 bg-transparent bg-gradient-to-b from-secondary-dim/80 to-transparent sticky z-40 transition-all duration-300">
+<div class="flex justify-between items-center w-full max-w-screen-xl mx-auto">
+<button class="text-surface hover:opacity-80 transition-opacity p-2 rounded-full bg-surface-container-highest/10 backdrop-blur-md">
+<span class="material-symbols-outlined text-2xl" data-icon="cottage">cottage</span>
+</button>
+<h1 class="font-headline font-bold tracking-tight text-2xl text-surface">Digital Sanctuary</h1>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-surface-container-highest/20 hover:opacity-80 transition-opacity cursor-pointer">
+<img alt="User Avatar" class="w-full h-full object-cover" data-alt="close up portrait of young woman with natural makeup and soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApZm66-zlbuliy18lMVk_u-_eZ2hlaUz9gmSm1Yf3wX-2ipspcdJdx38vFJuxaTF4BIE88UVNojLwGESxfDOadOgIrIcFCJMbz2LVta0vzNv_L_8aQ5xTsS9jJJnW0hf8htIsxyxVl0MyOKk80a1ONAlSLNlkt2S3_PBt7SvuF42aYnnZDOkKtXPOqF4DX0jKfvRkqgw_t4UHaq3P2fs8RB6ae5yN8Uo3LWkDLCYWz3yBCXJ5-CaGU-xzM475rmroZEw4mUDoD17Q"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full max-w-screen-xl mx-auto px-6 pt-8 pb-24">
+<!-- Nursery Environment Header -->
+<div class="flex flex-col items-center justify-center text-center mb-12 space-y-2">
+<div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-surface-container-highest/10 backdrop-blur-md text-surface text-sm font-semibold">
+<span class="material-symbols-outlined text-base fill-icon text-tertiary-container" data-icon="bedtime">bedtime</span>
+<span>Nursery Mode</span>
+</div>
+<h2 class="font-headline text-5xl font-black text-surface tracking-tight">Quiet Hours</h2>
+<p class="text-secondary-fixed-dim text-lg max-w-md mx-auto">Your agents are currently resting and processing daily logs.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 relative z-10">
+<!-- Agent Habitat Main Card (The Pod) -->
+<div class="col-span-1 md:col-span-8 bg-surface-container-lowest/10 backdrop-blur-3xl rounded-xl p-8 md:p-12 relative overflow-hidden flex flex-col justify-between min-h-[500px]">
+<!-- Ambient Lighting Effect -->
+<div class="absolute -top-32 -right-32 w-96 h-96 bg-primary-container/20 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute -bottom-32 -left-32 w-96 h-96 bg-tertiary-container/10 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Agent Info Overlay -->
+<div class="flex justify-between items-start z-10">
+<div>
+<h3 class="font-headline text-3xl font-bold text-surface mb-1">Luna</h3>
+<div class="flex items-center space-x-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed animate-pulse"></span>
+<span class="text-secondary-fixed text-sm font-medium">Idle / Sleeping</span>
+</div>
+</div>
+<button class="bg-surface-container-lowest/20 hover:bg-surface-container-lowest/30 backdrop-blur-md text-surface px-5 py-2.5 rounded-full flex items-center space-x-2 transition-all duration-200 hover:scale-95 shadow-[0px_20px_40px_rgba(46,47,45,0.06)] border border-surface-container-lowest/10">
+<span class="material-symbols-outlined text-sm" data-icon="tune">tune</span>
+<span class="font-semibold text-sm">Customize</span>
+</button>
+</div>
+<!-- 3D Pod Visual Container -->
+<div class="flex-grow flex items-center justify-center relative z-0 py-8">
+<!-- Placeholder for actual 3D render, using an evocative image instead -->
+<div class="relative w-64 h-64 md:w-80 md:h-80">
+<img alt="Glowing Pod" class="w-full h-full object-cover rounded-full mix-blend-screen opacity-80" data-alt="abstract glowing orb soft pastel colors floating in dark space ethereal lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd5OJwfkYRiE9jZ1IM9NS80SkUKb2HHXQgqxbeORp61WEZow8GkDv1TswOLEr0RM35rOltSugjBkV7BzpPaA6luBekJ8DUy1C6hJ2dq7z3TPcTqjZMpOoK6O9sP3hkBTd2LBaFnE2jKzuglXNFtzTXT7V9jJkyfZEy4_spa4lENHIfMFBRq4ewRF1c-kexlRSYcHw-OGGED__Ltt1P7rG1iqc8sTFnVTySdxNtvxcfjg5iN4iT7LBiIz4-7LU8uCUZtoO5JGp7DVU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-secondary-dim via-transparent to-transparent rounded-full mix-blend-multiply"></div>
+</div>
+</div>
+<!-- Vital Stats Bottom Bar -->
+<div class="grid grid-cols-3 gap-4 z-10 mt-8">
+<div class="bg-surface-container-lowest/5 backdrop-blur-lg rounded-lg p-4 text-center border border-surface-container-lowest/10">
+<span class="block text-secondary-fixed-dim text-xs mb-1">Energy</span>
+<span class="text-surface font-headline font-bold text-xl">100%</span>
+</div>
+<div class="bg-surface-container-lowest/5 backdrop-blur-lg rounded-lg p-4 text-center border border-surface-container-lowest/10">
+<span class="block text-secondary-fixed-dim text-xs mb-1">Logs Processed</span>
+<span class="text-surface font-headline font-bold text-xl">1.2k</span>
+</div>
+<div class="bg-surface-container-lowest/5 backdrop-blur-lg rounded-lg p-4 text-center border border-surface-container-lowest/10">
+<span class="block text-secondary-fixed-dim text-xs mb-1">Uptime</span>
+<span class="text-surface font-headline font-bold text-xl">48h</span>
+</div>
+</div>
+</div>
+<!-- Secondary Column -->
+<div class="col-span-1 md:col-span-4 flex flex-col gap-8">
+<!-- Environment Controls -->
+<div class="bg-surface-container-lowest/10 backdrop-blur-xl rounded-xl p-8 border border-surface-container-lowest/5">
+<h4 class="font-headline font-bold text-surface text-xl mb-6 flex items-center space-x-2">
+<span class="material-symbols-outlined" data-icon="lightbulb">lightbulb</span>
+<span>Ambience</span>
+</h4>
+<div class="space-y-6">
+<!-- Slider Control -->
+<div>
+<div class="flex justify-between text-sm text-secondary-fixed mb-2">
+<span>Starlight Intensity</span>
+<span class="font-medium text-surface">30%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest/20 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[30%] rounded-full shadow-[0_0_10px_rgba(253,239,159,0.5)]"></div>
+</div>
+</div>
+<!-- Toggle Controls -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="water_drop">water_drop</span>
+</div>
+<span class="text-surface font-medium">White Noise</span>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 bottom-1 w-4 bg-surface rounded-full shadow-sm"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-fixed text-sm" data-icon="mode_cool">mode_cool</span>
+</div>
+<span class="text-surface font-medium">Temperature Control</span>
+</div>
+<div class="w-12 h-6 bg-surface-container-highest/20 rounded-full relative cursor-pointer">
+<div class="absolute left-1 top-1 bottom-1 w-4 bg-surface-variant rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Agent Personality Quick Settings -->
+<div class="bg-surface-container-lowest/10 backdrop-blur-xl rounded-xl p-8 border border-surface-container-lowest/5 flex-grow">
+<h4 class="font-headline font-bold text-surface text-xl mb-4 flex items-center space-x-2">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>Personality</span>
+</h4>
+<p class="text-secondary-fixed-dim text-sm mb-6">Luna is currently configured to be empathetic and analytical.</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-4 py-2 rounded-full bg-surface-container-lowest/20 text-surface text-xs font-semibold backdrop-blur-md">Empathetic</span>
+<span class="px-4 py-2 rounded-full bg-surface-container-lowest/20 text-surface text-xs font-semibold backdrop-blur-md">Analytical</span>
+<span class="px-4 py-2 rounded-full bg-surface-container-lowest/5 text-secondary-fixed text-xs border border-surface-container-lowest/10 border-dashed cursor-pointer hover:bg-surface-container-lowest/10 transition-colors">+ Add Trait</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full rounded-t-[3rem] px-8 pb-8 pt-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-3xl shadow-[0px_-20px_40px_rgba(46,47,45,0.06)] z-50 flex justify-around items-center">
+<!-- Lounge (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#585979] dark:text-slate-400 px-6 py-2 hover:scale-105 duration-300 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-[#0e6848] transition-colors" data-icon="weekend">weekend</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Lounge</span>
+</a>
+<!-- Kitchen (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#585979] dark:text-slate-400 px-6 py-2 hover:scale-105 duration-300 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-[#0e6848] transition-colors" data-icon="soup_kitchen">soup_kitchen</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Kitchen</span>
+</a>
+<!-- Nursery (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#9deec4] dark:bg-[#0e6848] text-[#0e6848] dark:text-[#9deec4] rounded-full px-6 py-2 transition-all hover:scale-105 duration-300 scale-95" href="#">
+<span class="material-symbols-outlined mb-1 fill-icon" data-icon="potted_plant">potted_plant</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Nursery</span>
+</a>
+<!-- Garden (Inactive) -->
+<a class="flex flex-col items-center justify-center text-[#585979] dark:text-slate-400 px-6 py-2 hover:scale-105 duration-300 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-[#0e6848] transition-colors" data-icon="local_florist">local_florist</span>
+<span class="font-['Be_Vietnam_Pro'] text-[11px] font-semibold">Garden</span>
+</a>
+</nav>
+</body></html>

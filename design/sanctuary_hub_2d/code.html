@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Sanctuary - Hub</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#73796f",
+                        "inverse-primary": "#afd0a1",
+                        "on-tertiary-fixed-variant": "#6e3900",
+                        "surface-dim": "#dedacf",
+                        "surface-bright": "#fdf9ee",
+                        "tertiary-container": "#8e5012",
+                        "secondary-fixed": "#ffdbc9",
+                        "background": "#fdf9ee",
+                        "tertiary-fixed": "#ffdcc3",
+                        "error": "#ba1a1a",
+                        "primary-fixed-dim": "#afd0a1",
+                        "primary-fixed": "#caecbc",
+                        "tertiary": "#6f3a00",
+                        "inverse-on-surface": "#f5f0e5",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f8f3e8",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c3c8bd",
+                        "on-tertiary-container": "#ffd1af",
+                        "on-surface-variant": "#434840",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#783603",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#496640",
+                        "secondary-container": "#ffa26a",
+                        "on-secondary-fixed": "#321200",
+                        "primary": "#334f2b",
+                        "inverse-surface": "#323129",
+                        "surface-variant": "#e6e2d7",
+                        "secondary": "#934b19",
+                        "on-tertiary-fixed": "#2f1500",
+                        "tertiary-fixed-dim": "#ffb77d",
+                        "surface-container": "#f2eee2",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e6e2d7",
+                        "secondary-fixed-dim": "#ffb68c",
+                        "on-primary-fixed-variant": "#324e2a",
+                        "on-surface": "#1c1c15",
+                        "on-secondary-fixed-variant": "#753401",
+                        "on-background": "#1c1c15",
+                        "on-primary-container": "#c2e4b4",
+                        "surface-container-high": "#ece8dd",
+                        "surface": "#fdf9ee",
+                        "primary-container": "#4a6741",
+                        "on-primary-fixed": "#062104"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .blueprint-grid {
+            background-image: 
+                linear-gradient(to right, rgba(195, 200, 189, 0.15) 1px, transparent 1px), 
+                linear-gradient(to bottom, rgba(195, 200, 189, 0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body h-screen w-full overflow-hidden flex flex-col relative blueprint-grid">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-6 py-4 bg-[#fdf9ee] text-[#334f2b] font-['Space_Grotesk'] font-bold uppercase tracking-wider docked full-width top-0 z-50 transition-transform">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-2xl hover:bg-[#4a6741]/10 p-2 cursor-pointer transition-colors">grid_view</span>
+<h1 class="text-xl font-black text-[#1c1c15]">Digital Sanctuary</h1>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 bg-surface-container-highest border-2 border-primary flex items-center justify-center hover:bg-[#4a6741]/10 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+</div>
+</header>
+<!-- Top Navigation Separation Logic -->
+<div class="bg-stone-200/30 h-[2px] w-full relative z-40"></div>
+<!-- Main Canvas: Floor Plan Layout -->
+<main class="flex-1 relative w-full h-full overflow-y-auto overflow-x-hidden p-6 md:p-12 pb-32">
+<div class="max-w-6xl mx-auto h-full flex flex-col">
+<!-- Context Header -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h2 class="font-headline text-4xl md:text-5xl font-bold text-on-surface tracking-tighter uppercase leading-none">Sector Alpha</h2>
+<p class="font-body text-on-surface-variant mt-2 text-sm max-w-md">Live monitoring of entity flow and structural integrity across the primary habitation zones.</p>
+</div>
+<div class="hidden md:flex gap-4">
+<button class="bg-gradient-to-b from-primary to-primary-container text-on-primary font-headline uppercase text-sm px-6 py-3 hover:-translate-y-[2px] hover:-translate-x-[2px] transition-transform relative group">
+<span class="relative z-10 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add</span> Deploy
+                        </span>
+<div class="absolute inset-0 bg-on-surface opacity-0 group-hover:opacity-10 translate-y-[4px] translate-x-[4px] -z-10 transition-opacity"></div>
+</button>
+</div>
+</div>
+<!-- Architectural Grid Container -->
+<div class="flex-1 grid grid-cols-1 md:grid-cols-12 md:grid-rows-12 gap-4 relative">
+<!-- Zone 1: Lounge (Top Left, spans wider) -->
+<div class="bg-surface-container-low p-6 md:col-span-7 md:row-span-6 relative overflow-hidden flex flex-col group transition-colors hover:bg-surface-container">
+<div class="flex justify-between items-start z-10">
+<h3 class="font-headline text-xl font-bold text-primary tracking-widest uppercase">Lounge</h3>
+<div class="px-2 py-1 bg-surface-variant text-on-surface-variant text-[10px] font-bold font-headline uppercase tracking-widest">Active</div>
+</div>
+<!-- Sprite: Octopus lounging -->
+<div class="absolute bottom-1/4 right-1/4 transform scale-125 translate-x-4 hover:-translate-y-2 transition-transform duration-500 cursor-pointer z-20">
+<img alt="Octopus Sprite" class="w-24 h-24 object-cover mix-blend-multiply opacity-90 drop-shadow-[0_8px_16px_rgba(28,28,21,0.15)]" data-alt="pixel art style illustration of a purple octopus wearing headphones sitting on a low modern modular sofa, isometric top-down perspective, vibrant clean background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBREv4LwgTSTWur7Csb3NYjRsuzONK9-n8qe7YK2egk5d6rXQQPrcNZS35CxDaeI1tbcsYouFTodwUmg1Ct2cbkrKCZomitFkBkKw_XjahjQF891lgd94OWjvdkyjqndTn4UXXZU-Q52SithOOuYJ4kx7VPnh_ZpMkuwwZBi940DjLbE95-OoOKqR8b_-9PssmGzyDQzX5H_qWHRp4pHC2qve8nO3HA0D_1vb01sgGIrtYkGmbVzcxlXf4KYSLwlAW6myQKpMLaFrI"/>
+</div>
+<!-- Environmental details -->
+<div class="absolute inset-x-0 bottom-0 h-1/3 border-t-2 border-surface-variant bg-surface-container/50"></div>
+</div>
+<!-- Zone 2: Kitchen (Top Right) -->
+<div class="bg-surface-container p-6 md:col-span-5 md:row-span-7 relative overflow-hidden flex flex-col group transition-colors hover:bg-surface-container-high">
+<div class="flex justify-between items-start z-10">
+<h3 class="font-headline text-xl font-bold text-secondary tracking-widest uppercase">Kitchen</h3>
+<span class="material-symbols-outlined text-secondary opacity-50">restaurant</span>
+</div>
+<!-- Structural element -->
+<div class="w-2/3 h-12 bg-surface-container-highest mt-auto border-b-2 border-secondary relative">
+<div class="absolute -top-6 left-4 w-8 h-8 bg-surface-variant border border-outline-variant/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">local_fire_department</span>
+</div>
+</div>
+</div>
+<!-- Zone 3: Nursery (Bottom Left) -->
+<div class="bg-surface-container-high p-6 md:col-span-6 md:row-span-6 relative overflow-hidden flex flex-col">
+<div class="flex justify-between items-start z-10">
+<h3 class="font-headline text-xl font-bold text-on-surface tracking-widest uppercase">Nursery</h3>
+</div>
+<!-- Sprite: Alien moving -->
+<div class="absolute top-1/2 left-1/3 transform -translate-y-1/2 hover:translate-x-4 transition-transform duration-700 cursor-pointer z-20">
+<img alt="Alien Sprite" class="w-20 h-20 object-cover mix-blend-multiply opacity-80 drop-shadow-[0_4px_12px_rgba(28,28,21,0.1)]" data-alt="isometric top-down pixel art sprite of a small green alien character holding a watering can, standing near a geometric hydroponic plant bed, soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3eAhYyU1yd5EUOKU7NBL4QRGpCOz0rcZH4rFdPvNcJmaTcKpuWzEAzqIw81w1J6o8n8vpz-wBwqdyB4UoSjLv9ak07vCubuEATUgBZ1o2LOteZBK3EJcKtGNWaNAgDKxV9dJrewchhb8PW15Ea9JuEFQSlb6dz6IwCdMiCdXIzmdSKio7TuphGI233lqPuZ53vh2zT4y8q3WYOvFoGsU6NmJ5vxrJqsB1mfxyH5I4-2jjk88l0k0RURfpk10LlBupBHbPvl3jyLg"/>
+</div>
+</div>
+<!-- Zone 4: Garden (Bottom Right) -->
+<div class="bg-[#caecbc]/20 p-6 md:col-span-6 md:row-span-5 relative overflow-hidden flex flex-col group">
+<div class="flex justify-between items-start z-10">
+<h3 class="font-headline text-xl font-bold text-primary tracking-widest uppercase">Garden</h3>
+<span class="material-symbols-outlined text-primary">eco</span>
+</div>
+<!-- Abstract foliage representation -->
+<div class="absolute -right-4 -bottom-4 w-32 h-32 bg-primary/10 border border-primary/20 transform rotate-12"></div>
+<div class="absolute right-12 bottom-8 w-16 h-24 bg-primary/15 border border-primary/20 transform -rotate-6"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Container (Mobile specific display context via Tailwind classes usually, but strictly implementing JSON layout) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-end px-4 pb-6 pt-2 bg-[#fdf9ee] border-t-2 border-[#1c1c15]/5 z-50 md:hidden">
+<!-- Tab: HUB (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-[#334f2b] border-b-4 border-[#934b19] pb-1 scale-95 transition-all duration-100 w-16 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-[#334f2b]" style="font-variation-settings: 'FILL' 1;">home_storage</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">HUB</span>
+</a>
+<!-- Tab: ROOMS (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-[#1c1c15]/40 pb-1 hover:text-[#334f2b] transition-colors w-16 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-[#334f2b]">door_open</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">ROOMS</span>
+</a>
+<!-- Tab: AGENTS (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-[#1c1c15]/40 pb-1 hover:text-[#334f2b] transition-colors w-16 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-[#334f2b]">memory</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">AGENTS</span>
+</a>
+<!-- Tab: LOGS (INACTIVE) -->
+<a class="flex flex-col items-center justify-center text-[#1c1c15]/40 pb-1 hover:text-[#334f2b] transition-colors w-16 group" href="#">
+<span class="material-symbols-outlined mb-1 group-hover:text-[#334f2b]">database</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-tighter">LOGS</span>
+</a>
+</nav>
+</body></html>
