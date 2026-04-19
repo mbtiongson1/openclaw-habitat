@@ -8,6 +8,10 @@ import { AgentCreator } from './components/agent/AgentCreator';
 import { LoadingScreen } from './components/ui/LoadingScreen';
 import { ConnectionBadge } from './components/ui/ConnectionBadge';
 import { SettingsModal } from './components/ui/SettingsModal';
+import { SanctuaryHub } from './components/sanctuary/SanctuaryHub';
+import { KitchenView } from './components/kitchen/KitchenView';
+import { AgentPage } from './components/agent/AgentPage';
+
 
 
 // Define the port depending on dev/prod
