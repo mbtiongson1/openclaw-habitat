@@ -30,6 +30,7 @@ export interface SnackReward {
   boostValue: number;
   boostDurationMinutes: number;
   timestamp: number;
+  nodeType?: string;
 }
 
 export interface FeedingLogEntry {
@@ -74,6 +75,7 @@ export interface SubAgentTaskCompleteEvent {
   description: string;
   score: number;
   timestamp: number;
+  nodeType?: string;
 }
 
 export interface ConfigSnapshot {

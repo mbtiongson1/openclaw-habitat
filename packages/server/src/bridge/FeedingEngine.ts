@@ -33,7 +33,7 @@ export class FeedingEngine extends EventEmitter {
   }
 
   /** Grant a snack for a completed task (critique pattern: scored 0-10) */
-  grantSnack(agentId: string, taskDescription: string, score: number): SnackReward {
+  grantSnack(agentId: string, taskDescription: string, score: number, nodeType?: string): SnackReward {
     const tier = scoreTier(score);
     const boost = boostForTier(tier);
 
@@ -47,6 +47,7 @@ export class FeedingEngine extends EventEmitter {
       boostValue: boost.value,
       boostDurationMinutes: boost.durationMinutes,
       timestamp: Date.now(),
+      nodeType,
     };
 
     const agent = this.stateManager.getAgent(agentId);
