@@ -1,0 +1,103 @@
+.nursery-view {
+  background-color: var(--surface-container-low);
+  padding: var(--space-xl);
+  height: 100%;
+  overflow-y: auto;
+  padding-bottom: 80px;
+
+  /* Dimmer look for nursery */
+  color: var(--on-surface);
+}
+
+.nursery-view__header {
+  margin-bottom: var(--space-2xl);
+}
+
+.nursery-view__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.5rem;
+  margin: 0 0 var(--space-xs) 0;
+  color: var(--on-surface);
+}
+
+.nursery-view__subtitle {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  margin: 0;
+}
+
+.nursery-view__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-xl);
+}
+
+.nursery-bed {
+  background-color: var(--surface-container-high);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nursery-bed:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+}
+
+.nursery-bed__agent {
+  animation: sleep-breathe 4s infinite ease-in-out;
+}
+
+.dream-bubble {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background-color: var(--surface);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  font-size: 0.8rem;
+  max-width: 150px;
+  text-align: center;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+}
+
+.dream-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 20px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--surface);
+  border-right: 1px solid var(--outline-variant);
+  border-bottom: 1px solid var(--outline-variant);
+  transform: rotate(45deg);
+}
+
+.z-particle {
+  position: absolute;
+  font-family: 'Space Grotesk', sans-serif;
+  color: var(--primary);
+  font-weight: bold;
+  animation: z-float 3s infinite linear;
+  opacity: 0;
+}
+
+.z-particle:nth-child(1) { top: -20px; right: -10px; animation-delay: 0s; }
+.z-particle:nth-child(2) { top: -30px; right: -20px; font-size: 1.2rem; animation-delay: 1s; }
+.z-particle:nth-child(3) { top: -45px; right: -30px; font-size: 1.5rem; animation-delay: 2s; }
+
+.mt-2 {
+  margin-top: var(--space-sm);
+}
+
+.text-center {
+  text-align: center;
+}
