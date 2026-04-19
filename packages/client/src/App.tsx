@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useWebSocket } from './hooks/useWebSocket';
 import { useAgents } from './hooks/useAgents';
 import { BottomNav } from './components/ui/BottomNav';
-import { SanctuaryHub } from './components/sanctuary/SanctuaryHub';
-import { KitchenView } from './components/kitchen/KitchenView';
-import { AgentPage } from './components/agent/AgentPage';
 import { NurseryView } from './components/nursery/NurseryView';
 import { GardenView } from './components/garden/GardenView';
 import { AgentCreator } from './components/agent/AgentCreator';
+import { LoadingScreen } from './components/ui/LoadingScreen';
+import { ConnectionBadge } from './components/ui/ConnectionBadge';
+import { SettingsModal } from './components/ui/SettingsModal';
+
 
 // Define the port depending on dev/prod
 const WS_URL = import.meta.env.PROD 
@@ -19,21 +20,24 @@ export function App() {
   const { agents, selectedAgent, selectedAgentId, setSelectedAgentId, feedAgent, createAgent } = useAgents(ws);
   const [activeTab, setActiveTab] = useState<'hub' | 'kitchen' | 'nursery' | 'garden'>('hub');
   const [showCreator, setShowCreator] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
   if (!ws.connected && agents.length === 0) {
-    return (
-      <div className="app bg-surface flex flex-col items-center justify-center h-screen color-on-surface">
-        <h1 className="text-2xl font-display mb-4">Digital Sanctuary</h1>
-        <p className="opacity-70">{ws.reconnecting ? 'Reconnecting to Habitat...' : 'Connecting to Habitat...'}</p>
-        {!ws.connected && !ws.reconnecting && (
-          <p className="opacity-50 mt-4 text-sm">Ensure mock server is running: npm run dev:mock</p>
-        )}
-      </div>
-    );
+    return <LoadingScreen reconnecting={ws.reconnecting} />;
   }
 
   return (
     <div className="app">
+      <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
+      
+      {/* Settings Button */}
+      <button 
+        className="icon-btn" 
+        onClick={() => setShowSettings(true)}
+        style={{ position: 'fixed', top: 'var(--space-md)', right: 'var(--space-md)', zIndex: 1000, background: 'var(--surface-variant)', padding: '8px', borderRadius: '50%', border: '1px solid var(--outline-variant)' }}
+      >
+        ⚙️
+      </button>
       <main className="app__content">
         {activeTab === 'hub' && (
           <SanctuaryHub agents={agents} onSelectAgent={setSelectedAgentId} />
@@ -76,6 +80,11 @@ export function App() {
             onClose={() => setShowCreator(false)} 
             onCreate={createAgent} 
           />
+        )}
+
+        {/* Settings Modal Overlay */}
+        {showSettings && (
+          <SettingsModal onClose={() => setShowSettings(false)} />
         )}
       </main>
 
