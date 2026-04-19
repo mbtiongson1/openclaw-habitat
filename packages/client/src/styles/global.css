@@ -1,7 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --color-outline: #73796f;
+  --color-inverse-primary: #afd0a1;
+  --color-on-tertiary-fixed-variant: #6e3900;
+  --color-surface-dim: #dedacf;
+  --color-surface-bright: #fdf9ee;
+  --color-tertiary-container: #8e5012;
+  --color-secondary-fixed: #ffdbc9;
+  --color-background: #fdf9ee;
+  --color-tertiary-fixed: #ffdcc3;
+  --color-error: #ba1a1a;
+  --color-primary-fixed-dim: #afd0a1;
+  --color-primary-fixed: #caecbc;
+  --color-tertiary: #6f3a00;
+  --color-inverse-on-surface: #f5f0e5;
+  --color-error-container: #ffdad6;
+  --color-surface-container-low: #f8f3e8;
+  --color-on-tertiary: #ffffff;
+  --color-outline-variant: #c3c8bd;
+  --color-on-tertiary-container: #ffd1af;
+  --color-on-surface-variant: #434840;
+  --color-on-error: #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-secondary-container: #783603;
+  --color-on-secondary: #ffffff;
+  --color-on-error-container: #93000a;
+  --color-surface-tint: #496640;
+  --color-secondary-container: #ffa26a;
+  --color-on-secondary-fixed: #321200;
+  --color-primary: #334f2b;
+  --color-inverse-surface: #323129;
+  --color-surface-variant: #e6e2d7;
+  --color-secondary: #934b19;
+  --color-on-tertiary-fixed: #2f1500;
+  --color-tertiary-fixed-dim: #ffb77d;
+  --color-surface-container: #f2eee2;
+  --color-on-primary: #ffffff;
+  --color-surface-container-highest: #e6e2d7;
+  --color-secondary-fixed-dim: #ffb68c;
+  --color-on-primary-fixed-variant: #324e2a;
+  --color-on-surface: #1c1c15;
+  --color-on-secondary-fixed-variant: #753401;
+  --color-on-background: #1c1c15;
+  --color-on-primary-container: #c2e4b4;
+  --color-surface-container-high: #ece8dd;
+  --color-surface: #fdf9ee;
+  --color-primary-container: #4a6741;
+  --color-on-primary-fixed: #062104;
+
+  --font-headline: "Space Grotesk", sans-serif;
+  --font-body: "Manrope", sans-serif;
+  --font-label: "Manrope", sans-serif;
+}
+
 @import './tokens.css';
 @import './reset.css';
 @import './animations.css';
-
 html, body, #root {
   height: 100%;
   width: 100%;

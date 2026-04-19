@@ -27,18 +27,25 @@ export function App() {
   }
 
   return (
-    <div className="app">
+    <div className="bg-background text-on-background font-body min-h-screen flex flex-col pb-24 md:pb-0">
       <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
       
-      {/* Settings Button */}
-      <button 
-        className="icon-btn" 
-        onClick={() => setShowSettings(true)}
-        style={{ position: 'fixed', top: 'var(--space-md)', right: 'var(--space-md)', zIndex: 1000, background: 'var(--surface-variant)', padding: '8px', borderRadius: '50%', border: '1px solid var(--outline-variant)' }}
-      >
-        ⚙️
-      </button>
-      <main className="app__content">
+      {/* Top Header */}
+      <header className="sticky top-0 z-50 bg-surface flex justify-between items-center w-full px-6 py-4">
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-primary text-2xl">grid_view</span>
+          <h1 className="font-headline font-bold uppercase tracking-wider text-xl text-on-surface">Digital Sanctuary</h1>
+        </div>
+        <button 
+          className="w-10 h-10 bg-surface-container-highest flex items-center justify-center overflow-hidden hover:bg-surface-variant transition-colors"
+          onClick={() => setShowSettings(true)}
+        >
+          <span className="material-symbols-outlined text-on-surface">settings</span>
+        </button>
+        <div className="absolute bottom-0 left-0 bg-outline-variant h-[2px] w-full"></div>
+      </header>
+
+      <main className="flex-grow p-6 md:p-12 md:pl-32 max-w-7xl mx-auto w-full relative z-10">
         {activeTab === 'hub' && (
           <SanctuaryHub agents={agents} onSelectAgent={setSelectedAgentId} />
         )}
