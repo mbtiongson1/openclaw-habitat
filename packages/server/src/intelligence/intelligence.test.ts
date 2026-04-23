@@ -159,7 +159,8 @@ test('setActiveModel returns recovery_required for runtime_unreachable model', a
     { on: () => {}, getState: () => ({}) } as any,
     { recommend: () => [] } as any,
     { on: () => {}, ensureAgent: () => {} } as any,
-    { getSnapshot: () => ({}) } as any
+    { getSnapshot: () => ({}) } as any,
+    { on: () => {}, append: () => {} } as any
   );
 
   const result = service.setActiveModel('agent-1', 'llama3.1:8b');
@@ -167,5 +168,56 @@ test('setActiveModel returns recovery_required for runtime_unreachable model', a
   assert.equal(result.result, 'recovery_required');
   // @ts-ignore
   assert.equal(result.reasonCode, 'runtime_unreachable');
+});
+
+test('automatic fallback logs a warning event and switches the agent', async () => {
+  const { AgentIntelligenceService } = await import('./AgentIntelligenceService.js');
+  
+  const unreachableModel = {
+    id: 'gpt-4o',
+    usability: { status: 'quota_exhausted', reasonCode: 'quota_exhausted', message: 'Quota hit' }
+  } as any;
+
+  const fallbackModel = {
+    id: 'mistral-nemo:12b',
+    usability: { status: 'usable', reasonCode: 'ok', message: 'ok' }
+  } as any;
+
+  const stateManager = {
+    getAgent: () => ({ config: { id: 'agent-1' } }),
+    getAll: () => [],
+  } as any;
+
+  const catalogService = {
+    getModel: (id: string) => id === 'gpt-4o' ? unreachableModel : fallbackModel,
+    getCatalog: () => [unreachableModel, fallbackModel],
+    on: () => {},
+  } as any;
+
+  const strategyService = {
+    getStrategy: () => ({ fallbackModelId: 'mistral-nemo:12b', switchRules: { fallbackOnQuota: true } }),
+    on: () => {},
+  } as any;
+
+  const logEvents: any[] = [];
+  const logService = {
+    append: (e: any) => logEvents.push(e),
+  } as any;
+
+  const service = new AgentIntelligenceService(
+    stateManager,
+    catalogService,
+    strategyService,
+    { on: () => {}, getState: () => ({}) } as any,
+    { recommend: () => [] } as any,
+    { on: () => {}, setActiveModel: () => {} } as any,
+    { getSnapshot: () => ({}) } as any,
+    logService
+  );
+
+  // @ts-ignore
+  const result = service.handleModelFailure('agent-1', 'gpt-4o', 'quota_exhausted');
+  assert.equal(result.switchedToModelId, 'mistral-nemo:12b');
+  assert.equal(logEvents[0].eventType, 'automatic_fallback_switch');
 });
 

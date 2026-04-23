@@ -150,4 +150,8 @@ export class ConfigStore {
       return false;
     }
   }
+
+  getStorageDir(): string {
+    return CONFIG_DIR;
+  }
 }

@@ -17,6 +17,7 @@ import { AgentTelemetryService } from './AgentTelemetryService.js';
 import { ModelCatalogService } from './ModelCatalogService.js';
 import { ModelQuickSwitchService } from './ModelQuickSwitchService.js';
 import { ModelRecommendationService } from './ModelRecommendationService.js';
+import { ModelOperationsLogService } from './ModelOperationsLogService.js';
 import { RuntimeMetricsService } from './RuntimeMetricsService.js';
 
 type StrategyIntent = 'planning' | 'quick_task' | 'fallback';
@@ -29,7 +30,8 @@ export class AgentIntelligenceService extends EventEmitter {
     private readonly quickSwitchService: ModelQuickSwitchService,
     private readonly recommendationService: ModelRecommendationService,
     private readonly telemetryService: AgentTelemetryService,
-    private readonly runtimeMetricsService: RuntimeMetricsService
+    private readonly runtimeMetricsService: RuntimeMetricsService,
+    private readonly logService: ModelOperationsLogService
   ) {
     super();
     this.wireEvents();
@@ -203,9 +205,70 @@ export class AgentIntelligenceService extends EventEmitter {
       };
     }
 
+    const currentTelemetry = this.telemetryService.getTelemetry(agentId);
+    const fromModelId = currentTelemetry?.activeModelId;
+
     this.telemetryService.setActiveModel(agentId, model);
     this.quickSwitchService.markUsed(agentId, model.id);
+
+    this.logService.append({
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      agentId,
+      eventType: 'manual_switch',
+      severity: 'info',
+      source: 'manual_action',
+      fromModelId,
+      toModelId: model.id,
+      message: `Manual switch to ${model.displayName}`,
+    });
+
     return this.getSnapshot(agentId);
+  }
+
+  handleModelFailure(agentId: string, currentModelId: string, reasonCode: string) {
+    const catalog = this.catalogService.getCatalog();
+    const strategy = this.strategyService.getStrategy(agentId, catalog);
+
+    // Only fallback if enabled in strategy
+    const shouldFallback = 
+      (reasonCode === 'quota_exhausted' && strategy.switchRules.fallbackOnQuota) ||
+      (reasonCode === 'runtime_unreachable' && strategy.switchRules.fallbackOnUnavailable);
+
+    if (shouldFallback) {
+      const fallback = catalog.find(m => m.id === strategy.fallbackModelId);
+      if (fallback && fallback.usability.status === 'usable') {
+        this.telemetryService.setActiveModel(agentId, fallback);
+        this.logService.append({
+          id: crypto.randomUUID(),
+          timestamp: Date.now(),
+          agentId,
+          eventType: 'automatic_fallback_switch',
+          severity: 'warning',
+          source: 'automatic_recovery',
+          fromModelId: currentModelId,
+          toModelId: fallback.id,
+          reasonCode,
+          message: `Switched to fallback ${fallback.displayName} due to ${reasonCode}`,
+        });
+        return { switchedToModelId: fallback.id };
+      }
+    }
+
+    // Log the failure even if no fallback possible
+    this.logService.append({
+      id: crypto.randomUUID(),
+      timestamp: Date.now(),
+      agentId,
+      eventType: reasonCode === 'quota_exhausted' ? 'quota_exhausted' : 'runtime_unreachable',
+      severity: 'error',
+      source: 'runtime_probe',
+      fromModelId: currentModelId,
+      reasonCode,
+      message: `Model failure: ${reasonCode} for ${currentModelId}`,
+    });
+
+    return { switchedToModelId: null };
   }
 
   private buildRecoveryOptions(agentId: string, failedModel: ModelDescriptor): RecoveryOption[] {

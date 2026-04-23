@@ -23,6 +23,7 @@ app.use(express.json());
 const configStore = new ConfigStore();
 const stateManager = new AgentStateManager(configStore);
 const feedingEngine = new FeedingEngine(stateManager);
+const modelOperationsLogService = new ModelOperationsLogService(configStore.getStorageDir());
 const modelCatalogService = new ModelCatalogService(
   [
     new StaticCloudProviderAdapter('openai', 'OpenAI', [
@@ -45,7 +46,8 @@ const intelligenceService = new AgentIntelligenceService(
   new ModelQuickSwitchService(configStore),
   new ModelRecommendationService(),
   new AgentTelemetryService(),
-  new RuntimeMetricsService()
+  new RuntimeMetricsService(),
+  modelOperationsLogService
 );
 const mockGateway = new MockGateway(stateManager, intelligenceService);
 
@@ -101,6 +103,10 @@ async function bootstrap(): Promise<void> {
   });
   intelligenceService.on('pull_progress', (job) => {
     bridge.broadcast({ type: 'local_model_pull_progress', payload: job });
+  });
+
+  modelOperationsLogService.on('event_logged', (event) => {
+    bridge.broadcast({ type: 'model_operation_logged', payload: event });
   });
 
   // Wire task completions → feeding engine snack generation
