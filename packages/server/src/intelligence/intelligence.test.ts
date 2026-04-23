@@ -102,3 +102,25 @@ test('recommendations prefer reachable favorites over unreachable local fallback
   assert.notEqual(recommendations[0].modelId, 'llama3.1:8b');
   assert.equal(recommendations.at(-1)?.modelId, 'llama3.1:8b');
 });
+
+test('ollama-installed model is runtime_unreachable when runtime probe fails', async () => {
+  // Use a port that is likely not in use to ensure connection failure
+  const adapter = new (await import('./adapters.js')).OllamaAdapter('http://127.0.0.1:1');
+  const [model] = await adapter.listInstalledModels();
+  // @ts-ignore - usability doesn't exist yet
+  assert.equal(model.usability.status, 'runtime_unreachable');
+  assert.equal(model.availability.reachable, false);
+});
+
+test('cloud model is usable when installed, reachable, and quota not exhausted', async () => {
+  const { ModelUsabilityService } = await import('./ModelUsabilityService.js');
+  const service = new ModelUsabilityService();
+  const result = service.evaluate({
+    origin: 'cloud',
+    installed: true,
+    reachable: true,
+    quotaExhausted: false,
+  });
+  assert.equal(result.status, 'usable');
+});
+

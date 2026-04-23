@@ -58,6 +58,20 @@ export interface Agent {
 
 export type ModelOrigin = 'cloud' | 'local';
 
+export type ModelUsabilityStatus =
+  | 'usable'
+  | 'temporarily_unavailable'
+  | 'quota_exhausted'
+  | 'not_installed'
+  | 'runtime_unreachable';
+
+export interface ModelUsability {
+  status: ModelUsabilityStatus;
+  reasonCode: string;
+  message: string;
+  checkedAt: number;
+}
+
 export interface ModelAvailability {
   installed: boolean;
   reachable: boolean;
@@ -79,6 +93,7 @@ export interface ModelDescriptor {
   contextWindowTokens: number;
   supportsStreaming: boolean;
   availability: ModelAvailability;
+  usability: ModelUsability;
   links?: ModelLinks;
 }
 
@@ -175,6 +190,49 @@ export interface LocalModelPullJob {
   progressPct: number;
   status: 'queued' | 'running' | 'completed' | 'failed';
   error?: string;
+}
+
+export type RecoveryAction = 'use_fallback' | 'retry_check' | 'download_recommended_local_model';
+
+export interface RecoveryOption {
+  action: RecoveryAction;
+  label: string;
+  description: string;
+  priority: number;
+  modelId?: string;
+}
+
+export interface RecoveryResponse {
+  result: 'recovery_required';
+  reasonCode: string;
+  message: string;
+  requestedModelId: string;
+  recoveryOptions: RecoveryOption[];
+}
+
+export type ModelOperationEventType =
+  | 'manual_switch'
+  | 'automatic_fallback_switch'
+  | 'quota_exhausted'
+  | 'runtime_unreachable'
+  | 'download_start'
+  | 'download_complete'
+  | 'download_failed'
+  | 'strategy_change'
+  | 'recovery_retry';
+
+export interface ModelOperationEvent {
+  id: string;
+  timestamp: number;
+  agentId?: string;
+  eventType: ModelOperationEventType;
+  severity: 'info' | 'warning' | 'error';
+  source: 'manual_action' | 'automatic_recovery' | 'runtime_probe' | 'download_job' | 'strategy_update';
+  fromModelId?: string;
+  toModelId?: string;
+  reasonCode?: string;
+  message: string;
+  metadata?: Record<string, any>;
 }
 
 export interface ZoneTransitionEvent {
