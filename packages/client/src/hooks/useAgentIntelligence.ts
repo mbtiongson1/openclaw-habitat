@@ -5,6 +5,7 @@ import type {
   LocalModelPullJob,
   LocalModelSearchResult,
   ModelQuickSwitchState,
+  RecoveryResponse,
 } from '@habitat/shared';
 import { useWebSocket } from './useWebSocket';
 
@@ -17,7 +18,23 @@ export function useAgentIntelligence(agentId: string | null, ws: ReturnType<type
   const [updatingStrategy, setUpdatingStrategy] = useState(false);
   const [favoritePendingId, setFavoritePendingId] = useState<string | null>(null);
   const [pullJobs, setPullJobs] = useState<Record<string, LocalModelPullJob>>({});
+  const [recoveryState, setRecoveryState] = useState<RecoveryResponse | null>(null);
   const lastSearchQueryRef = useRef('');
+
+  const searchLocalModels = useCallback(async (query: string) => {
+    lastSearchQueryRef.current = query;
+    setSearching(true);
+    const response = await fetch(`/api/models/local/search?q=${encodeURIComponent(query)}`);
+    if (!response.ok) {
+      setSearching(false);
+      throw new Error('Failed to search local models');
+    }
+    const payload = await response.json() as { results: LocalModelSearchResult[] };
+    startTransition(() => {
+      setSearchResults(payload.results);
+      setSearching(false);
+    });
+  }, []);
 
   const refresh = useCallback(async () => {
     if (!agentId) return;
@@ -84,23 +101,30 @@ export function useAgentIntelligence(agentId: string | null, ws: ReturnType<type
           setPullJobs(prev => ({ ...prev, [msg.payload.modelId]: msg.payload }));
           if (msg.payload.status === 'completed') {
             void refresh();
-            if (lastSearchQueryRef.current) {
-              void searchLocalModels(lastSearchQueryRef.current);
-            }
+            void searchLocalModels(lastSearchQueryRef.current ?? '');
           }
           break;
       }
     });
-  }, [agentId, refresh, ws]);
+  }, [agentId, refresh, searchLocalModels, ws]);
 
   const setActiveModel = useCallback(async (modelId: string) => {
     if (!agentId) return;
     setSwitchingModelId(modelId);
+    setRecoveryState(null);
     const response = await fetch(`/api/agents/${agentId}/active-model`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ modelId }),
     });
+
+    if (response.status === 409) {
+      const payload = await response.json() as RecoveryResponse;
+      setRecoveryState(payload);
+      setSwitchingModelId(null);
+      return;
+    }
+
     if (!response.ok) {
       setSwitchingModelId(null);
       throw new Error('Failed to switch model');
@@ -142,21 +166,6 @@ export function useAgentIntelligence(agentId: string | null, ws: ReturnType<type
     setFavoritePendingId(null);
   }, [agentId]);
 
-  const searchLocalModels = useCallback(async (query: string) => {
-    lastSearchQueryRef.current = query;
-    setSearching(true);
-    const response = await fetch(`/api/models/local/search?q=${encodeURIComponent(query)}`);
-    if (!response.ok) {
-      setSearching(false);
-      throw new Error('Failed to search local models');
-    }
-    const payload = await response.json() as { results: LocalModelSearchResult[] };
-    startTransition(() => {
-      setSearchResults(payload.results);
-      setSearching(false);
-    });
-  }, []);
-
   const pullLocalModel = useCallback(async (modelId: string) => {
     const response = await fetch('/api/models/local/pull', {
       method: 'POST',
@@ -170,6 +179,8 @@ export function useAgentIntelligence(agentId: string | null, ws: ReturnType<type
     setPullJobs(prev => ({ ...prev, [payload.job.modelId]: payload.job }));
   }, []);
 
+  const clearRecovery = useCallback(() => setRecoveryState(null), []);
+
   return {
     snapshot,
     loading,
@@ -179,11 +190,13 @@ export function useAgentIntelligence(agentId: string | null, ws: ReturnType<type
     updatingStrategy,
     favoritePendingId,
     pullJobs,
+    recoveryState,
     refresh,
     setActiveModel,
     updateStrategy,
     toggleFavorite,
     searchLocalModels,
     pullLocalModel,
+    clearRecovery,
   };
 }
