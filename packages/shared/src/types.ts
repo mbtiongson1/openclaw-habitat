@@ -173,6 +173,7 @@ export interface AgentIntelligenceSnapshot {
   recommendations: ModelRecommendation[];
   quickSwitch: ModelQuickSwitchState;
   runtime: RuntimeMetricsSnapshot;
+  recentEvents: ModelOperationEvent[];
 }
 
 export interface LocalModelSearchResult {

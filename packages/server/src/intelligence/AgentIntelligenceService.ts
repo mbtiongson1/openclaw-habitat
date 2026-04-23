@@ -153,6 +153,7 @@ export class AgentIntelligenceService extends EventEmitter {
       recommendations: this.recommendationService.recommend(catalog, quickSwitch, strategy),
       quickSwitch,
       runtime: this.runtimeMetricsService.getSnapshot(),
+      recentEvents: this.logService.listAgentEvents(agentId),
     };
   }
 

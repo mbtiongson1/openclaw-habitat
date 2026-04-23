@@ -21,6 +21,10 @@ The per-agent intelligence panel combines REST bootstrapping with websocket upda
   - Maintains near-real-time token, context, work-time, and compute metrics.
 - `RuntimeMetricsService`
   - Reports host runtime CPU and RAM metrics for the current Habitat bridge process.
+- `ModelUsabilityService`
+  - Truthful source of truth for model actionability (usable, quota exhausted, runtime unreachable, etc.).
+- `ModelOperationsLogService`
+  - Append-only bounded log with disk persistence for operationally significant model events.
 
 ## REST API
 - `GET /api/agents/:id/intelligence`
@@ -29,10 +33,13 @@ The per-agent intelligence panel combines REST bootstrapping with websocket upda
   - Persists the 3-slot model strategy.
 - `PATCH /api/agents/:id/active-model`
   - Manually switches the active model and updates quick-switch state.
+  - Returns `409 recovery_required` for unusable targets.
 - `POST /api/agents/:id/model-favorites/:modelId`
   - Adds a favorite model.
 - `DELETE /api/agents/:id/model-favorites/:modelId`
   - Removes a favorite model.
+- `GET /api/agents/:id/model-events`
+  - Returns recent per-agent model operation log entries.
 - `GET /api/models/catalog`
   - Returns the merged model catalog.
 - `GET /api/models/local/search?q=...`
@@ -41,6 +48,8 @@ The per-agent intelligence panel combines REST bootstrapping with websocket upda
   - Starts a simulated local pull job and emits progress over websocket.
 - `GET /api/models/runtime`
   - Returns host runtime resource metrics.
+- `GET /api/model-operations`
+  - Global model operations log with severity and type filtering.
 
 ## Websocket Events
 - `agent_intelligence_init`
@@ -57,6 +66,12 @@ The per-agent intelligence panel combines REST bootstrapping with websocket upda
   - Favorites, recents, and most-used updates for a specific agent.
 - `local_model_pull_progress`
   - Pull progress for local-model add flows.
+- `model_operation_logged`
+  - Live stream of operationally significant model events (fallback, manual switch, failures).
+- `model_recovery_required`
+  - Non-blocking recovery notice for active-run failures.
+- `model_usability_changed`
+  - Notifies client of runtime probe status changes.
 
 ## Mock vs Live Bridge
 - Mock mode

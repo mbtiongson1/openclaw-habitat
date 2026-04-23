@@ -4,6 +4,8 @@ import AgentSVG from '../../svg/AgentSVG';
 import { type Agent } from '../../hooks/useAgents';
 import { useAgentIntelligence } from '../../hooks/useAgentIntelligence';
 import { useWebSocket } from '../../hooks/useWebSocket';
+import { ModelRecoveryPrompt } from './ModelRecoveryPrompt';
+import { AgentEventLog } from './AgentEventLog';
 import './AgentPage.css';
 
 interface AgentPageProps {
@@ -150,11 +152,13 @@ export function AgentPage({ agent, ws, onClose, onChat }: AgentPageProps) {
     updatingStrategy,
     favoritePendingId,
     pullJobs,
+    recoveryState,
     setActiveModel,
     updateStrategy,
     toggleFavorite,
     searchLocalModels,
     pullLocalModel,
+    clearRecovery,
   } = useAgentIntelligence(agent.config.id, ws);
 
   useEffect(() => {
@@ -264,6 +268,15 @@ export function AgentPage({ agent, ws, onClose, onChat }: AgentPageProps) {
         <div className="agent-page__content agent-page__content--intelligence">
           {(activeTab === 'intelligence') && (
             <>
+              {recoveryState && (
+                <ModelRecoveryPrompt
+                  recoveryState={recoveryState}
+                  onUseFallback={(id) => setActiveModel(id).catch(console.error)}
+                  onRetry={() => setActiveModel(recoveryState.requestedModelId).catch(console.error)}
+                  onDownload={(id) => pullLocalModel(id).catch(console.error)}
+                />
+              )}
+
               <section className="agent-page__panel agent-page__panel--telemetry">
                 <div className="agent-page__section-head">
                   <h3>Real-time Telemetry</h3>
@@ -604,6 +617,10 @@ export function AgentPage({ agent, ws, onClose, onChat }: AgentPageProps) {
                     </div>
                   </div>
                 )}
+              </section>
+
+              <section className="agent-page__panel">
+                <AgentEventLog events={snapshot?.recentEvents ?? []} />
               </section>
             </>
           )}
