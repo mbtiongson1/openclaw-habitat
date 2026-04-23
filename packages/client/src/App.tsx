@@ -85,6 +85,7 @@ export function App() {
         {selectedAgent && (
           <AgentPage 
             agent={selectedAgent} 
+            ws={ws}
             onClose={() => setSelectedAgentId(null)} 
             onChat={(agentId, text) => {
               ws.send({ type: 'send_chat', payload: { agentId, text } });
