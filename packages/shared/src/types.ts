@@ -276,7 +276,10 @@ export type WSMessageType =
   | 'model_catalog_update'
   | 'model_recommendations_update'
   | 'model_quick_switch_update'
-  | 'local_model_pull_progress';
+  | 'local_model_pull_progress'
+  | 'model_operation_logged'
+  | 'model_recovery_required'
+  | 'model_usability_changed';
 
 export interface WSMessageEnvelope<T = any> {
   type: WSMessageType;

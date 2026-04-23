@@ -1,4 +1,7 @@
 import { type LocalModelSearchResult, type ModelDescriptor } from '@habitat/shared';
+import { ModelUsabilityService } from './ModelUsabilityService.js';
+
+const usabilityService = new ModelUsabilityService();
 
 export interface ProviderAdapter {
   id: string;
@@ -35,6 +38,11 @@ export class StaticCloudProviderAdapter implements ProviderAdapter {
         installed: true,
         reachable: true,
       },
+      usability: usabilityService.evaluate({
+        origin: 'cloud',
+        installed: true,
+        reachable: true,
+      }),
       links: model.usageUrl ? { usageUrl: model.usageUrl } : undefined,
     }));
   }
@@ -82,6 +90,11 @@ export class OllamaAdapter {
         reachable,
         reason: reachable ? undefined : 'Ollama runtime not reachable',
       },
+      usability: usabilityService.evaluate({
+        origin: 'local',
+        installed,
+        reachable,
+      }),
       links: {
         managementUrl: 'http://127.0.0.1:11434',
       },
@@ -125,7 +138,7 @@ export class OllamaAdapter {
       }
     }
 
-    return Array.from(this.installed).map(id => this.mapLibraryModel(this.findLibraryEntry(id), reachable || true, true));
+    return Array.from(this.installed).map(id => this.mapLibraryModel(this.findLibraryEntry(id), reachable, true));
   }
 
   async searchModels(query: string): Promise<LocalModelSearchResult[]> {

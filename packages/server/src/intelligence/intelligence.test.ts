@@ -29,6 +29,7 @@ function createCatalog(): ModelDescriptor[] {
       contextWindowTokens: 128_000,
       supportsStreaming: true,
       availability: { installed: true, reachable: true },
+      usability: { status: 'usable', reasonCode: 'ok', message: 'ok', checkedAt: Date.now() },
     },
     {
       id: 'gpt-4.1-mini',
@@ -40,6 +41,7 @@ function createCatalog(): ModelDescriptor[] {
       contextWindowTokens: 128_000,
       supportsStreaming: true,
       availability: { installed: true, reachable: true },
+      usability: { status: 'usable', reasonCode: 'ok', message: 'ok', checkedAt: Date.now() },
     },
     {
       id: 'llama3.1:8b',
@@ -51,6 +53,7 @@ function createCatalog(): ModelDescriptor[] {
       contextWindowTokens: 128_000,
       supportsStreaming: true,
       availability: { installed: true, reachable: false, reason: 'Runtime offline' },
+      usability: { status: 'runtime_unreachable', reasonCode: 'runtime_unreachable', message: 'offline', checkedAt: Date.now() },
     },
   ];
 }
@@ -107,7 +110,6 @@ test('ollama-installed model is runtime_unreachable when runtime probe fails', a
   // Use a port that is likely not in use to ensure connection failure
   const adapter = new (await import('./adapters.js')).OllamaAdapter('http://127.0.0.1:1');
   const [model] = await adapter.listInstalledModels();
-  // @ts-ignore - usability doesn't exist yet
   assert.equal(model.usability.status, 'runtime_unreachable');
   assert.equal(model.availability.reachable, false);
 });
