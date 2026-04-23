@@ -31,3 +31,22 @@ export const ChatMessageSchema = z.object({
 export const FeedRequestSchema = z.object({
   snackId: z.string()
 });
+
+export const AgentModelStrategySchema = z.object({
+  planningModelId: z.string().min(1),
+  quickTaskModelId: z.string().min(1),
+  fallbackModelId: z.string().min(1),
+  switchRules: z.object({
+    useQuickTaskForShortTasks: z.boolean(),
+    fallbackOnQuota: z.boolean(),
+    fallbackOnUnavailable: z.boolean(),
+  }),
+});
+
+export const ActiveModelSchema = z.object({
+  modelId: z.string().min(1),
+});
+
+export const LocalModelPullSchema = z.object({
+  modelId: z.string().min(1),
+});

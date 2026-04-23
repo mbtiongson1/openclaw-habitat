@@ -89,6 +89,16 @@ export class ConfigStore {
     return { ...this.config };
   }
 
+  getPreference<T>(key: string, fallback: T): T {
+    const value = this.config.preferences[key];
+    return value === undefined ? fallback : value;
+  }
+
+  setPreference<T>(key: string, value: T): void {
+    this.config.preferences[key] = value;
+    this.save();
+  }
+
   // --- Snapshot System ---
 
   saveSnapshot(): ConfigSnapshot {
