@@ -112,8 +112,13 @@ export function createRoutes(
     }
 
     try {
-      const snapshot = intelligenceService.setActiveModel(req.params.id, parsed.data.modelId);
-      res.json(snapshot);
+      const result = intelligenceService.setActiveModel(req.params.id, parsed.data.modelId);
+      
+      if ('result' in result && result.result === 'recovery_required') {
+        return res.status(409).json(result);
+      }
+
+      res.json(result);
     } catch (error) {
       res.status(400).json({ error: error instanceof Error ? error.message : 'Active model update failed' });
     }

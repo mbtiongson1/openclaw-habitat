@@ -7,6 +7,8 @@ import {
   type LocalModelPullJob,
   type LocalModelSearchResult,
   type ModelDescriptor,
+  type RecoveryOption,
+  type RecoveryResponse,
   type RuntimeMetricsSnapshot,
 } from '@habitat/shared';
 import { AgentStateManager } from '../bridge/AgentStateManager.js';
@@ -180,7 +182,7 @@ export class AgentIntelligenceService extends EventEmitter {
     return this.strategyService.setStrategy(agentId, strategy);
   }
 
-  setActiveModel(agentId: string, modelId: string): AgentIntelligenceSnapshot {
+  setActiveModel(agentId: string, modelId: string): AgentIntelligenceSnapshot | RecoveryResponse {
     const agent = this.stateManager.getAgent(agentId);
     if (!agent) {
       throw new Error('Agent not found');
@@ -191,9 +193,58 @@ export class AgentIntelligenceService extends EventEmitter {
       throw new Error(`Unknown model: ${modelId}`);
     }
 
+    if (model.usability.status !== 'usable') {
+      return {
+        result: 'recovery_required',
+        reasonCode: model.usability.reasonCode,
+        message: model.usability.message,
+        requestedModelId: model.id,
+        recoveryOptions: this.buildRecoveryOptions(agentId, model),
+      };
+    }
+
     this.telemetryService.setActiveModel(agentId, model);
     this.quickSwitchService.markUsed(agentId, model.id);
     return this.getSnapshot(agentId);
+  }
+
+  private buildRecoveryOptions(agentId: string, failedModel: ModelDescriptor): RecoveryOption[] {
+    const options: RecoveryOption[] = [];
+    const catalog = this.catalogService.getCatalog();
+    const strategy = this.strategyService.getStrategy(agentId, catalog);
+
+    // 1. Fallback option (highest priority if usable)
+    const fallback = catalog.find(m => m.id === strategy.fallbackModelId);
+    if (fallback && fallback.usability.status === 'usable') {
+      options.push({
+        action: 'use_fallback',
+        label: `Use fallback (${fallback.displayName})`,
+        description: 'Switch to your pre-configured fallback model immediately.',
+        priority: 1,
+        modelId: fallback.id,
+      });
+    }
+
+    // 2. Retry option
+    options.push({
+      action: 'retry_check',
+      label: 'Retry availability check',
+      description: 'Re-scan the runtime or provider for status changes.',
+      priority: 2,
+    });
+
+    // 3. Recommended download (if local model missing)
+    if (failedModel.origin === 'local' && !failedModel.availability.installed) {
+      options.push({
+        action: 'download_recommended_local_model',
+        label: `Download ${failedModel.displayName}`,
+        description: 'Start a background download and install for this model.',
+        priority: 3,
+        modelId: failedModel.id,
+      });
+    }
+
+    return options.sort((a, b) => a.priority - b.priority);
   }
 
   addFavorite(agentId: string, modelId: string) {

@@ -50,3 +50,10 @@ export const ActiveModelSchema = z.object({
 export const LocalModelPullSchema = z.object({
   modelId: z.string().min(1),
 });
+
+export const ModelOperationsLogFilterSchema = z.object({
+  severity: z.enum(['info', 'warning', 'error']).optional(),
+  eventType: z.string().optional(),
+  agentId: z.string().optional(),
+  limit: z.number().int().min(1).max(500).optional(),
+});

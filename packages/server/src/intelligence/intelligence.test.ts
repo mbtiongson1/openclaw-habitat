@@ -126,3 +126,46 @@ test('cloud model is usable when installed, reachable, and quota not exhausted',
   assert.equal(result.status, 'usable');
 });
 
+test('setActiveModel returns recovery_required for runtime_unreachable model', async () => {
+  const { AgentIntelligenceService } = await import('./AgentIntelligenceService.js');
+  const { ModelCatalogService } = await import('./ModelCatalogService.js');
+  
+  // Minimal stubs
+  const stateManager = {
+    getAgent: () => ({ config: { id: 'agent-1' } }),
+    getAll: () => [],
+  } as any;
+  
+  const unreachableModel = {
+    id: 'llama3.1:8b',
+    usability: { status: 'runtime_unreachable', reasonCode: 'runtime_unreachable', message: 'Offline' }
+  } as any;
+
+  const catalogService = {
+    getModel: () => unreachableModel,
+    getCatalog: () => [unreachableModel],
+    on: () => {},
+  } as any;
+
+  const strategyService = {
+    getStrategy: () => ({ fallbackModelId: 'gpt-4o' }),
+    on: () => {},
+  } as any;
+
+  const service = new AgentIntelligenceService(
+    stateManager,
+    catalogService,
+    strategyService,
+    { on: () => {}, getState: () => ({}) } as any,
+    { recommend: () => [] } as any,
+    { on: () => {}, ensureAgent: () => {} } as any,
+    { getSnapshot: () => ({}) } as any
+  );
+
+  const result = service.setActiveModel('agent-1', 'llama3.1:8b');
+  // @ts-ignore
+  assert.equal(result.result, 'recovery_required');
+  // @ts-ignore
+  assert.equal(result.reasonCode, 'runtime_unreachable');
+});
+
