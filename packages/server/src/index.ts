@@ -52,7 +52,7 @@ const intelligenceService = new AgentIntelligenceService(
 const mockGateway = new MockGateway(stateManager, intelligenceService);
 
 // REST API
-app.use('/api', createRoutes(stateManager, feedingEngine, configStore, intelligenceService));
+app.use('/api', createRoutes(stateManager, feedingEngine, configStore, intelligenceService, modelOperationsLogService));
 
 // Health check
 app.get('/health', (_req, res) => {

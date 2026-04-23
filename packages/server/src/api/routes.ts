@@ -5,6 +5,7 @@ import {
   AgentModelStrategySchema,
   FeedRequestSchema,
   LocalModelPullSchema,
+  ModelOperationsLogFilterSchema,
 } from '@habitat/shared';
 import { AgentStateManager } from '../bridge/AgentStateManager.js';
 import { FeedingEngine } from '../bridge/FeedingEngine.js';
@@ -15,7 +16,8 @@ export function createRoutes(
   stateManager: AgentStateManager,
   feedingEngine: FeedingEngine,
   configStore: ConfigStore,
-  intelligenceService: AgentIntelligenceService
+  intelligenceService: AgentIntelligenceService,
+  operationsLogService: import('../intelligence/ModelOperationsLogService.js').ModelOperationsLogService
 ): Router {
   const router = Router();
 
@@ -74,6 +76,11 @@ export function createRoutes(
     const log = feedingEngine.getFeedingLog(req.params.id);
     if (!log) return res.status(404).json({ error: 'No feeding log found' });
     res.type('text/markdown').send(log);
+  });
+
+  /** Get recent model events for an agent */
+  router.get('/agents/:id/model-events', (req, res) => {
+    res.json({ events: operationsLogService.listAgentEvents(req.params.id) });
   });
 
   /** Chat with agent (stub) */
@@ -168,6 +175,15 @@ export function createRoutes(
 
   router.get('/models/runtime', (_req, res) => {
     res.json({ runtime: intelligenceService.getRuntimeMetrics() });
+  });
+
+  /** Global model operations log */
+  router.get('/model-operations', (req, res) => {
+    const parsed = ModelOperationsLogFilterSchema.safeParse(req.query);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.flatten() });
+    }
+    res.json({ events: operationsLogService.listGlobalEvents(parsed.data) });
   });
 
   // --- Config Routes ---
