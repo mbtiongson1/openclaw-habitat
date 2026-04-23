@@ -1,5 +1,6 @@
 import { AGENT_STATES, type AgentStateType } from '@habitat/shared';
 import { AgentStateManager } from '../bridge/AgentStateManager.js';
+import { AgentIntelligenceService } from '../intelligence/AgentIntelligenceService.js';
 
 const STATES = Object.values(AGENT_STATES);
 const NODE_TYPES = [
@@ -26,10 +27,12 @@ const MOCK_TASKS = [
  */
 export class MockGateway {
   private stateManager: AgentStateManager;
+  private intelligenceService: AgentIntelligenceService;
   private intervals: NodeJS.Timeout[] = [];
 
-  constructor(stateManager: AgentStateManager) {
+  constructor(stateManager: AgentStateManager, intelligenceService: AgentIntelligenceService) {
     this.stateManager = stateManager;
+    this.intelligenceService = intelligenceService;
   }
 
   start(): void {
@@ -56,6 +59,7 @@ export class MockGateway {
           memory: agent.stats.memory + memDelta,
           uptimeSeconds: agent.stats.uptimeSeconds + 3,
         });
+        this.intelligenceService.simulateAgentCycle(agent);
       }
     }, 3000);
 

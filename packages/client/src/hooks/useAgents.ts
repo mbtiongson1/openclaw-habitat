@@ -15,7 +15,7 @@ export interface Agent {
   activeBoosts: { type: string; value: number; expiresAt: number }[];
   pendingSnacks: {
     id: string; taskId: string; taskDescription: string; score: number;
-    tier: string; boostType: string; boostValue: number; boostDurationMinutes: number; timestamp: number;
+    tier: string; boostType: string; boostValue: number; boostDurationMinutes: number; timestamp: number; nodeType?: string;
   }[];
 }
 
