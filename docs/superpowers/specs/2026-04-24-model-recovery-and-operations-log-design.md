@@ -45,8 +45,6 @@ The current system has fallback ideas in strategy and recommendation logic, but 
 
 There is currently no persistent audit trail for model failures, automatic recoveries, strategy changes, downloads, or retries.
 
-## Design
-
 ## 1. Backend-Owned Model Usability
 
 Introduce an explicit model usability layer in the server. Every model action should pass through a single decision path that classifies the target model into one of these states:
@@ -248,10 +246,7 @@ Add a `Recent Events` section to the intelligence panel showing the latest few e
 
 ### Global operations view
 
-Add a dedicated global operations log surface, either as:
-
-- a new analytics subsection, or
-- a top-level model/runtime log page
+Add the global operations log as a new analytics subsection in v1 rather than as a separate top-level page.
 
 It should support basic filtering by:
 
