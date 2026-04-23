@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgentIntel - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-container": "#d0e4dc",
+                      "surface-dim": "#dbdad5",
+                      "outline": "#707975",
+                      "tertiary-fixed": "#ffdbcd",
+                      "surface-variant": "#e4e2dd",
+                      "on-secondary-container": "#546660",
+                      "secondary": "#50625c",
+                      "secondary-fixed": "#d3e7df",
+                      "on-background": "#1b1c19",
+                      "surface-container-high": "#eae8e3",
+                      "on-tertiary-fixed": "#360f00",
+                      "on-secondary-fixed": "#0e1f1a",
+                      "inverse-on-surface": "#f2f1ec",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed-variant": "#1f4f42",
+                      "on-secondary-fixed-variant": "#394a44",
+                      "tertiary": "#6b2700",
+                      "primary-fixed-dim": "#9fd1c0",
+                      "outline-variant": "#c0c8c4",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "primary-fixed": "#bbeddc",
+                      "inverse-primary": "#9fd1c0",
+                      "inverse-surface": "#30312e",
+                      "primary-container": "#2d5c4f",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-container": "#ffb798",
+                      "tertiary-container": "#8c3b0f",
+                      "on-surface": "#1b1c19",
+                      "error": "#ba1a1a",
+                      "surface-container": "#f0eee9",
+                      "on-primary-container": "#a1d2c2",
+                      "on-primary-fixed": "#002019",
+                      "background": "#fbf9f4",
+                      "on-primary": "#ffffff",
+                      "primary": "#124438",
+                      "surface-bright": "#fbf9f4",
+                      "on-surface-variant": "#404945",
+                      "secondary-fixed-dim": "#b7cbc3",
+                      "surface-container-low": "#f5f3ee",
+                      "surface-container-highest": "#e4e2dd",
+                      "on-tertiary-fixed-variant": "#7b2f03",
+                      "surface": "#fbf9f4",
+                      "on-tertiary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "surface-tint": "#386759",
+                      "surface-container-lowest": "#ffffff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Space Grotesk"
+                      ],
+                      "display": [
+                              "Space Grotesk"
+                      ],
+                      "body": [
+                              "Manrope"
+                      ],
+                      "label": [
+                              "Space Grotesk"
+                      ]
+              },
+              "fontSize": {}
+      },
+          },
+        }
+      </script>
+<style>
+        .ghost-grid {
+            background-image: linear-gradient(to right, rgba(192, 200, 196, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(192, 200, 196, 0.05) 1px, transparent 1px);
+            background-size: 64px 64px;
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #124438 0%, #2d5c4f 100%);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen ghost-grid overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="flex justify-between items-center px-8 h-16 w-full sticky top-0 z-50 bg-[#FAF8F3] dark:bg-[#1B1C19] border-b border-[#707975]/20">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black tracking-tighter uppercase font-['Space_Grotesk'] text-[#2D5C4F] dark:text-[#A7C6B8]">AgentIntel</span>
+<div class="hidden md:flex gap-6 h-full items-center">
+<a class="text-[#2D5C4F] dark:text-[#A7C6B8] border-b-2 border-[#2D5C4F] pb-1 font-['Space_Grotesk'] uppercase tracking-tight font-bold text-sm scale-95 transition-transform cursor-pointer" href="#">Telemetry</a>
+<a class="text-[#707975] dark:text-[#91918C] hover:text-[#2D5C4F] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] transition-all duration-150 font-['Space_Grotesk'] uppercase tracking-tight font-bold text-sm px-2 py-1 scale-95 transition-transform cursor-pointer" href="#">Model Strategy</a>
+<a class="text-[#707975] dark:text-[#91918C] hover:text-[#2D5C4F] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] transition-all duration-150 font-['Space_Grotesk'] uppercase tracking-tight font-bold text-sm px-2 py-1 scale-95 transition-transform cursor-pointer" href="#">Hardware</a>
+<a class="text-[#707975] dark:text-[#91918C] hover:text-[#2D5C4F] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] transition-all duration-150 font-['Space_Grotesk'] uppercase tracking-tight font-bold text-sm px-2 py-1 scale-95 transition-transform cursor-pointer" href="#">Logs</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="p-2 text-[#2D5C4F] dark:text-[#A7C6B8] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] transition-all duration-150 rounded-none scale-95 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+<button class="p-2 text-[#2D5C4F] dark:text-[#A7C6B8] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] transition-all duration-150 rounded-none scale-95 cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">settings</span>
+</button>
+</div>
+<button class="btn-gradient text-on-primary font-headline font-bold text-sm px-6 py-2 uppercase tracking-tight scale-95 transition-transform cursor-pointer">Deploy Agent</button>
+</div>
+</nav>
+<!-- SideNavBar & Main Content Wrapper -->
+<div class="flex min-h-[calc(100vh-64px)]">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col justify-between py-6 z-40 bg-[#FAF8F3] dark:bg-[#1B1C19] border-r border-[#707975]/20 w-64 fixed left-0 top-16 h-[calc(100vh-64px)]">
+<div>
+<div class="px-6 mb-8">
+<h2 class="font-headline text-lg font-bold tracking-tight text-[#2D5C4F] dark:text-[#A7C6B8]">System Config</h2>
+<p class="font-body text-xs text-outline mt-1">v4.2.0-stable</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="bg-[#2D5C4F] text-[#FAF8F3] dark:bg-[#A7C6B8] dark:text-[#1B1C19] flex items-center gap-3 px-4 py-3 font-['Space_Grotesk'] text-xs font-bold tracking-widest uppercase transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">layers</span>
+                        Inference Tiers
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#707975] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] hover:text-[#2D5C4F] font-['Space_Grotesk'] text-xs font-bold tracking-widest uppercase transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">memory</span>
+                        Memory Layers
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#707975] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] hover:text-[#2D5C4F] font-['Space_Grotesk'] text-xs font-bold tracking-widest uppercase transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">shield</span>
+                        Security Protocols
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#707975] hover:bg-[#f0eee9] dark:hover:bg-[#2D2D2D] hover:text-[#2D5C4F] font-['Space_Grotesk'] text-xs font-bold tracking-widest uppercase transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">key</span>
+                        API Keys
+                    </a>
+</nav>
+</div>
+<div class="px-4">
+<button class="w-full border border-primary text-primary hover:bg-surface-container-low transition-colors duration-200 font-headline font-bold text-xs uppercase tracking-widest py-3 rounded-none">
+                    Build Strategy
+                </button>
+<div class="mt-6 flex items-center gap-3 px-2">
+<div class="w-8 h-8 bg-surface-container-high rounded-full overflow-hidden border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-sm">person</span>
+</div>
+<span class="font-body text-xs font-semibold text-on-surface-variant">System Administrator</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 ml-0 md:ml-64 p-8">
+<header class="mb-12">
+<h1 class="font-display text-4xl lg:text-5xl font-bold tracking-tight text-on-surface mb-2">Agent Intelligence Dashboard</h1>
+<p class="font-body text-outline max-w-2xl">Monitor real-time telemetry, configure multi-tier model strategies, and manage hardware allocation for optimal agent performance.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Real-time Telemetry (Left Col) -->
+<div class="lg:col-span-8 flex flex-col gap-8">
+<!-- Telemetry Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-1 relative">
+<!-- Structural grid lines wrapper -->
+<div class="absolute inset-0 bg-outline-variant/10 pointer-events-none" style="padding: 1px;"></div>
+<!-- Metric Card 1 -->
+<div class="bg-surface-container-lowest p-6 border-outline-variant/20 border relative">
+<span class="font-label text-xs uppercase tracking-widest text-outline mb-4 block">Tokens Processed</span>
+<div class="font-mono text-3xl font-medium text-primary tracking-tighter">1,204,592</div>
+<div class="mt-2 text-xs font-body text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+                                +12% this hour
+                            </div>
+</div>
+<!-- Metric Card 2 -->
+<div class="bg-surface-container-lowest p-6 border-outline-variant/20 border relative">
+<span class="font-label text-xs uppercase tracking-widest text-outline mb-4 block">Tokens/sec</span>
+<div class="font-mono text-3xl font-medium text-on-surface tracking-tighter">45.2</div>
+<div class="mt-2 text-xs font-body text-outline flex items-center gap-1">
+                                Peak: 62.1 t/s
+                            </div>
+</div>
+<!-- Metric Card 3 -->
+<div class="bg-surface-container-lowest p-6 border-outline-variant/20 border relative">
+<span class="font-label text-xs uppercase tracking-widest text-outline mb-4 block">Accumulative Work</span>
+<div class="font-mono text-3xl font-medium text-on-surface tracking-tighter">14h 22m</div>
+<div class="mt-2 text-xs font-body text-outline flex items-center gap-1">
+                                Since last restart
+                            </div>
+</div>
+<!-- Context Window Progress (Spans all columns) -->
+<div class="md:col-span-3 bg-surface-container-low p-6 border-outline-variant/20 border mt-[-1px]">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label text-xs uppercase tracking-widest text-outline">Context Window Used</span>
+<span class="font-mono text-sm text-on-surface">112k / 128k</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-none overflow-hidden flex">
+<div class="bg-primary h-full w-[85%]"></div>
+<div class="bg-tertiary h-full w-[5%] ml-auto"></div> <!-- Highlighting the edge -->
+</div>
+</div>
+</div>
+<!-- Model Strategy Builder -->
+<div class="bg-surface-container p-8 relative">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+<h3 class="font-headline text-xl font-bold mb-6 text-on-surface">Model Strategy Builder</h3>
+<div class="flex flex-col gap-6">
+<!-- Tier 1 -->
+<div class="bg-surface-container-lowest p-4 border border-outline-variant flex flex-col md:flex-row gap-4 items-start md:items-center">
+<div class="w-48 flex-shrink-0">
+<span class="font-label text-xs uppercase tracking-widest text-outline block mb-1">Primary (Planning)</span>
+</div>
+<div class="flex-1 w-full relative">
+<select class="w-full bg-surface border border-outline text-on-surface font-body text-sm py-2 px-3 appearance-none rounded-none focus:border-primary focus:ring-0 focus:bg-surface-container-lowest">
+<option>GPT-4o</option>
+<option>Claude 3.5 Sonnet</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 text-outline w-24 justify-end">
+<span class="material-symbols-outlined text-sm">cloud</span>
+<span class="font-label text-[10px] uppercase">Cloud</span>
+</div>
+</div>
+<!-- Tier 2 -->
+<div class="bg-surface-container-lowest p-4 border border-outline-variant flex flex-col md:flex-row gap-4 items-start md:items-center">
+<div class="w-48 flex-shrink-0">
+<span class="font-label text-xs uppercase tracking-widest text-outline block mb-1">Secondary (Tasking)</span>
+</div>
+<div class="flex-1 w-full relative">
+<select class="w-full bg-surface border border-outline text-on-surface font-body text-sm py-2 px-3 appearance-none rounded-none focus:border-primary focus:ring-0 focus:bg-surface-container-lowest">
+<option>GPT-3.5-Turbo</option>
+<option>Llama 3 8B</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 text-outline w-24 justify-end">
+<span class="material-symbols-outlined text-sm">cloud</span>
+<span class="font-label text-[10px] uppercase">Cloud</span>
+</div>
+</div>
+<!-- Tier 3 -->
+<div class="bg-surface-container-lowest p-4 border border-outline-variant flex flex-col md:flex-row gap-4 items-start md:items-center">
+<div class="w-48 flex-shrink-0">
+<span class="font-label text-xs uppercase tracking-widest text-outline block mb-1">Fallback (Quota)</span>
+</div>
+<div class="flex-1 w-full relative">
+<select class="w-full bg-surface border border-outline text-on-surface font-body text-sm py-2 px-3 appearance-none rounded-none focus:border-primary focus:ring-0 focus:bg-surface-container-lowest">
+<option>Mistral-Nemo-12B</option>
+<option>Phi-3-Mini</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline pointer-events-none">arrow_drop_down</span>
+</div>
+<div class="flex items-center gap-2 text-primary w-24 justify-end">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span class="font-label text-[10px] uppercase">Local</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Col: Hardware & Library -->
+<div class="lg:col-span-4 flex flex-col gap-8">
+<!-- Hardware Monitor -->
+<div class="bg-surface-container-low p-6 border-t-4 border-primary">
+<h3 class="font-headline text-lg font-bold mb-6 text-on-surface">Hardware Allocation</h3>
+<div class="mb-6">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label text-xs uppercase tracking-widest text-outline">Compute (CPU)</span>
+<span class="font-mono text-sm text-on-surface">78%</span>
+</div>
+<div class="flex h-6 gap-1 w-full">
+<!-- Brutalist Segmented Bar -->
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-tertiary opacity-80"></div>
+<div class="flex-1 bg-surface-container-highest"></div>
+<div class="flex-1 bg-surface-container-highest"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label text-xs uppercase tracking-widest text-outline">RAM Usage</span>
+<span class="font-mono text-sm text-tertiary">24GB / 32GB</span>
+</div>
+<div class="flex h-6 gap-1 w-full">
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-tertiary opacity-90"></div>
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-surface-container-highest"></div>
+</div>
+</div>
+</div>
+<!-- Model Library -->
+<div class="bg-surface-container-lowest p-6 border border-outline-variant">
+<h3 class="font-headline text-lg font-bold mb-4 text-on-surface">Model Library</h3>
+<div class="relative mb-6">
+<input class="w-full bg-surface border border-outline text-on-surface font-body text-sm py-2 px-3 pl-10 rounded-none focus:border-primary focus:ring-0 focus:bg-surface-container-lowest" placeholder="Add Local Models..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between p-3 bg-surface-container border-l-2 border-primary">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-sm">cloud_done</span>
+<span class="font-body text-sm font-semibold">GPT-4o</span>
+</div>
+<span class="font-label text-[10px] text-primary uppercase">Active</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-sm">memory</span>
+<span class="font-body text-sm">Llama-3-8B</span>
+</div>
+<span class="font-label text-[10px] text-outline uppercase">Idle</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline text-sm">cloud_off</span>
+<span class="font-body text-sm text-outline">Claude 3 Opus</span>
+</div>
+<span class="font-label text-[10px] text-outline uppercase">Offline</span>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant/30 text-right">
+<a class="font-headline text-xs font-bold uppercase tracking-widest text-primary hover:text-primary-container transition-colors flex items-center justify-end gap-1" href="#">
+                                View API Usage
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
