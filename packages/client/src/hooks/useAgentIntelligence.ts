@@ -4,6 +4,7 @@ import type {
   AgentModelStrategy,
   LocalModelPullJob,
   LocalModelSearchResult,
+  ModelOperationEvent,
   ModelQuickSwitchState,
   RecoveryResponse,
 } from '@habitat/shared';
@@ -104,6 +105,16 @@ export function useAgentIntelligence(agentId: string | null, ws: ReturnType<type
             void searchLocalModels(lastSearchQueryRef.current ?? '');
           }
           break;
+        case 'model_operation_logged': {
+          const event = msg.payload as ModelOperationEvent;
+          if (event.agentId === agentId) {
+            setSnapshot(prev => prev ? {
+              ...prev,
+              recentEvents: upsertRecentEvent(prev.recentEvents ?? [], event),
+            } : prev);
+          }
+          break;
+        }
       }
     });
   }, [agentId, refresh, searchLocalModels, ws]);
@@ -199,4 +210,10 @@ export function useAgentIntelligence(agentId: string | null, ws: ReturnType<type
     pullLocalModel,
     clearRecovery,
   };
+}
+
+function upsertRecentEvent(events: ModelOperationEvent[], event: ModelOperationEvent): ModelOperationEvent[] {
+  return [event, ...events.filter(existing => existing.id !== event.id)]
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 25);
 }

@@ -85,4 +85,88 @@ describe('useAgentIntelligence', () => {
     expect(fetch).toHaveBeenCalledWith('/api/agents/agent-1/intelligence');
     expect(fetch).toHaveBeenCalledWith('/api/models/local/search?q=');
   });
+
+  it('adds matching model operation events to the open agent snapshot', async () => {
+    let wsCallback: any;
+    wsStub.subscribe.mockImplementation((cb: any) => {
+      wsCallback = cb;
+      return () => {};
+    });
+
+    (fetch as any).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        agent: { config: { id: 'agent-1' } },
+        telemetry: {},
+        strategy: {},
+        catalog: [],
+        recommendations: [],
+        quickSwitch: {},
+        runtime: {},
+        recentEvents: [],
+      }),
+    });
+
+    const { result } = renderHook(() => useAgentIntelligence('agent-1', wsStub));
+    await act(async () => {});
+
+    await act(async () => {
+      wsCallback({
+        type: 'model_operation_logged',
+        payload: {
+          id: 'event-1',
+          agentId: 'agent-1',
+          timestamp: 10,
+          eventType: 'quota_exhausted',
+          severity: 'warning',
+          source: 'runtime_probe',
+          message: 'Fallback applied',
+        },
+      });
+    });
+
+    expect(result.current.snapshot?.recentEvents[0].id).toBe('event-1');
+  });
+
+  it('ignores model operation events for other agents', async () => {
+    let wsCallback: any;
+    wsStub.subscribe.mockImplementation((cb: any) => {
+      wsCallback = cb;
+      return () => {};
+    });
+
+    (fetch as any).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        agent: { config: { id: 'agent-1' } },
+        telemetry: {},
+        strategy: {},
+        catalog: [],
+        recommendations: [],
+        quickSwitch: {},
+        runtime: {},
+        recentEvents: [],
+      }),
+    });
+
+    const { result } = renderHook(() => useAgentIntelligence('agent-1', wsStub));
+    await act(async () => {});
+
+    await act(async () => {
+      wsCallback({
+        type: 'model_operation_logged',
+        payload: {
+          id: 'event-2',
+          agentId: 'agent-2',
+          timestamp: 10,
+          eventType: 'quota_exhausted',
+          severity: 'warning',
+          source: 'runtime_probe',
+          message: 'Different agent fallback applied',
+        },
+      });
+    });
+
+    expect(result.current.snapshot?.recentEvents).toEqual([]);
+  });
 });
