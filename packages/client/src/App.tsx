@@ -11,6 +11,8 @@ import { AgentCreator } from './components/agent/AgentCreator';
 import { LoadingScreen } from './components/ui/LoadingScreen';
 import { ConnectionBadge } from './components/ui/ConnectionBadge';
 import { AgentPage } from './components/agent/AgentPage';
+import { GlobalCommandRail } from './components/controls/GlobalCommandRail';
+import { useGlobalCommands } from './hooks/useGlobalCommands';
 
 const WS_URL = import.meta.env.PROD 
   ? `ws://${window.location.host}/ws`
@@ -19,6 +21,7 @@ const WS_URL = import.meta.env.PROD
 export function App() {
   const ws = useWebSocket(WS_URL);
   const { agents, selectedAgent, selectedAgentId, setSelectedAgentId, feedAgent, createAgent } = useAgents(ws);
+  const { commands } = useGlobalCommands();
   const [activeTab, setActiveTab] = useState<TabId>('hub');
   const [showCreator, setShowCreator] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -52,7 +55,7 @@ export function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:pr-[22rem] py-8 relative">
         {activeTab === 'hub' && (
           <SanctuaryHub agents={agents} onSelectAgent={setSelectedAgentId} />
         )}
@@ -65,13 +68,6 @@ export function App() {
         {activeTab === 'analytics' && (
           <AnalyticsView />
         )}
-        {activeTab === 'settings' && (
-          <div className="flex flex-col gap-4">
-             <h2 className="text-3xl font-headline font-black text-on-background">Settings</h2>
-             <button className="btn btn--primary max-w-xs" onClick={() => setShowSettings(true)}>Open System Config</button>
-          </div>
-        )}
-
         {/* Floating Action Button */}
         <button 
           aria-label="Create Agent" 
@@ -104,6 +100,10 @@ export function App() {
           <SettingsModal onClose={() => setShowSettings(false)} />
         )}
       </main>
+
+      <div className="hidden xl:block fixed top-24 right-6 bottom-8 w-72 overflow-y-auto z-30">
+        <GlobalCommandRail commands={commands} />
+      </div>
 
       <BottomNav activeTab={activeTab} onChange={setActiveTab} />
     </div>

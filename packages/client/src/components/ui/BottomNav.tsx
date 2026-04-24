@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type TabId = 'hub' | 'zones' | 'agents' | 'analytics' | 'settings';
+export type TabId = 'hub' | 'zones' | 'agents' | 'analytics';
 
 interface BottomNavProps {
   activeTab: TabId;
@@ -13,7 +13,6 @@ export function BottomNav({ activeTab, onChange }: BottomNavProps) {
     { id: 'zones', label: 'Zones', icon: 'grid_guides' },
     { id: 'agents', label: 'Agents', icon: 'smart_toy' },
     { id: 'analytics', label: 'Analytics', icon: 'monitoring' },
-    { id: 'settings', label: 'Settings', icon: 'settings' },
   ] as const;
 
   return (
