@@ -7,6 +7,9 @@ import {
   SVG_HAND_TYPES, 
   SVG_FOOT_TYPES 
 } from './constants';
+import { type ZoneType } from './constants';
+
+const ZoneSchema = z.enum(Object.values(ZONES) as [ZoneType, ...ZoneType[]]);
 
 export const SvgPartsSchema = z.object({
   head: z.enum(SVG_HEAD_TYPES),
@@ -55,5 +58,18 @@ export const ModelOperationsLogFilterSchema = z.object({
   severity: z.enum(['info', 'warning', 'error']).optional(),
   eventType: z.string().optional(),
   agentId: z.string().optional(),
-  limit: z.number().int().min(1).max(500).optional(),
+  limit: z.coerce.number().int().min(1).max(500).optional(),
+});
+
+export const SanctuaryTaskFilterSchema = z.object({
+  zone: ZoneSchema.optional(),
+  status: z.enum(['queued', 'active', 'blocked', 'completed', 'failed']).optional(),
+  agentId: z.string().optional(),
+  limit: z.coerce.number().int().min(1).max(500).optional(),
+});
+
+export const HeartbeatFilterSchema = z.object({
+  agentId: z.string().optional(),
+  zone: ZoneSchema.optional(),
+  staleAfterMs: z.coerce.number().int().min(1_000).max(300_000).optional(),
 });

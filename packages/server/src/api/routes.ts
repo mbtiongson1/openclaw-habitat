@@ -4,20 +4,26 @@ import {
   AgentConfigSchema,
   AgentModelStrategySchema,
   FeedRequestSchema,
+  HeartbeatFilterSchema,
   LocalModelPullSchema,
   ModelOperationsLogFilterSchema,
+  SanctuaryTaskFilterSchema,
 } from '@habitat/shared';
 import { AgentStateManager } from '../bridge/AgentStateManager.js';
 import { FeedingEngine } from '../bridge/FeedingEngine.js';
 import { ConfigStore } from '../config/ConfigStore.js';
 import { AgentIntelligenceService } from '../intelligence/AgentIntelligenceService.js';
+import { TaskHeartbeatService } from '../tasks/TaskHeartbeatService.js';
+import { OpenClawCommandService } from '../commands/OpenClawCommandService.js';
 
 export function createRoutes(
   stateManager: AgentStateManager,
   feedingEngine: FeedingEngine,
   configStore: ConfigStore,
   intelligenceService: AgentIntelligenceService,
-  operationsLogService: import('../intelligence/ModelOperationsLogService.js').ModelOperationsLogService
+  operationsLogService: import('../intelligence/ModelOperationsLogService.js').ModelOperationsLogService,
+  taskHeartbeatService = new TaskHeartbeatService(stateManager),
+  commandService = new OpenClawCommandService()
 ): Router {
   const router = Router();
 
@@ -175,6 +181,48 @@ export function createRoutes(
 
   router.get('/models/runtime', (_req, res) => {
     res.json({ runtime: intelligenceService.getRuntimeMetrics() });
+  });
+
+  // --- Sanctuary Operations Routes ---
+
+  router.get('/tasks', (req, res) => {
+    const parsed = SanctuaryTaskFilterSchema.safeParse(req.query);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.flatten() });
+    }
+    res.json({ tasks: taskHeartbeatService.listTasks(parsed.data) });
+  });
+
+  router.get('/zones/:zoneId/tasks', (req, res) => {
+    const parsed = SanctuaryTaskFilterSchema.safeParse({ ...req.query, zone: req.params.zoneId });
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.flatten() });
+    }
+    res.json({ tasks: taskHeartbeatService.listTasks(parsed.data) });
+  });
+
+  router.get('/zones/task-summaries', (_req, res) => {
+    res.json({ summaries: taskHeartbeatService.listZoneSummaries() });
+  });
+
+  router.get('/agents/:id/heartbeats', (req, res) => {
+    const parsed = HeartbeatFilterSchema.safeParse({ ...req.query, agentId: req.params.id });
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.flatten() });
+    }
+    res.json({ heartbeats: taskHeartbeatService.listHeartbeats(parsed.data) });
+  });
+
+  router.get('/commands', (_req, res) => {
+    res.json({ commands: commandService.listDescriptors() });
+  });
+
+  router.post('/commands/:id/preview', (req, res) => {
+    try {
+      res.json(commandService.preview(req.params.id));
+    } catch (error) {
+      res.status(404).json({ error: error instanceof Error ? error.message : 'Unknown command' });
+    }
   });
 
   /** Global model operations log */
