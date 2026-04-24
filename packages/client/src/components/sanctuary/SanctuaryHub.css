@@ -1,31 +1,325 @@
-.hub {
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* Allow panning if needed on small screens */
-  background: var(--surface);
+.sanctuary-hub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 
-.hub__grid {
+.sanctuary-hub__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-lg);
+}
+
+.sanctuary-hub__eyebrow {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--outline);
+}
+
+.sanctuary-hub__header h2 {
+  margin: 0;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  line-height: 0.95;
+  color: var(--primary);
+}
+
+.sanctuary-hub__summary {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  width: 200%; /* Make grid larger than viewport to encourage panning */
-  height: 200%;
-  min-width: 800px; /* Minimum size to see the quadrants clearly */
-  min-height: 800px;
-  transform-origin: top left;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: min(100%, 380px);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 55%, transparent);
+  background: color-mix(in srgb, var(--surface-container-lowest) 82%, transparent);
 }
 
-@media (min-width: 768px) {
-  .hub__grid {
+.sanctuary-hub__metric {
+  padding: 12px 14px;
+  border-right: 1px solid color-mix(in srgb, var(--outline-variant) 45%, transparent);
+}
+
+.sanctuary-hub__metric:last-child {
+  border-right: 0;
+}
+
+.sanctuary-hub__metric strong,
+.sanctuary-hub__metric span {
+  display: block;
+  letter-spacing: 0;
+}
+
+.sanctuary-hub__metric strong {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--on-surface);
+}
+
+.sanctuary-hub__metric span {
+  font-size: 0.72rem;
+  color: var(--on-surface-variant);
+}
+
+.sanctuary-map {
+  position: relative;
+  width: min(100%, 980px);
+  min-height: 620px;
+  margin: 0 auto;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 52% 92%, rgba(18, 68, 56, 0.12), transparent 36%),
+    linear-gradient(180deg, #f7f3ea 0%, #efe9dd 56%, #dbe8cf 100%);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 65%, transparent);
+  box-shadow: 0 30px 80px rgba(27, 28, 25, 0.16);
+}
+
+.sanctuary-map::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(112, 121, 117, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(112, 121, 117, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, black 0 58%, transparent 76%);
+  pointer-events: none;
+}
+
+.sanctuary-map__house-shell,
+.sanctuary-room,
+.sanctuary-map__garden-path {
+  position: absolute;
+}
+
+.sanctuary-map__house-shell {
+  background: rgba(80, 98, 92, 0.18);
+  border: 10px solid rgba(80, 98, 92, 0.82);
+  box-shadow:
+    0 24px 50px rgba(27, 28, 25, 0.14),
+    inset 0 0 0 2px rgba(251, 249, 244, 0.45);
+  pointer-events: none;
+}
+
+.sanctuary-map__roof-line {
+  position: absolute;
+  inset: -20px -18px auto;
+  height: 20px;
+  background: linear-gradient(90deg, #39544b, #50625c);
+  clip-path: polygon(4% 100%, 12% 0, 88% 0, 96% 100%);
+}
+
+.sanctuary-map__garden-path {
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(150, 127, 88, 0.28), rgba(150, 127, 88, 0.1));
+  border: 1px dashed rgba(107, 39, 0, 0.18);
+  border-radius: 999px;
+}
+
+.sanctuary-room {
+  --sanctuary-room-color: var(--surface-container-low);
+  z-index: 2;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 28%),
+    var(--sanctuary-room-color);
+  border: 2px solid rgba(80, 98, 92, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(251, 249, 244, 0.48);
+}
+
+.sanctuary-room--outdoor {
+  z-index: 0;
+  border-radius: 42% 58% 44% 56% / 36% 42% 58% 64%;
+  border: 0;
+  background:
+    radial-gradient(circle at 22% 62%, rgba(18, 68, 56, 0.2), transparent 18%),
+    radial-gradient(circle at 74% 42%, rgba(18, 68, 56, 0.16), transparent 20%),
+    linear-gradient(135deg, #dbe8cf, #c7ddb9 62%, #e4ead3);
+  box-shadow:
+    inset 0 0 0 2px rgba(18, 68, 56, 0.12),
+    0 20px 42px rgba(18, 68, 56, 0.1);
+}
+
+.sanctuary-room__texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  pointer-events: none;
+  background-image:
+    linear-gradient(45deg, rgba(112, 121, 117, 0.08) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(112, 121, 117, 0.08) 75%);
+  background-size: 22px 22px;
+}
+
+.sanctuary-room--garden .sanctuary-room__texture {
+  background-image:
+    radial-gradient(circle at 18px 22px, rgba(18, 68, 56, 0.13) 2px, transparent 3px),
+    radial-gradient(circle at 44px 38px, rgba(107, 39, 0, 0.12) 2px, transparent 4px);
+  background-size: 56px 52px;
+}
+
+.sanctuary-room__header {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.sanctuary-room__header span,
+.sanctuary-room__counts span {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sanctuary-room__header span {
+  font-size: 0.58rem;
+  color: var(--outline);
+}
+
+.sanctuary-room__header h3 {
+  margin: 2px 0 0;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--primary);
+}
+
+.sanctuary-room__counts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.sanctuary-room__counts span {
+  padding: 4px 6px;
+  background: color-mix(in srgb, var(--surface-container-lowest) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 45%, transparent);
+  font-size: 0.56rem;
+  color: var(--on-surface-variant);
+}
+
+.sanctuary-room__agents,
+.sanctuary-room__furniture {
+  position: absolute;
+  inset: 0;
+}
+
+.sanctuary-room__agents {
+  z-index: 5;
+}
+
+.fixture {
+  position: absolute;
+  display: block;
+  background: rgba(80, 98, 92, 0.16);
+  border: 1px solid rgba(80, 98, 92, 0.16);
+}
+
+.fixture--bed {
+  left: 10%;
+  bottom: 14%;
+  width: 36%;
+  height: 24%;
+  background: linear-gradient(90deg, #d9cfc0, #efe8dc);
+}
+
+.fixture--rug {
+  right: 16%;
+  bottom: 16%;
+  width: 24%;
+  height: 18%;
+  border-radius: 50%;
+  background: rgba(140, 59, 15, 0.12);
+}
+
+.fixture--counter {
+  top: 24%;
+  right: 8%;
+  width: 16%;
+  height: 58%;
+  background: #d7cab7;
+}
+
+.fixture--table {
+  left: 18%;
+  bottom: 18%;
+  width: 26%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(107, 39, 0, 0.12);
+}
+
+.fixture--desk {
+  left: 10%;
+  bottom: 16%;
+  width: 38%;
+  height: 18%;
+  background: #d5ddd4;
+}
+
+.fixture--console {
+  right: 10%;
+  top: 34%;
+  width: 22%;
+  height: 14%;
+  background: rgba(18, 68, 56, 0.12);
+}
+
+.fixture--pond {
+  left: 42%;
+  top: 42%;
+  width: 24%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(45, 92, 79, 0.16);
+}
+
+.fixture--tree {
+  width: 36px;
+  height: 48px;
+  border-radius: 50% 50% 44% 44%;
+  background: rgba(18, 68, 56, 0.18);
+}
+
+.fixture--tree-a {
+  left: 16%;
+  bottom: 18%;
+}
+
+.fixture--tree-b {
+  right: 16%;
+  top: 22%;
+}
+
+@media (max-width: 900px) {
+  .sanctuary-hub__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sanctuary-hub__summary {
     width: 100%;
-    height: 100%;
-    min-width: auto;
-    min-height: auto;
+  }
+
+  .sanctuary-map {
+    min-height: 560px;
   }
 }
 
-.hub__quadrant {
-  position: relative;
-  /* Visual separators removed per DESIGN.md: "no 1px borders" */
+@media (max-width: 640px) {
+  .sanctuary-map {
+    width: 100%;
+    min-height: 520px;
+  }
+
+  .sanctuary-room__header {
+    padding: 10px;
+  }
+
+  .sanctuary-room__counts span {
+    display: none;
+  }
 }

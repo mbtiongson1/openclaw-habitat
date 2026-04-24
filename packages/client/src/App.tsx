@@ -57,7 +57,7 @@ export function App() {
       {/* Main Content */}
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:pr-[22rem] py-8 relative">
         {activeTab === 'hub' && (
-          <SanctuaryHub agents={agents} onSelectAgent={setSelectedAgentId} />
+          <SanctuaryHub agents={agents} ws={ws} onSelectAgent={setSelectedAgentId} />
         )}
         {activeTab === 'zones' && (
           <ZonesView agents={agents} />
