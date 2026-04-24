@@ -1,0 +1,159 @@
+.sanctuary-sprite {
+  --sanctuary-sprite-duration: 12000ms;
+  --sanctuary-sprite-delay: 0ms;
+  position: absolute;
+  z-index: 12;
+  width: 88px;
+  min-height: 102px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--on-surface);
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+  transform-origin: 50% 76%;
+  transition:
+    filter var(--duration-fast, 160ms) var(--ease-out, ease),
+    transform var(--duration-fast, 160ms) var(--ease-out, ease);
+}
+
+.sanctuary-sprite:hover,
+.sanctuary-sprite:focus-visible {
+  z-index: 20;
+  filter: drop-shadow(0 8px 12px rgba(51, 44, 34, 0.18));
+  transform: translate(-50%, -54%) scale(1.05);
+}
+
+.sanctuary-sprite:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+
+.sanctuary-sprite__body {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  animation: sanctuary-sprite-breathe var(--sanctuary-sprite-duration) ease-in-out infinite;
+  animation-delay: var(--sanctuary-sprite-delay);
+}
+
+.sanctuary-sprite--task .sanctuary-sprite__body {
+  animation-name: sanctuary-sprite-step;
+}
+
+.sanctuary-sprite--rest .sanctuary-sprite__body {
+  animation-name: sanctuary-sprite-rest;
+}
+
+.sanctuary-sprite--left .sanctuary-sprite__body {
+  scale: -1 1;
+}
+
+.sanctuary-sprite__shadow {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  width: 48px;
+  height: 12px;
+  background: rgba(75, 63, 45, 0.14);
+  border-radius: 50%;
+  transform: translateX(-50%);
+  filter: blur(1px);
+}
+
+.sanctuary-sprite__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  max-width: 88px;
+  margin-top: -4px;
+  padding: 2px 6px;
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 60%, transparent);
+  box-shadow: 0 3px 10px rgba(51, 44, 34, 0.08);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition:
+    opacity var(--duration-fast, 160ms) var(--ease-out, ease),
+    transform var(--duration-fast, 160ms) var(--ease-out, ease);
+  pointer-events: none;
+}
+
+.sanctuary-sprite:hover .sanctuary-sprite__label,
+.sanctuary-sprite:focus-visible .sanctuary-sprite__label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.sanctuary-sprite__name,
+.sanctuary-sprite__state {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0;
+}
+
+.sanctuary-sprite__name {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.sanctuary-sprite__state {
+  font-size: 0.58rem;
+  line-height: 1;
+  color: var(--on-surface-variant);
+}
+
+@keyframes sanctuary-sprite-breathe {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -5px;
+  }
+}
+
+@keyframes sanctuary-sprite-step {
+  0%,
+  100% {
+    translate: -2px 0;
+    rotate: -1deg;
+  }
+  50% {
+    translate: 2px -4px;
+    rotate: 1deg;
+  }
+}
+
+@keyframes sanctuary-sprite-rest {
+  0%,
+  100% {
+    translate: 0 0;
+    scale: 1;
+  }
+  50% {
+    translate: 0 1px;
+    scale: 1.02 0.98;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sanctuary-sprite,
+  .sanctuary-sprite__body,
+  .sanctuary-sprite__label {
+    animation: none;
+    transition-duration: 0.01ms;
+  }
+
+  .sanctuary-sprite:hover,
+  .sanctuary-sprite:focus-visible {
+    transform: translate(-50%, -50%);
+  }
+}
