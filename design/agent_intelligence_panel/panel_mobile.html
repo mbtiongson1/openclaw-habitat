@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Agent Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#fbf9f4",
+                      "on-secondary-fixed": "#0e1f1a",
+                      "surface-variant": "#e4e2dd",
+                      "secondary-fixed-dim": "#b7cbc3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-container": "#ffb798",
+                      "on-secondary-container": "#546660",
+                      "inverse-surface": "#30312e",
+                      "on-primary-container": "#a1d2c2",
+                      "primary-container": "#2d5c4f",
+                      "outline-variant": "#c0c8c4",
+                      "on-primary-fixed": "#002019",
+                      "surface-container-highest": "#e4e2dd",
+                      "outline": "#707975",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "on-tertiary-fixed-variant": "#7b2f03",
+                      "on-secondary": "#ffffff",
+                      "tertiary-container": "#8c3b0f",
+                      "on-error-container": "#93000a",
+                      "secondary": "#50625c",
+                      "secondary-fixed": "#d3e7df",
+                      "on-secondary-fixed-variant": "#394a44",
+                      "surface": "#fbf9f4",
+                      "tertiary-fixed": "#ffdbcd",
+                      "on-tertiary-fixed": "#360f00",
+                      "on-tertiary": "#ffffff",
+                      "background": "#fbf9f4",
+                      "on-background": "#1b1c19",
+                      "surface-container-low": "#f5f3ee",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#bbeddc",
+                      "on-error": "#ffffff",
+                      "surface-container": "#f0eee9",
+                      "surface-dim": "#dbdad5",
+                      "surface-tint": "#386759",
+                      "inverse-on-surface": "#f2f1ec",
+                      "secondary-container": "#d0e4dc",
+                      "error": "#ba1a1a",
+                      "primary-fixed-dim": "#9fd1c0",
+                      "on-surface": "#1b1c19",
+                      "tertiary": "#6b2700",
+                      "error-container": "#ffdad6",
+                      "on-surface-variant": "#404945",
+                      "primary": "#124438",
+                      "on-primary-fixed-variant": "#1f4f42",
+                      "surface-container-high": "#eae8e3",
+                      "inverse-primary": "#9fd1c0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "0px"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Space Grotesk"
+                      ],
+                      "display": [
+                              "Space Grotesk"
+                      ],
+                      "body": [
+                              "Manrope"
+                      ],
+                      "label": [
+                              "Space Grotesk"
+                      ]
+              },
+              "fontSize": {}
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            background-color: #fbf9f4;
+            color: #1b1c19;
+            background-image: 
+                linear-gradient(to right, rgba(192, 200, 196, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(192, 200, 196, 0.1) 1px, transparent 1px);
+            background-size: 64px 64px;
+            background-attachment: fixed;
+        }
+        h1, h2, h3, h4, h5, h6, .font-headline, .font-display, .font-label {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Transition utilities */
+        .mech-transition {
+            transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-24 md:pb-0 pt-16">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#FAF8F3] dark:bg-[#1A1A1A] text-[#2D5C4F] dark:text-emerald-500 rounded-none border-b border-[#2D5C4F]/10 transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)]">
+<button class="flex items-center justify-center p-2 hover:bg-[#2D5C4F]/5 dark:hover:bg-emerald-950/30 rounded-none mech-transition">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-['Space_Grotesk'] font-bold text-xl uppercase tracking-tighter text-[#2D5C4F] dark:text-emerald-400">Agent Intelligence</h1>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0" data-alt="close up of an abstract botanical texture, dark green and burnt orange macro photography">
+<img alt="Agent Signature Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC31UyUX_bxN20xDguPijLFSMbs4HaLEOj4ggxi1p7Yh916w0bjQBKMMJB2g3ug8AbyCndEA00F60HdlCdb3fc970STMxzKoAzf8ibD4_LnDaGYMxg180Umu06EMEJlwM75pCWxr1eE8ppqVCP5kzNvhZx5Z7MwpkcNqnAWZe5EHJpbgjOOQrcQTLdxZ7Qt4FKPLkKa68kK7eaxkazeyEj-cxejf1L4S1i5TvLr4r_IV9yybqRePxX-bGL6tRlRfEUNBU8z3HTz5-k"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-12">
+<!-- Section 1: Real-time Telemetry -->
+<section class="space-y-4">
+<h2 class="font-headline text-2xl font-bold tracking-tight text-primary">Real-time Telemetry</h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-lowest border border-outline/20 p-4 relative group hover:bg-surface-container-low mech-transition">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 mech-transition"></div>
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant mb-1 block">Tokens Processed</span>
+<div class="font-display text-3xl font-bold text-primary">1.2M</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline/20 p-4 relative group hover:bg-surface-container-low mech-transition">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 mech-transition"></div>
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant mb-1 block">Tokens/sec</span>
+<div class="font-display text-3xl font-bold text-primary">45.2</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline/20 p-4">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant">Context Window</span>
+<span class="font-headline text-sm font-bold text-primary">112k / 128k</span>
+</div>
+<div class="w-full h-2 bg-surface-variant relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary to-primary-container" style="width: 87.5%;"></div>
+</div>
+</div>
+</section>
+<!-- Section 2: Model Strategy Builder -->
+<section class="space-y-4">
+<h2 class="font-headline text-2xl font-bold tracking-tight text-primary">Model Strategy Builder</h2>
+<div class="bg-surface-container-low p-6 space-y-6">
+<!-- Primary -->
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant block">Primary (Planning)</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline text-on-surface pl-10 pr-4 py-3 font-headline focus:ring-0 focus:border-primary focus:border-b-2 appearance-none mech-transition">
+<option selected="">GPT-4o</option>
+<option>Claude 3 Opus</option>
+<option>Gemini 1.5 Pro</option>
+</select>
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">cloud</span>
+</div>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- Secondary -->
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant block">Secondary (Tasking)</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline text-on-surface pl-10 pr-4 py-3 font-headline focus:ring-0 focus:border-primary focus:border-b-2 appearance-none mech-transition">
+<option selected="">GPT-3.5-Turbo</option>
+<option>Claude 3 Haiku</option>
+<option>Llama-3-70B</option>
+</select>
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">cloud</span>
+</div>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">arrow_drop_down</span>
+</div>
+</div>
+</div>
+<!-- Fallback -->
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest text-on-surface-variant block">Fallback (Quota)</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline text-on-surface pl-10 pr-4 py-3 font-headline focus:ring-0 focus:border-primary focus:border-b-2 appearance-none mech-transition">
+<option selected="">Mistral-Nemo-12B</option>
+<option>Llama-3-8B</option>
+<option>Phi-3-Mini</option>
+</select>
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">memory</span>
+</div>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">arrow_drop_down</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Hardware Allocation -->
+<section class="space-y-4">
+<h2 class="font-headline text-2xl font-bold tracking-tight text-primary">Hardware Allocation</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- CPU -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant">CPU Usage</span>
+<span class="font-headline text-sm font-bold text-on-surface">78%</span>
+</div>
+<div class="w-full h-1 bg-surface-variant relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary" style="width: 78%;"></div>
+</div>
+</div>
+<!-- RAM -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="font-label text-xs uppercase tracking-widest text-on-surface-variant">RAM Usage</span>
+<span class="font-headline text-sm font-bold text-on-surface">24GB / 32GB</span>
+</div>
+<div class="w-full h-1 bg-surface-variant relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-tertiary" style="width: 75%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 4: Model Library -->
+<section class="space-y-4">
+<div class="flex justify-between items-center border-b border-outline/20 pb-2">
+<h2 class="font-headline text-2xl font-bold tracking-tight text-primary">Model Library</h2>
+<button class="p-2 hover:bg-surface-container mech-transition text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+<div class="space-y-0">
+<!-- Active -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest border-b border-outline/10 hover:bg-surface-container-low mech-transition">
+<div class="flex items-center space-x-4">
+<div class="w-2 h-2 bg-primary"></div>
+<span class="font-headline font-bold text-primary">GPT-4o</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-primary border border-primary/30 px-2 py-1">Active</span>
+</div>
+<!-- Idle -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest border-b border-outline/10 hover:bg-surface-container-low mech-transition opacity-80">
+<div class="flex items-center space-x-4">
+<div class="w-2 h-2 bg-tertiary"></div>
+<span class="font-headline font-medium text-on-surface">Llama-3-8B</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-tertiary border border-tertiary/30 px-2 py-1">Idle</span>
+</div>
+<!-- Offline -->
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest border-b border-outline/10 hover:bg-surface-container-low mech-transition opacity-50">
+<div class="flex items-center space-x-4">
+<div class="w-2 h-2 bg-outline"></div>
+<span class="font-headline font-medium text-on-surface-variant">Claude 3 Opus</span>
+</div>
+<span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant border border-outline/30 px-2 py-1">Offline</span>
+</div>
+</div>
+</section>
+<!-- Section 5: Link -->
+<section class="pt-4 pb-12">
+<a class="inline-flex items-center space-x-2 text-primary hover:text-primary-container font-headline font-bold group mech-transition" href="#">
+<span>View API Usage</span>
+<span class="material-symbols-outlined transform group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center h-20 bg-[#FAF8F3] dark:bg-[#1A1A1A] border-t border-[#2D5C4F]/10 px-2 pb-safe">
+<a class="flex flex-col items-center justify-center bg-[#2D5C4F] text-[#FAF8F3] dark:bg-emerald-600 dark:text-white px-4 py-1 rounded-none w-1/4 h-full mech-transition" href="#">
+<span class="material-symbols-outlined mb-1">monitoring</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.05em]">Telemetry</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2D5C4F] dark:text-stone-400 opacity-60 hover:bg-[#2D5C4F]/10 dark:hover:bg-emerald-900/20 px-4 py-1 rounded-none w-1/4 h-full mech-transition" href="#">
+<span class="material-symbols-outlined mb-1">architecture</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.05em]">Strategy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2D5C4F] dark:text-stone-400 opacity-60 hover:bg-[#2D5C4F]/10 dark:hover:bg-emerald-900/20 px-4 py-1 rounded-none w-1/4 h-full mech-transition" href="#">
+<span class="material-symbols-outlined mb-1">inventory_2</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.05em]">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#2D5C4F] dark:text-stone-400 opacity-60 hover:bg-[#2D5C4F]/10 dark:hover:bg-emerald-900/20 px-4 py-1 rounded-none w-1/4 h-full mech-transition" href="#">
+<span class="material-symbols-outlined mb-1">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-[0.05em]">Resources</span>
+</a>
+</nav>
+</body></html>

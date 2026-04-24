@@ -5,37 +5,47 @@ import { type Agent } from '../../hooks/useAgents';
 interface ZoneRendererProps {
   id: string;
   name: string;
+  label: string;
   color: string;
   agents: Agent[];
   onSelectAgent: (id: string) => void;
 }
 
-export function ZoneRenderer({ id, name, color, agents, onSelectAgent }: ZoneRendererProps) {
-  // Memoize positions to avoid jumping on every render
+export function ZoneRenderer({ id, name, label, color, agents, onSelectAgent }: ZoneRendererProps) {
+  // Memoize positions based on agent count and IDs
   const agentPositions = useMemo(() => {
+    const seed = agents.length;
     return agents.map((agent, i) => {
-      // Procedurally scatter agents within the zone
-      const numAgents = agents.length;
-      const col = i % Math.ceil(Math.sqrt(numAgents));
-      const row = Math.floor(i / Math.ceil(Math.sqrt(numAgents)));
+      // Create a deterministic but scattered feel
+      const angle = (i / agents.length) * Math.PI * 2 + (seed * 0.5);
+      const radius = 20 + (i % 3) * 10;
       return {
         id: agent.config.id,
-        x: 20 + col * 40 + (Math.random() * 10 - 5), // percentage based
-        y: 30 + row * 30 + (Math.random() * 10 - 5),
+        x: 50 + Math.cos(angle) * radius,
+        y: 50 + Math.sin(angle) * radius,
       };
     });
-  }, [agents.map(a => a.config.id).join(',')]);
+  }, [agents.length, agents.map(a => a.config.id).join(',')]);
 
   return (
-    <div className="w-full h-full relative p-4 group" style={{ backgroundColor: color }}>
-      <div className="absolute bottom-4 right-4 flex items-center gap-2 z-10">
-        <span className="font-headline font-bold text-[10px] text-on-surface opacity-30 uppercase tracking-[0.2em]">{name}</span>
-        <div className="w-6 h-6 bg-on-surface text-surface flex items-center justify-center font-headline font-bold text-[10px]">
-          {agents.length}
-        </div>
+    <div 
+      className="relative flex flex-col group transition-all duration-300 hover:brightness-95" 
+      style={{ backgroundColor: color }}
+    >
+      {/* Background Patterns */}
+      <div className="absolute inset-0 bg-floor-pattern opacity-40 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-grid-pattern opacity-20 pointer-events-none"></div>
+      
+      {/* Room Header */}
+      <div className="p-3 md:p-5 flex justify-between items-start z-10">
+        <h3 className="font-headline text-lg md:text-xl text-primary font-bold tracking-tight">{name}</h3>
+        <span className="font-headline text-[10px] uppercase tracking-widest text-outline bg-surface-container-highest/50 px-2 py-1">
+          {label}
+        </span>
       </div>
 
-      <div className="relative w-full h-full overflow-hidden">
+      {/* Agent Playground */}
+      <div className="flex-grow relative z-10 w-full h-full">
         {agents.map((agent) => {
           const pos = agentPositions.find(p => p.id === agent.config.id);
           return (
@@ -46,7 +56,10 @@ export function ZoneRenderer({ id, name, color, agents, onSelectAgent }: ZoneRen
                 left: `${pos?.x || 50}%`,
                 top: `${pos?.y || 50}%`,
               }}
-              onClick={() => onSelectAgent(agent.config.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelectAgent(agent.config.id);
+              }}
             >
               <div className="relative group/agent">
                 <AgentSVG
@@ -57,8 +70,11 @@ export function ZoneRenderer({ id, name, color, agents, onSelectAgent }: ZoneRen
                   feet={agent.config.svgParts.feet}
                   state={agent.state as any}
                 />
-                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-surface px-2 py-0.5 font-headline font-bold text-[8px] border border-on-surface opacity-0 group-hover/agent:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest">
-                  {agent.config.name}
+
+                
+                {/* Agent Detail Hover */}
+                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-surface px-2 py-0.5 font-headline font-bold text-[8px] border border-outline opacity-0 group-hover/agent:opacity-100 transition-opacity whitespace-nowrap uppercase tracking-widest z-50">
+                  {agent.config.name} ({agent.state})
                 </div>
               </div>
             </div>

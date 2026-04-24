@@ -1,41 +1,47 @@
 import React from 'react';
 
+export type TabId = 'hub' | 'zones' | 'agents' | 'analytics' | 'settings';
+
 interface BottomNavProps {
-  activeTab: 'hub' | 'kitchen' | 'nursery' | 'garden';
-  onChange: (tab: 'hub' | 'kitchen' | 'nursery' | 'garden') => void;
+  activeTab: TabId;
+  onChange: (tab: TabId) => void;
 }
 
 export function BottomNav({ activeTab, onChange }: BottomNavProps) {
   const tabs = [
-    { id: 'hub', label: 'HUB', icon: 'home_storage' },
-    { id: 'kitchen', label: 'KITCHEN', icon: 'countertops' },
-    { id: 'nursery', label: 'NURSERY', icon: 'bedtime' },
-    { id: 'garden', label: 'GARDEN', icon: 'nature' },
+    { id: 'hub', label: 'Sanctuary', icon: 'home_pin' },
+    { id: 'zones', label: 'Zones', icon: 'grid_guides' },
+    { id: 'agents', label: 'Agents', icon: 'smart_toy' },
+    { id: 'analytics', label: 'Analytics', icon: 'monitoring' },
+    { id: 'settings', label: 'Settings', icon: 'settings' },
   ] as const;
 
   return (
-    <nav className="fixed bottom-0 left-0 w-full flex justify-around items-end px-4 pb-6 pt-2 bg-background border-t-2 border-on-background/5 z-50 rounded-none">
+    <nav className="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 h-20 pb-safe bg-[#FAF8F3]/80 dark:bg-[#1B1C19]/80 backdrop-blur-md border-t border-outline-variant/10">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         return (
           <button
             key={tab.id}
-            onClick={() => onChange(tab.id as any)}
-            className={`flex flex-col items-center justify-center pb-1 transition-all duration-100 ${
+            onClick={() => onChange(tab.id as TabId)}
+            className={`flex flex-col items-center justify-center relative w-16 h-full transition-all duration-200 ${
               isActive 
-                ? 'text-primary border-b-4 border-secondary scale-95' 
-                : 'text-on-background/40 hover:text-primary'
+                ? 'text-primary dark:text-[#4A8C7B]' 
+                : 'text-[#707975] dark:text-[#8B928E] opacity-60 hover:opacity-100'
             }`}
           >
             <span 
-              className="material-symbols-outlined mb-1"
+              className="material-symbols-outlined mb-1 text-[24px]"
               style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
             >
               {tab.icon}
             </span>
-            <span className="font-headline text-[10px] font-bold tracking-tighter uppercase">
+            <span className="text-[10px] font-bold uppercase tracking-[0.05em] font-headline">
               {tab.label}
             </span>
+            {isActive && (
+              <div className="absolute bottom-0 w-full h-[3px] bg-primary rounded-t-full" />
+            )}
           </button>
         );
       })}

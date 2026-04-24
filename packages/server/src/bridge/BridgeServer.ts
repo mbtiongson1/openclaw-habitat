@@ -3,6 +3,7 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { type WSMessageEnvelope } from '@habitat/shared';
 import { AgentStateManager } from './AgentStateManager.js';
 import { FeedingEngine } from './FeedingEngine.js';
+import { AgentIntelligenceService } from '../intelligence/AgentIntelligenceService.js';
 
 export class BridgeServer {
   private wss: WebSocketServer;
@@ -11,7 +12,8 @@ export class BridgeServer {
   constructor(
     server: http.Server,
     private stateManager: AgentStateManager,
-    private feedingEngine: FeedingEngine
+    private feedingEngine: FeedingEngine,
+    private intelligenceService: AgentIntelligenceService
   ) {
     this.wss = new WebSocketServer({ server });
     this.wss.on('connection', (ws) => this.handleConnection(ws));
@@ -27,6 +29,15 @@ export class BridgeServer {
       payload: { agents: this.stateManager.getAll() },
     };
     ws.send(JSON.stringify(initMsg));
+
+    ws.send(JSON.stringify({
+      type: 'model_catalog_update',
+      payload: { catalog: this.intelligenceService.getCatalog() },
+    }));
+    ws.send(JSON.stringify({
+      type: 'agent_intelligence_init',
+      payload: { snapshots: this.intelligenceService.getAllSnapshots() },
+    }));
 
     ws.on('message', (raw) => {
       try {

@@ -126,6 +126,10 @@ dist-ssr/
 # npm cache
 .npm-cache
 
+# Local Codex/Superpowers workspaces
+.worktrees/
+.superpowers/
+
 # Python cache
 __pycache__/
 *.py[cod]

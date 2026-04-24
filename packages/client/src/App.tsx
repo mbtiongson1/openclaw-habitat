@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useWebSocket } from './hooks/useWebSocket';
 import { useAgents } from './hooks/useAgents';
-import { BottomNav } from './components/ui/BottomNav';
-import { NurseryView } from './components/nursery/NurseryView';
-import { GardenView } from './components/garden/GardenView';
+import { BottomNav, TabId } from './components/ui/BottomNav';
+import { SanctuaryHub } from './components/sanctuary/SanctuaryHub';
+import { ZonesView } from './components/sanctuary/ZonesView';
+import { AgentsListView } from './components/agent/AgentsListView';
+import { AnalyticsView } from './components/analytics/AnalyticsView';
+import { SettingsModal } from './components/ui/SettingsModal';
 import { AgentCreator } from './components/agent/AgentCreator';
 import { LoadingScreen } from './components/ui/LoadingScreen';
 import { ConnectionBadge } from './components/ui/ConnectionBadge';
-import { SettingsModal } from './components/ui/SettingsModal';
+import { AgentPage } from './components/agent/AgentPage';
 
-
-// Define the port depending on dev/prod
 const WS_URL = import.meta.env.PROD 
   ? `ws://${window.location.host}/ws`
   : 'ws://localhost:3001';
@@ -18,7 +19,7 @@ const WS_URL = import.meta.env.PROD
 export function App() {
   const ws = useWebSocket(WS_URL);
   const { agents, selectedAgent, selectedAgentId, setSelectedAgentId, feedAgent, createAgent } = useAgents(ws);
-  const [activeTab, setActiveTab] = useState<'hub' | 'kitchen' | 'nursery' | 'garden'>('hub');
+  const [activeTab, setActiveTab] = useState<TabId>('hub');
   const [showCreator, setShowCreator] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -27,53 +28,64 @@ export function App() {
   }
 
   return (
-    <div className="bg-background text-on-background font-body min-h-screen flex flex-col pb-24 md:pb-0">
+    <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col bg-grid-pattern relative pb-24 md:pb-0 pt-16 md:pt-20 font-body">
       <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
       
-      {/* Top Header */}
-      <header className="sticky top-0 z-50 bg-surface flex justify-between items-center w-full px-6 py-4">
+      {/* TopAppBar */}
+      <header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10">
         <div className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-primary text-2xl">grid_view</span>
-          <h1 className="font-headline font-bold uppercase tracking-wider text-xl text-on-surface">Digital Sanctuary</h1>
+          <span className="material-symbols-outlined text-primary-container text-2xl">grid_view</span>
+          <h1 className="text-xl font-black text-primary-container tracking-tight uppercase font-headline">Digital Sanctuary</h1>
         </div>
-        <button 
-          className="w-10 h-10 bg-surface-container-highest flex items-center justify-center overflow-hidden hover:bg-surface-variant transition-colors"
-          onClick={() => setShowSettings(true)}
-        >
-          <span className="material-symbols-outlined text-on-surface">settings</span>
-        </button>
-        <div className="absolute bottom-0 left-0 bg-outline-variant h-[2px] w-full"></div>
+        <div className="flex items-center gap-4">
+          <span className="material-symbols-outlined text-outline hover:text-primary transition-colors duration-200 cursor-pointer">notifications</span>
+          <div className="text-xs uppercase tracking-wider font-headline text-primary-container font-bold border border-outline-variant px-3 py-1 bg-surface-container-low">
+            Health: 99%
+          </div>
+          <button 
+            className="md:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-surface-container transition-colors"
+            onClick={() => setShowSettings(true)}
+          >
+            <span className="material-symbols-outlined text-outline text-xl">settings</span>
+          </button>
+        </div>
       </header>
 
-      <main className="flex-grow p-6 md:p-12 md:pl-32 max-w-7xl mx-auto w-full relative z-10">
+      {/* Main Content */}
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
         {activeTab === 'hub' && (
           <SanctuaryHub agents={agents} onSelectAgent={setSelectedAgentId} />
         )}
-        {activeTab === 'kitchen' && (
-          <KitchenView agents={agents} onFeedAgent={feedAgent} />
+        {activeTab === 'zones' && (
+          <ZonesView agents={agents} />
         )}
-        {activeTab === 'nursery' && (
-          <NurseryView agents={agents} onSelectAgent={setSelectedAgentId} />
+        {activeTab === 'agents' && (
+          <AgentsListView agents={agents} onSelectAgent={setSelectedAgentId} />
         )}
-        {activeTab === 'garden' && (
-          <GardenView agents={agents} onSelectAgent={setSelectedAgentId} />
+        {activeTab === 'analytics' && (
+          <AnalyticsView />
         )}
-
-        {/* Action Button for Agent Creation (only visible in Hub for now) */}
-        {activeTab === 'hub' && (
-          <button 
-            className="btn btn--primary" 
-            style={{ position: 'absolute', bottom: '80px', right: 'var(--space-xl)', zIndex: 100, borderRadius: '24px', padding: '12px 24px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)' }}
-            onClick={() => setShowCreator(true)}
-          >
-            + Create Agent
-          </button>
+        {activeTab === 'settings' && (
+          <div className="flex flex-col gap-4">
+             <h2 className="text-3xl font-headline font-black text-on-background">Settings</h2>
+             <button className="btn btn--primary max-w-xs" onClick={() => setShowSettings(true)}>Open System Config</button>
+          </div>
         )}
 
-        {/* Temporary Agent Detail Overlay */}
+        {/* Floating Action Button */}
+        <button 
+          aria-label="Create Agent" 
+          className="fixed bottom-24 md:bottom-8 right-6 w-16 h-16 btn-gradient text-on-primary flex items-center justify-center shadow-lg z-40 transition-transform hover:scale-105 active:scale-95 border-none rounded-none cursor-pointer"
+          onClick={() => setShowCreator(true)}
+        >
+          <span className="material-symbols-outlined text-3xl font-bold">add</span>
+        </button>
+
+        {/* Overlays */}
         {selectedAgent && (
           <AgentPage 
             agent={selectedAgent} 
+            ws={ws}
             onClose={() => setSelectedAgentId(null)} 
             onChat={(agentId, text) => {
               ws.send({ type: 'send_chat', payload: { agentId, text } });
@@ -81,7 +93,6 @@ export function App() {
           />
         )}
 
-        {/* Agent Creator Overlay */}
         {showCreator && (
           <AgentCreator 
             onClose={() => setShowCreator(false)} 
@@ -89,7 +100,6 @@ export function App() {
           />
         )}
 
-        {/* Settings Modal Overlay */}
         {showSettings && (
           <SettingsModal onClose={() => setShowSettings(false)} />
         )}
