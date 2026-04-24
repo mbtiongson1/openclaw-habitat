@@ -13,8 +13,10 @@ import { AgentTelemetryService } from './intelligence/AgentTelemetryService.js';
 import { ModelCatalogService } from './intelligence/ModelCatalogService.js';
 import { ModelQuickSwitchService } from './intelligence/ModelQuickSwitchService.js';
 import { ModelRecommendationService } from './intelligence/ModelRecommendationService.js';
+import { ModelOperationsLogService } from './intelligence/ModelOperationsLogService.js';
 import { RuntimeMetricsService } from './intelligence/RuntimeMetricsService.js';
 import { OllamaAdapter, StaticCloudProviderAdapter } from './intelligence/adapters.js';
+import { type ModelOperationEvent } from '@habitat/shared';
 
 const app = express();
 app.use(express.json());
@@ -105,7 +107,7 @@ async function bootstrap(): Promise<void> {
     bridge.broadcast({ type: 'local_model_pull_progress', payload: job });
   });
 
-  modelOperationsLogService.on('event_logged', (event) => {
+  modelOperationsLogService.on('event_logged', (event: ModelOperationEvent) => {
     bridge.broadcast({ type: 'model_operation_logged', payload: event });
   });
 

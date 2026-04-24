@@ -93,11 +93,11 @@ export class AgentIntelligenceService extends EventEmitter {
 
   private findBestAvailableModel(modelId: string, catalog: ModelDescriptor[]): ModelDescriptor | undefined {
     const exact = catalog.find(model => model.id === modelId);
-    if (exact && exact.availability.installed && exact.availability.reachable) {
+    if (exact && exact.usability.status === 'usable') {
       return exact;
     }
 
-    return catalog.find(model => model.availability.installed && model.availability.reachable);
+    return catalog.find(model => model.usability.status === 'usable');
   }
 
   private resolveModelForIntent(agentId: string, intent: StrategyIntent): ModelDescriptor {
@@ -110,13 +110,13 @@ export class AgentIntelligenceService extends EventEmitter {
         : strategy.fallbackModelId;
 
     const preferred = catalog.find(model => model.id === preferredId);
-    if (preferred && preferred.availability.installed && preferred.availability.reachable) {
+    if (preferred && preferred.usability.status === 'usable') {
       return preferred;
     }
 
     if (strategy.switchRules.fallbackOnUnavailable || strategy.switchRules.fallbackOnQuota) {
       const fallback = catalog.find(model => model.id === strategy.fallbackModelId);
-      if (fallback && fallback.availability.installed && fallback.availability.reachable) {
+      if (fallback && fallback.usability.status === 'usable') {
         return fallback;
       }
     }
@@ -333,11 +333,26 @@ export class AgentIntelligenceService extends EventEmitter {
 
   simulateAgentCycle(agent: Agent): void {
     this.ensureAgentInitialized(agent.config.id);
+    const currentTelemetry = this.telemetryService.getTelemetry(agent.config.id);
+    const currentModelId = currentTelemetry?.activeModelId;
+
+    if (currentModelId) {
+      const currentModel = this.catalogService.getModel(currentModelId);
+      if (currentModel && currentModel.usability.status !== 'usable') {
+        // Active model became unusable — trigger recovery
+        const result = this.handleModelFailure(agent.config.id, currentModelId, currentModel.usability.reasonCode);
+        if (result.switchedToModelId) {
+          // Recovered with fallback
+          return;
+        }
+        // Fallback failed or disabled — agent remains on unusable model in simulation
+      }
+    }
+
     const intent: StrategyIntent = agent.state === AGENT_STATES.WORKING
       ? (Math.random() > 0.45 ? 'planning' : 'quick_task')
       : 'fallback';
     const targetModel = this.resolveModelForIntent(agent.config.id, intent);
-    const currentTelemetry = this.telemetryService.getTelemetry(agent.config.id);
 
     if (currentTelemetry?.activeModelId !== targetModel.id) {
       this.telemetryService.setActiveModel(agent.config.id, targetModel);
