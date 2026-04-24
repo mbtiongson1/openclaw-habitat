@@ -47,6 +47,12 @@ export interface AgentConfig {
   installedAt: number;
 }
 
+export interface AgentConfigPatch {
+  name?: string;
+  personality?: string;
+  svgParts?: Partial<SVGParts>;
+}
+
 export interface Agent {
   config: AgentConfig;
   zone: ZoneType;

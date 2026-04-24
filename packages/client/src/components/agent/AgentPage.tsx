@@ -1,5 +1,16 @@
 import React, { useDeferredValue, useEffect, useMemo, useState } from 'react';
-import type { AgentIntelligenceSnapshot, AgentModelStrategy, ModelDescriptor, ModelRecommendation } from '@habitat/shared';
+import {
+  AGENT_PERSONALITIES,
+  SVG_BODY_TYPES,
+  SVG_FOOT_TYPES,
+  SVG_HAND_TYPES,
+  SVG_HEAD_TYPES,
+  type AgentConfigPatch,
+  type AgentIntelligenceSnapshot,
+  type AgentModelStrategy,
+  type ModelDescriptor,
+  type ModelRecommendation,
+} from '@habitat/shared';
 import AgentSVG from '../../svg/AgentSVG';
 import { type Agent } from '../../hooks/useAgents';
 import { useAgentIntelligence } from '../../hooks/useAgentIntelligence';
@@ -141,6 +152,13 @@ export function AgentPage({ agent, ws, onClose, onChat }: AgentPageProps) {
   const [chatLog, setChatLog] = useState<{ sender: string; text: string }[]>([
     { sender: 'agent', text: 'Telemetry online. Ready for tasking.' },
   ]);
+  const [characteristicsDraft, setCharacteristicsDraft] = useState({
+    name: agent.config.name,
+    personality: agent.config.personality,
+    svgParts: agent.config.svgParts,
+  });
+  const [savingCharacteristics, setSavingCharacteristics] = useState(false);
+  const [characteristicsStatus, setCharacteristicsStatus] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const deferredSearchQuery = useDeferredValue(searchQuery);
   const {
@@ -167,6 +185,15 @@ export function AgentPage({ agent, ws, onClose, onChat }: AgentPageProps) {
       .then(text => setFeedingLog(text))
       .catch(console.error);
   }, [agent.config.id]);
+
+  useEffect(() => {
+    setCharacteristicsDraft({
+      name: agent.config.name,
+      personality: agent.config.personality,
+      svgParts: agent.config.svgParts,
+    });
+    setCharacteristicsStatus(null);
+  }, [agent.config.id, agent.config.name, agent.config.personality, agent.config.svgParts]);
 
   useEffect(() => {
     const handle = setTimeout(() => {
@@ -220,6 +247,52 @@ export function AgentPage({ agent, ws, onClose, onChat }: AgentPageProps) {
       },
     };
     await updateStrategy(nextStrategy);
+  };
+
+  const patchCharacteristic = <K extends keyof typeof characteristicsDraft>(
+    key: K,
+    value: (typeof characteristicsDraft)[K]
+  ) => {
+    setCharacteristicsDraft(prev => ({ ...prev, [key]: value }));
+    setCharacteristicsStatus(null);
+  };
+
+  const patchSvgPart = (part: keyof typeof characteristicsDraft.svgParts, value: string) => {
+    setCharacteristicsDraft(prev => ({
+      ...prev,
+      svgParts: {
+        ...prev.svgParts,
+        [part]: value,
+      },
+    }));
+    setCharacteristicsStatus(null);
+  };
+
+  const saveCharacteristics = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const patch: AgentConfigPatch = {
+      name: characteristicsDraft.name.trim(),
+      personality: characteristicsDraft.personality,
+      svgParts: characteristicsDraft.svgParts,
+    };
+
+    setSavingCharacteristics(true);
+    setCharacteristicsStatus(null);
+    try {
+      const response = await fetch(`/api/agents/${agent.config.id}/config`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to save characteristics');
+      }
+      setCharacteristicsStatus('Saved');
+    } catch (error) {
+      setCharacteristicsStatus(error instanceof Error ? error.message : 'Failed to save characteristics');
+    } finally {
+      setSavingCharacteristics(false);
+    }
   };
 
   return (
@@ -276,6 +349,82 @@ export function AgentPage({ agent, ws, onClose, onChat }: AgentPageProps) {
                   onDownload={(id) => pullLocalModel(id).catch(console.error)}
                 />
               )}
+
+              <section className="agent-page__panel">
+                <div className="agent-page__section-head">
+                  <h3>Editable Characteristics</h3>
+                  <span className="agent-page__muted">
+                    {characteristicsStatus ?? 'Name, personality, and editable sprite parts.'}
+                  </span>
+                </div>
+                <form className="agent-page__character-form" onSubmit={saveCharacteristics}>
+                  <label className="agent-page__strategy-field">
+                    <span>Agent name</span>
+                    <input
+                      aria-label="Agent name"
+                      value={characteristicsDraft.name}
+                      onChange={event => patchCharacteristic('name', event.target.value)}
+                    />
+                  </label>
+                  <label className="agent-page__strategy-field">
+                    <span>Personality</span>
+                    <select
+                      aria-label="Personality"
+                      value={characteristicsDraft.personality}
+                      onChange={event => patchCharacteristic('personality', event.target.value)}
+                    >
+                      {AGENT_PERSONALITIES.map(personality => (
+                        <option key={personality.id} value={personality.id}>{personality.name}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="agent-page__strategy-field">
+                    <span>Head shape</span>
+                    <select
+                      aria-label="Head shape"
+                      value={characteristicsDraft.svgParts.head}
+                      onChange={event => patchSvgPart('head', event.target.value)}
+                    >
+                      {SVG_HEAD_TYPES.map(part => <option key={part} value={part}>{part}</option>)}
+                    </select>
+                  </label>
+                  <label className="agent-page__strategy-field">
+                    <span>Body shape</span>
+                    <select
+                      aria-label="Body shape"
+                      value={characteristicsDraft.svgParts.body}
+                      onChange={event => patchSvgPart('body', event.target.value)}
+                    >
+                      {SVG_BODY_TYPES.map(part => <option key={part} value={part}>{part}</option>)}
+                    </select>
+                  </label>
+                  <label className="agent-page__strategy-field">
+                    <span>Hands</span>
+                    <select
+                      aria-label="Hands"
+                      value={characteristicsDraft.svgParts.hands}
+                      onChange={event => patchSvgPart('hands', event.target.value)}
+                    >
+                      {SVG_HAND_TYPES.map(part => <option key={part} value={part}>{part}</option>)}
+                    </select>
+                  </label>
+                  <label className="agent-page__strategy-field">
+                    <span>Feet</span>
+                    <select
+                      aria-label="Feet"
+                      value={characteristicsDraft.svgParts.feet}
+                      onChange={event => patchSvgPart('feet', event.target.value)}
+                    >
+                      {SVG_FOOT_TYPES.map(part => <option key={part} value={part}>{part}</option>)}
+                    </select>
+                  </label>
+                  <div className="agent-page__form-actions">
+                    <button className="btn btn--primary" type="submit" disabled={savingCharacteristics}>
+                      {savingCharacteristics ? 'Saving...' : 'Save Characteristics'}
+                    </button>
+                  </div>
+                </form>
+              </section>
 
               <section className="agent-page__panel agent-page__panel--telemetry">
                 <div className="agent-page__section-head">

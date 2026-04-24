@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   ActiveModelSchema,
+  AgentConfigPatchSchema,
   AgentConfigSchema,
   AgentModelStrategySchema,
   FeedRequestSchema,
@@ -59,6 +60,18 @@ export function createRoutes(
     }
     const agent = stateManager.createAgent(result.data);
     res.status(201).json({ agent });
+  });
+
+  /** Update editable agent characteristics */
+  router.patch('/agents/:id/config', (req, res) => {
+    const parsed = AgentConfigPatchSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.flatten() });
+    }
+
+    const agent = stateManager.updateAgentConfig(req.params.id, parsed.data);
+    if (!agent) return res.status(404).json({ error: 'Agent not found' });
+    res.json({ agent });
   });
 
   /** Feed an agent a snack */

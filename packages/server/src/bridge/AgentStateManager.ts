@@ -9,6 +9,7 @@ import {
   SVG_FOOT_TYPES,
   type Agent,
   type AgentConfig,
+  type AgentConfigPatch,
   type AgentStats,
   type SVGParts,
   type ZoneType,
@@ -83,6 +84,24 @@ export class AgentStateManager extends EventEmitter {
     };
 
     this.agents.set(id, agent);
+    this.emit('agent_update', agent);
+    return agent;
+  }
+
+  updateAgentConfig(agentId: string, patch: AgentConfigPatch): Agent | undefined {
+    const agent = this.agents.get(agentId);
+    if (!agent) return undefined;
+
+    agent.config = {
+      ...agent.config,
+      name: patch.name ?? agent.config.name,
+      personality: patch.personality ?? agent.config.personality,
+      svgParts: {
+        ...agent.config.svgParts,
+        ...patch.svgParts,
+      },
+    };
+
     this.emit('agent_update', agent);
     return agent;
   }

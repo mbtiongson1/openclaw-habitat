@@ -27,6 +27,15 @@ export const AgentConfigSchema = z.object({
 
 export type AgentConfigInput = z.infer<typeof AgentConfigSchema>;
 
+export const AgentConfigPatchSchema = z.object({
+  name: z.string().min(1).max(50).optional(),
+  personality: z.string().min(1).max(50).optional(),
+  svgParts: SvgPartsSchema.partial().optional(),
+}).refine(
+  patch => patch.name !== undefined || patch.personality !== undefined || patch.svgParts !== undefined,
+  { message: 'At least one agent characteristic must be provided' }
+);
+
 export const ChatMessageSchema = z.object({
   text: z.string().min(1)
 });

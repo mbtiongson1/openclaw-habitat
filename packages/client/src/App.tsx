@@ -60,7 +60,7 @@ export function App() {
           <SanctuaryHub agents={agents} ws={ws} onSelectAgent={setSelectedAgentId} />
         )}
         {activeTab === 'zones' && (
-          <ZonesView agents={agents} />
+          <ZonesView agents={agents} ws={ws} />
         )}
         {activeTab === 'agents' && (
           <AgentsListView agents={agents} onSelectAgent={setSelectedAgentId} />
