@@ -22,6 +22,8 @@ export function BottomNav({ activeTab, onChange }: BottomNavProps) {
         return (
           <button
             key={tab.id}
+            type="button"
+            aria-label={tab.label}
             onClick={() => onChange(tab.id as TabId)}
             className={`flex flex-col items-center justify-center relative w-16 h-full transition-all duration-200 ${
               isActive 
@@ -30,6 +32,7 @@ export function BottomNav({ activeTab, onChange }: BottomNavProps) {
             }`}
           >
             <span 
+              aria-hidden="true"
               className="material-symbols-outlined mb-1 text-[24px]"
               style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}
             >

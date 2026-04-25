@@ -25,6 +25,7 @@ export function App() {
   const [activeTab, setActiveTab] = useState<TabId>('hub');
   const [showCreator, setShowCreator] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const goToSanctuary = () => setActiveTab('hub');
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,10 +39,15 @@ export function App() {
     <div className="app-shell bg-surface text-on-surface antialiased min-h-screen flex flex-col bg-grid-pattern relative font-body">
       {/* TopAppBar */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10">
-        <div className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-primary-container text-2xl">grid_view</span>
-          <h1 className="text-xl font-black text-primary-container tracking-tight uppercase font-headline">Digital Sanctuary</h1>
-        </div>
+        <button
+          type="button"
+          aria-label="Go to Sanctuary"
+          className="flex items-center gap-3 min-w-0 text-left text-primary-container transition-colors hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          onClick={goToSanctuary}
+        >
+          <span aria-hidden="true" className="material-symbols-outlined text-2xl">home</span>
+          <h1 className="text-lg sm:text-xl font-black tracking-tight uppercase font-headline truncate">Digital Sanctuary</h1>
+        </button>
         <div className="flex items-center gap-4">
           <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
           <span className="material-symbols-outlined text-outline hover:text-primary transition-colors duration-200 cursor-pointer">notifications</span>
