@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   type GlobalCommandDescriptor,
   type ModelOperationEvent,
@@ -20,6 +20,15 @@ interface AnalyticsState {
   commands: GlobalCommandDescriptor[];
 }
 
+interface AnalyticsSample {
+  timestamp: number;
+  cpu: number;
+  memory: number;
+  activeTasks: number;
+  queuedTasks: number;
+  staleHeartbeats: number;
+}
+
 const EMPTY_STATE: AnalyticsState = {
   health: null,
   runtime: null,
@@ -28,44 +37,56 @@ const EMPTY_STATE: AnalyticsState = {
   commands: [],
 };
 
+const HISTORY_LIMIT = 60;
+
 export function AnalyticsView() {
   const [state, setState] = useState<AnalyticsState>(EMPTY_STATE);
+  const [history, setHistory] = useState<AnalyticsSample[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
+  const loadSnapshot = useCallback(async (options: { showLoading?: boolean } = {}) => {
+    if (options.showLoading) setLoading(true);
     setError(null);
 
-    Promise.all([
-      fetchJson<HealthSnapshot>('/health'),
-      fetchJson<{ runtime: RuntimeMetricsSnapshot }>('/api/models/runtime'),
-      fetchJson<{ events: ModelOperationEvent[] }>('/api/model-operations?limit=8'),
-      fetchJson<{ summaries: ZoneTaskSummary[] }>('/api/zones/task-summaries'),
-      fetchJson<{ commands: GlobalCommandDescriptor[] }>('/api/commands'),
-    ])
-      .then(([health, runtimePayload, operationsPayload, zonePayload, commandsPayload]) => {
-        if (cancelled) return;
-        setState({
-          health,
-          runtime: runtimePayload.runtime,
-          operations: operationsPayload.events ?? [],
-          zoneSummaries: zonePayload.summaries ?? [],
-          commands: commandsPayload.commands ?? [],
-        });
-      })
-      .catch(err => {
-        if (!cancelled) setError(err instanceof Error ? err.message : 'Failed to load analytics');
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+    try {
+      const [health, runtimePayload, operationsPayload, zonePayload, commandsPayload] = await Promise.all([
+        fetchJson<HealthSnapshot>('/health'),
+        fetchJson<{ runtime: RuntimeMetricsSnapshot }>('/api/models/runtime'),
+        fetchJson<{ events: ModelOperationEvent[] }>('/api/model-operations?limit=8'),
+        fetchJson<{ summaries: ZoneTaskSummary[] }>('/api/zones/task-summaries'),
+        fetchJson<{ commands: GlobalCommandDescriptor[] }>('/api/commands'),
+      ]);
+      const nextState = {
+        health,
+        runtime: runtimePayload.runtime,
+        operations: operationsPayload.events ?? [],
+        zoneSummaries: zonePayload.summaries ?? [],
+        commands: commandsPayload.commands ?? [],
+      };
+      setState(nextState);
+      setHistory(previous => appendSample(previous, nextState));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load analytics');
+    } finally {
+      if (options.showLoading) setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const tick = () => {
+      if (!cancelled) void loadSnapshot({ showLoading: true });
+    };
+
+    tick();
+    const interval = window.setInterval(tick, 1000);
 
     return () => {
       cancelled = true;
+      window.clearInterval(interval);
     };
-  }, []);
+  }, [loadSnapshot]);
 
   const taskTotals = useMemo(() => state.zoneSummaries.reduce((totals, summary) => ({
     active: totals.active + summary.activeTasks,
@@ -95,6 +116,13 @@ export function AnalyticsView() {
           {error}
         </div>
       )}
+
+      <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <HistoryChart title="Runtime CPU" label="Runtime CPU history chart" value={`${Math.round(state.runtime?.cpuPct ?? 0)}%`} samples={history.map(sample => sample.cpu)} />
+        <HistoryChart title="Runtime Memory" label="Runtime memory history chart" value={`${Math.round(history.at(-1)?.memory ?? 0)}%`} samples={history.map(sample => sample.memory)} />
+        <HistoryChart title="Task Flow" label="Task flow history chart" value={`${taskTotals.active} active`} samples={history.map(sample => sample.activeTasks + sample.queuedTasks)} />
+        <HistoryChart title="Heartbeat Risk" label="Heartbeat risk history chart" value={`${taskTotals.stale} stale`} samples={history.map(sample => sample.staleHeartbeats)} />
+      </section>
 
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <MetricCard
@@ -263,9 +291,64 @@ function ResourceLine({ label, value, max, pct }: { label: string; value: string
   );
 }
 
+function HistoryChart({
+  title,
+  label,
+  value,
+  samples,
+}: {
+  title: string;
+  label: string;
+  value: string;
+  samples: number[];
+}) {
+  const points = sparklinePoints(samples);
+  return (
+    <article className="bg-surface-container-lowest/90 p-5 shadow-[0_18px_45px_rgba(51,44,34,0.08)]">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-xs font-headline uppercase tracking-widest text-on-surface-variant">{title}</h3>
+          <strong className="block text-3xl font-headline text-primary mt-2">{value}</strong>
+        </div>
+        <span className="text-[10px] uppercase tracking-widest text-outline font-headline font-bold">60 second history</span>
+      </div>
+      <svg aria-label={label} role="img" viewBox="0 0 100 42" className="mt-4 h-24 w-full overflow-visible">
+        <path d="M0 41 H100" fill="none" stroke="rgba(112,121,117,0.18)" strokeWidth="1" />
+        <polyline points={points} fill="none" stroke="var(--primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </article>
+  );
+}
+
 function ramPct(runtime: RuntimeMetricsSnapshot | null): number {
   if (!runtime || runtime.totalRamBytes <= 0) return 0;
   return (runtime.ramBytes / runtime.totalRamBytes) * 100;
+}
+
+function appendSample(previous: AnalyticsSample[], state: AnalyticsState): AnalyticsSample[] {
+  const taskTotals = state.zoneSummaries.reduce((totals, summary) => ({
+    active: totals.active + summary.activeTasks,
+    queued: totals.queued + summary.queuedTasks,
+    stale: totals.stale + summary.staleHeartbeats,
+  }), { active: 0, queued: 0, stale: 0 });
+  return [...previous, {
+    timestamp: Date.now(),
+    cpu: state.runtime?.cpuPct ?? 0,
+    memory: ramPct(state.runtime),
+    activeTasks: taskTotals.active,
+    queuedTasks: taskTotals.queued,
+    staleHeartbeats: taskTotals.stale,
+  }].slice(-HISTORY_LIMIT);
+}
+
+function sparklinePoints(samples: number[]): string {
+  const values = samples.length > 0 ? samples : [0];
+  const max = Math.max(1, ...values);
+  return values.map((value, index) => {
+    const x = values.length === 1 ? 0 : (index / (values.length - 1)) * 100;
+    const y = 40 - (Math.max(0, value) / max) * 34;
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
 }
 
 function formatBytes(bytes: number): string {

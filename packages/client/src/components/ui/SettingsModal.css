@@ -16,9 +16,8 @@
 .settings-modal {
   background: var(--surface);
   width: 100%;
-  max-width: 500px;
+  max-width: 760px;
   border-radius: 0;
-  border: 1px solid var(--outline-variant);
   box-shadow: 0 16px 32px rgba(0,0,0,0.2);
 }
 
@@ -38,8 +37,57 @@
 
 .settings-modal__content {
   padding: var(--space-lg);
-  max-height: 60vh;
+  max-height: 72vh;
   overflow-y: auto;
+  display: grid;
+  gap: var(--space-md);
+}
+
+.settings-section {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.7fr) minmax(0, 1.3fr);
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--surface-container-low);
+}
+
+.settings-section h3 {
+  margin: 0;
+  color: var(--primary);
+}
+
+.settings-section p {
+  margin: var(--space-xs) 0 0;
+  color: var(--on-surface-variant);
+  font-size: 0.85rem;
+}
+
+.settings-section__controls {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.settings-control {
+  display: grid;
+  grid-template-columns: 1fr minmax(120px, 0.9fr) auto;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.settings-control--row {
+  grid-template-columns: 1fr auto;
+}
+
+.settings-control strong,
+.settings-control span:last-child {
+  color: var(--primary);
+  font-family: var(--font-display);
+}
+
+.settings-control input {
+  width: 100%;
 }
 
 .snapshot-item {
@@ -51,4 +99,11 @@
   margin-bottom: var(--space-xs);
   border: 1px solid var(--outline-variant);
   font-family: var(--font-body);
+}
+
+@media (max-width: 700px) {
+  .settings-section,
+  .settings-control {
+    grid-template-columns: 1fr;
+  }
 }
