@@ -15,6 +15,14 @@ const GROUP_LABELS: Record<GlobalCommandGroup, string> = {
 
 const GROUP_ORDER: GlobalCommandGroup[] = ['session', 'model', 'visibility', 'power_user', 'thinking'];
 
+const GROUP_ICONS: Record<GlobalCommandGroup, string> = {
+  session: 'history',
+  model: 'neurology',
+  visibility: 'visibility',
+  power_user: 'terminal',
+  thinking: 'psychology',
+};
+
 interface CommandPreview {
   command: GlobalCommandDescriptor;
   executable: boolean;
@@ -59,25 +67,41 @@ export function GlobalCommandRail({ commands }: GlobalCommandRailProps) {
   };
 
   return (
-    <aside className="global-command-rail bg-surface-container-lowest border border-outline-variant/30 p-4 flex flex-col gap-4">
-      <div>
+    <aside
+      aria-label="OpenClaw global controls"
+      className="global-command-rail bg-surface-container-lowest/90 shadow-[0_20px_52px_rgba(24,35,31,0.11)] p-5 flex flex-col gap-5"
+    >
+      <div className="space-y-1">
         <p className="text-[10px] font-headline uppercase tracking-widest text-outline">OpenClaw</p>
-        <h2 className="text-lg font-headline font-bold text-primary">Global Controls</h2>
+        <h2 className="text-xl font-headline font-bold text-primary">Global Controls</h2>
+        <p className="text-xs leading-relaxed text-on-surface-variant">
+          Session, model, visibility, and runtime command previews.
+        </p>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         {grouped.map(section => (
-          <section key={section.group} className="flex flex-col gap-2">
-            <h3 className="text-[11px] font-headline font-bold uppercase tracking-widest text-on-surface-variant">
-              {GROUP_LABELS[section.group]}
-            </h3>
+          <section
+            key={section.group}
+            role="region"
+            aria-label={`${GROUP_LABELS[section.group]} commands`}
+            className="flex flex-col gap-3"
+          >
+            <div className="flex items-center gap-2">
+              <span aria-hidden="true" className="material-symbols-outlined text-primary text-lg">
+                {GROUP_ICONS[section.group]}
+              </span>
+              <h3 className="text-[11px] font-headline font-bold uppercase tracking-widest text-on-surface-variant">
+                {GROUP_LABELS[section.group]}
+              </h3>
+            </div>
             <div className="flex flex-col gap-2">
               {section.commands.map(command => (
                 <button
                   key={command.id}
                   type="button"
-                  className={`text-left border border-outline-variant/30 bg-surface-container-low p-3 transition-colors ${
-                    command.enabled ? 'hover:bg-surface-container-high cursor-pointer' : 'opacity-60 cursor-not-allowed'
+                  className={`text-left bg-surface-container-low/80 p-3 shadow-[0_8px_22px_rgba(24,35,31,0.05)] transition-colors ${
+                    command.enabled ? 'hover:bg-surface-container-high cursor-pointer' : 'opacity-55 cursor-not-allowed'
                   }`}
                   disabled={!command.enabled || loadingCommandId === command.id}
                   onClick={() => openPreview(command)}
@@ -85,7 +109,7 @@ export function GlobalCommandRail({ commands }: GlobalCommandRailProps) {
                 >
                   <span className="flex items-center justify-between gap-3">
                     <span className="font-headline text-sm font-bold text-on-surface">{command.label}</span>
-                    <span className="font-headline text-[10px] uppercase tracking-widest text-primary">
+                    <span className="font-headline text-[10px] uppercase tracking-widest text-primary bg-primary-fixed/30 px-2 py-0.5">
                       {command.command}
                     </span>
                   </span>
@@ -103,7 +127,7 @@ export function GlobalCommandRail({ commands }: GlobalCommandRailProps) {
       </div>
 
       {(preview || error) && (
-        <section className="border border-outline-variant/30 bg-surface-container-low p-3 flex flex-col gap-3" aria-live="polite">
+        <section className="bg-surface-container-low p-4 shadow-[0_12px_28px_rgba(24,35,31,0.08)] flex flex-col gap-3" aria-live="polite">
           <div className="flex items-start justify-between gap-3">
             <div>
               <h3 className="text-[11px] font-headline font-bold uppercase tracking-widest text-on-surface-variant">
@@ -127,7 +151,7 @@ export function GlobalCommandRail({ commands }: GlobalCommandRailProps) {
               <p className="text-xs text-on-surface-variant">{preview.message}</p>
               <button
                 type="button"
-                className="self-start border border-outline-variant/40 px-3 py-2 text-xs font-headline font-bold uppercase tracking-widest text-on-surface hover:bg-surface-container-high"
+                className="self-start bg-primary text-on-primary px-3 py-2 text-xs font-headline font-bold uppercase tracking-widest hover:opacity-90"
                 onClick={copyCommand}
               >
                 {copyState === 'copied' ? 'Copied' : 'Copy Command'}

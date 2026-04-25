@@ -36,6 +36,9 @@ describe('GlobalCommandRail', () => {
   it('groups commands and keeps privileged shell actions disabled', () => {
     render(<GlobalCommandRail commands={[...commands]} />);
 
+    expect(screen.getByRole('complementary', { name: /openclaw global controls/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /model control commands/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /power user commands/i })).toBeInTheDocument();
     expect(screen.getByText('Model Control')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Model Status/i })).toBeEnabled();
 
