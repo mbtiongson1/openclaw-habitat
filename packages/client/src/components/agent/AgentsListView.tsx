@@ -1,5 +1,6 @@
 import React from 'react';
 import { type Agent } from '../../hooks/useAgents';
+import AgentSVG from '../../svg/AgentSVG';
 
 interface AgentsListViewProps {
   agents: Agent[];
@@ -24,15 +25,26 @@ export function AgentsListView({ agents, onSelectAgent }: AgentsListViewProps) {
         {agents.map((agent) => (
           <article
             key={agent.config.id}
-            className="bg-surface-container-low border border-outline-variant/30 hover:bg-surface-container-high transition-colors group"
+            className="bg-surface-container-low/80 shadow-[0_18px_45px_rgba(51,44,34,0.08)] hover:bg-surface-container-high transition-colors group"
           >
-            <div className="flex items-start justify-between gap-4 p-5 border-b border-outline-variant/20">
+            <div className="flex items-start justify-between gap-4 p-5">
               <div className="flex items-center gap-4 min-w-0">
-                <div className="w-12 h-12 bg-surface-container-lowest border border-outline-variant/50 flex items-center justify-center font-headline font-black text-primary shrink-0">
-                  {agent.config.name.substring(0, 2).toUpperCase()}
+                <div
+                  role="img"
+                  aria-label={`${agent.config.name} sprite`}
+                  className="w-20 h-20 bg-surface-container-lowest flex items-center justify-center shrink-0 shadow-inner"
+                >
+                  <AgentSVG
+                    size={72}
+                    head={agent.config.svgParts.head}
+                    body={agent.config.svgParts.body}
+                    hands={agent.config.svgParts.hands}
+                    feet={agent.config.svgParts.feet}
+                    state={agent.state as 'idle' | 'working' | 'sleeping' | 'feeding' | 'social'}
+                  />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="font-headline font-bold text-on-background group-hover:text-primary transition-colors truncate">{agent.config.name}</h3>
+                  <h3 className="font-headline text-2xl font-bold text-on-background group-hover:text-primary transition-colors truncate">{agent.config.name}</h3>
                   <div className="flex items-center gap-2 text-[10px] font-headline font-bold uppercase tracking-wider text-outline">
                     <span className="text-primary">{agent.zone}</span>
                     <span>•</span>
@@ -51,7 +63,7 @@ export function AgentsListView({ agents, onSelectAgent }: AgentsListViewProps) {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 p-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 px-5 pb-5">
               <Metric label="CPU" value={`${Math.round(agent.stats.cpu)}%`} />
               <Metric label="Memory" value={`${Math.round(agent.stats.memory)}%`} />
               <Metric label="Tasks" value={agent.stats.tasksCompleted.toString()} />
@@ -75,7 +87,7 @@ export function AgentsListView({ agents, onSelectAgent }: AgentsListViewProps) {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-surface-container-lowest border border-outline-variant/20 p-3">
+    <div className="bg-surface-container-lowest/80 p-3">
       <div className="text-lg font-headline font-black text-on-background">{value}</div>
       <div className="text-[10px] uppercase tracking-widest text-outline font-headline font-bold">{label}</div>
     </div>
@@ -84,7 +96,7 @@ function Metric({ label, value }: { label: string; value: string }) {
 
 function Capability({ label, value, icon }: { label: string; value: string; icon: string }) {
   return (
-    <div className="flex items-start gap-2 bg-surface-container-lowest border border-outline-variant/20 p-3">
+    <div className="flex items-start gap-2 bg-surface-container-lowest/80 p-3">
       <span className="material-symbols-outlined text-primary text-lg mt-0.5">{icon}</span>
       <div>
         <div className="text-[10px] uppercase tracking-widest text-outline font-headline font-bold">{label}</div>

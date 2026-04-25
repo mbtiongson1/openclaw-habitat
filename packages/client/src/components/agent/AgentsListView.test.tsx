@@ -28,6 +28,8 @@ describe('AgentsListView', () => {
     render(<AgentsListView agents={[createAgent()]} onSelectAgent={onSelectAgent} />);
 
     expect(screen.getByText('Agent Operations')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: /ada sprite/i })).toBeInTheDocument();
+    expect(screen.queryByText('AD')).not.toBeInTheDocument();
     expect(screen.getByText('Personality')).toBeInTheDocument();
     expect(screen.getByText('cautious')).toBeInTheDocument();
     expect(screen.getByText('Model Strategy')).toBeInTheDocument();

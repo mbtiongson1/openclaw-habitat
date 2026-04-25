@@ -16,7 +16,7 @@
 .agent-creator {
   background: var(--surface-container-low);
   width: 100%;
-  max-width: 500px;
+  max-width: 860px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 16px 32px rgba(0,0,0,0.15);
@@ -47,8 +47,8 @@
 }
 
 .agent-creator__content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
   padding: var(--space-xl);
   gap: var(--space-xl);
 }
@@ -59,8 +59,25 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-xl);
-  background: var(--surface-container-high);
-  border: 1px dashed var(--outline-variant);
+  background:
+    radial-gradient(circle at 50% 36%, rgba(18, 68, 56, 0.12), transparent 36%),
+    var(--surface-container-high);
+}
+
+.agent-creator__sprite-stage {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-xs);
+}
+
+.agent-creator__tool {
+  padding: 4px 8px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 0.68rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
 .agent-creator__step-indicator {
@@ -71,8 +88,23 @@
   opacity: 0.6;
 }
 
+.agent-creator__selected-parts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--space-md);
+}
+
+.agent-creator__selected-parts span {
+  padding: 4px 7px;
+  background: rgba(255, 255, 255, 0.55);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
 .agent-creator__form {
-  min-height: 200px;
+  min-height: 360px;
 }
 
 .form-step label {
@@ -109,6 +141,44 @@
   margin-bottom: 0;
 }
 
+.agent-creator__variant-group {
+  margin-bottom: var(--space-md);
+}
+
+.agent-creator__variant-label {
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--outline);
+}
+
+.agent-creator__variant-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.agent-creator__variant-options button {
+  border: 0;
+  padding: 8px 10px;
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.agent-creator__variant-options button.is-selected,
+.agent-creator__variant-options button[aria-pressed="true"] {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
 .summary-box {
   background: var(--surface-container-high);
   padding: var(--space-md);
@@ -129,4 +199,15 @@
   padding: var(--space-xl);
   background: var(--surface);
   border-top: 1px solid var(--outline-variant);
+}
+
+@media (max-width: 760px) {
+  .agent-creator {
+    max-height: 92vh;
+  }
+
+  .agent-creator__content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
 }
