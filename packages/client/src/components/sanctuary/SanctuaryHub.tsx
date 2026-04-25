@@ -9,6 +9,7 @@ import {
   type SanctuaryBounds,
   type SanctuaryRoom,
 } from './houseLayout';
+import { roomTextureStyle } from './roomTextures';
 import { routeAgentToRoom, routeTaskToRoom } from './sanctuaryRouting';
 import './SanctuaryHub.css';
 
@@ -243,7 +244,7 @@ function RoomView({
       } as React.CSSProperties}
       aria-label={`${room.name} room`}
     >
-      <div className="sanctuary-room__texture" aria-hidden="true" />
+      <div className="sanctuary-room__texture" style={roomTextureStyle(room.kind)} aria-hidden="true" />
       <div className="sanctuary-room__furniture" aria-hidden="true">
         {renderFurniture(room)}
       </div>

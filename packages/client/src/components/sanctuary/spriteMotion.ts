@@ -35,6 +35,11 @@ export interface SanctuaryMotionPlan {
   cssPath: string;
 }
 
+export interface SanctuaryMotionFrame {
+  position: SanctuaryPoint;
+  facing: 'left' | 'right';
+}
+
 const ROOM_ANCHORS: Record<string, SanctuaryRoomAnchors> = {
   lounge: {
     entry: { x: 76, y: 52 },
@@ -145,6 +150,33 @@ export function buildSanctuaryMotion(input: SanctuaryMotionInput): SanctuaryMoti
   };
 }
 
+export function sampleSanctuaryMotionFrame(plan: SanctuaryMotionPlan, elapsedMs: number): SanctuaryMotionFrame {
+  if (plan.path.length <= 1 || plan.durationMs <= 0) {
+    return { position: plan.position, facing: plan.facing };
+  }
+
+  const effectiveElapsed = Math.max(0, elapsedMs - plan.delayMs);
+  if (effectiveElapsed <= 0) {
+    return { position: plan.path[0], facing: plan.facing };
+  }
+
+  const cycleProgress = (effectiveElapsed % plan.durationMs) / plan.durationMs;
+  const segmentCount = plan.path.length;
+  const scaledProgress = cycleProgress * segmentCount;
+  const segmentIndex = Math.floor(scaledProgress) % segmentCount;
+  const segmentProgress = smoothStep(scaledProgress - segmentIndex);
+  const start = plan.path[segmentIndex];
+  const end = plan.path[(segmentIndex + 1) % segmentCount];
+
+  return {
+    position: clampPoint({
+      x: lerp(start.x, end.x, segmentProgress),
+      y: lerp(start.y, end.y, segmentProgress),
+    }),
+    facing: end.x >= start.x ? 'right' : 'left',
+  };
+}
+
 function getIdleWanderPath(input: SanctuaryMotionInput): SanctuaryPoint[] {
   const anchors = getRoomAnchors(input.roomId);
   const seed = hashSeed(`${input.roomId}:${input.agentId}:${input.occupancyIndex ?? 0}`);
@@ -191,6 +223,15 @@ function clamp(value: number, min: number, max: number): number {
 
 function round(value: number): number {
   return Math.round(value * 10) / 10;
+}
+
+function lerp(start: number, end: number, amount: number): number {
+  return start + (end - start) * amount;
+}
+
+function smoothStep(value: number): number {
+  const clamped = clamp(value, 0, 1);
+  return clamped * clamped * (3 - 2 * clamped);
 }
 
 function hashSeed(value: string): number {

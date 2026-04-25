@@ -15,6 +15,7 @@
   transition:
     filter var(--duration-fast, 160ms) var(--ease-out, ease),
     transform var(--duration-fast, 160ms) var(--ease-out, ease);
+  will-change: left, top, transform, filter;
 }
 
 .sanctuary-sprite:hover,
@@ -38,7 +39,7 @@
 }
 
 .sanctuary-sprite--task .sanctuary-sprite__body {
-  animation-name: sanctuary-sprite-step;
+  animation-name: sanctuary-sprite-walk;
 }
 
 .sanctuary-sprite--rest .sanctuary-sprite__body {
@@ -120,11 +121,11 @@
   }
 }
 
-@keyframes sanctuary-sprite-step {
+@keyframes sanctuary-sprite-walk {
   0%,
   100% {
-    translate: -2px 0;
-    rotate: -1deg;
+    translate: -1px 0;
+    rotate: -0.8deg;
   }
   50% {
     translate: 2px -4px;

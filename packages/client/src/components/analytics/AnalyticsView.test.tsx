@@ -65,7 +65,7 @@ describe('AnalyticsView', () => {
     render(<AnalyticsView />);
 
     await waitFor(() => expect(screen.getByText('Docker Gateway')).toBeInTheDocument());
-    expect(screen.getAllByText('Host runtime').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Runtime CPU').length).toBeGreaterThan(0);
     expect(screen.getByText('Gemini quota exhausted')).toBeInTheDocument();
     expect(screen.getByText('OpenClaw Command Surface')).toBeInTheDocument();
   });

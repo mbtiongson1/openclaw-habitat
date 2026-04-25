@@ -44,8 +44,9 @@ The visual language should use:
 - warm off-white walls and subtly varied floor textures
 - natural greens for the garden and active states
 - soft shadows and lower-contrast dividers instead of heavy borders
-- furniture and room props as editable SVG/CSS assets, with optional PNG-style texture layers for floors and surfaces
+- furniture and room props as editable SVG/CSS assets, with required layered room textures or local bitmap surfaces when they make the space feel materially like a home
 - enough whitespace around panels to avoid the current cramped mobile and desktop views
+- persistent navigation that remains available on desktop and mobile, not only on one breakpoint
 
 Cards should be used for repeated items and modals only. Primary page sections should feel like unframed layouts or soft panels, not nested cards.
 
@@ -89,7 +90,7 @@ Each room type should have recognizable props:
 - Task rooms: workbench/table, queue trays, tool board, task surface.
 - Garden: grass texture, path, planters, shrubs, stepping stones, outdoor table/bench.
 
-Assets should be editable repo-native components where practical. SVG/React components are preferred for furniture and props. Small PNG-style textures may be added only when they make surfaces feel less flat and remain local, versioned assets.
+Assets should be editable repo-native components where practical. SVG/React components are preferred for furniture and props. Local bitmap or SVG texture layers should be used when they make surfaces feel less flat and more home-like.
 
 ### Metrics Interactions
 
@@ -112,6 +113,7 @@ The popover should show:
 - model strategy summary
 - current task or heartbeat status
 - quick actions such as "Open full details", "Send chat", or "Feed" if available
+- visible walking or idle motion that follows a deterministic room path rather than only bobbing in place
 
 The full Agent page can still exist, but it should be reached through an explicit action in the popover or from the Agents tab.
 
@@ -129,6 +131,7 @@ Navigation should feel less cramped on mobile:
 - reduce oversized headings when viewport height is limited
 - avoid bottom nav covering important content
 - ensure floating action button does not obscure room labels, charts, or lists
+- keep the main app navigation visible on desktop as well as mobile
 
 ## Agents Page
 

@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import AgentSVG from '../../svg/AgentSVG';
 import { type Agent } from '../../hooks/useAgents';
 import {
   buildSanctuaryMotion,
+  sampleSanctuaryMotionFrame,
   type SanctuarySpriteState,
 } from './spriteMotion';
 import './SanctuarySprite.css';
@@ -34,15 +35,43 @@ export function SanctuarySprite({
     }),
     [agent.config.id, agent.state, occupancyIndex, reducedMotion, roomId]
   );
+  const [frameTime, setFrameTime] = useState(() => (typeof performance !== 'undefined' ? performance.now() : Date.now()));
   const svgState = AGENT_SVG_STATES.has(agent.state) ? agent.state : 'idle';
+  const frame = useMemo(() => sampleSanctuaryMotionFrame(motion, frameTime), [motion, frameTime]);
+
+  useEffect(() => {
+    if (
+      reducedMotion ||
+      import.meta.env.MODE === 'test' ||
+      motion.path.length <= 1 ||
+      motion.durationMs <= 0 ||
+      typeof window.requestAnimationFrame !== 'function'
+    ) {
+      return;
+    }
+
+    let cancelled = false;
+    let frameId = 0;
+    const tick = (now: number) => {
+      if (cancelled) return;
+      setFrameTime(now);
+      frameId = window.requestAnimationFrame(tick);
+    };
+
+    frameId = window.requestAnimationFrame(tick);
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(frameId);
+    };
+  }, [motion.durationMs, motion.path.length, reducedMotion, motion.roomId, motion.agentId]);
 
   return (
     <button
       type="button"
-      className={`sanctuary-sprite sanctuary-sprite--${motion.activity} sanctuary-sprite--${motion.facing}`}
+      className={`sanctuary-sprite sanctuary-sprite--${motion.activity} sanctuary-sprite--${frame.facing}`}
       style={{
-        left: `${motion.position.x}%`,
-        top: `${motion.position.y}%`,
+        left: `${frame.position.x}%`,
+        top: `${frame.position.y}%`,
         '--sanctuary-sprite-duration': `${motion.durationMs}ms`,
         '--sanctuary-sprite-delay': `${motion.delayMs}ms`,
       } as React.CSSProperties}

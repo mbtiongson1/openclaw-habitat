@@ -122,7 +122,7 @@ body {
 .app-main {
   max-width: 80rem;
   margin: 0 auto;
-  padding: 2rem 1rem 6rem;
+  padding: 2rem 1rem 7rem;
 }
 
 .connection-badge {
@@ -157,7 +157,11 @@ body {
 @media (min-width: 768px) {
   .app-shell {
     padding-top: 6rem;
-    padding-bottom: 0;
+    padding-bottom: 7rem;
+  }
+
+  .app-main {
+    padding-bottom: 8rem;
   }
 }
 

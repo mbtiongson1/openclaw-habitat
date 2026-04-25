@@ -6,6 +6,7 @@ import {
   buildSanctuaryMotion,
   getRoomAnchors,
   getTaskPath,
+  sampleSanctuaryMotionFrame,
 } from './spriteMotion';
 
 const agent = {
@@ -80,6 +81,22 @@ describe('spriteMotion', () => {
 
     expect(motion.path).toEqual([motion.position]);
     expect(motion.durationMs).toBe(0);
+  });
+
+  it('samples distinct walking positions over time for active motion', () => {
+    const motion = buildSanctuaryMotion({
+      agentId: 'agent-iris',
+      roomId: 'garden',
+      state: 'working',
+      occupancyIndex: 1,
+    });
+
+    const early = sampleSanctuaryMotionFrame(motion, motion.delayMs + 5);
+    const late = sampleSanctuaryMotionFrame(motion, motion.delayMs + Math.floor(motion.durationMs / 2));
+
+    expect(early.position).not.toEqual(late.position);
+    expect(['left', 'right']).toContain(early.facing);
+    expect(['left', 'right']).toContain(late.facing);
   });
 });
 
