@@ -31,17 +31,26 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   min-width: min(100%, 380px);
-  border: 1px solid color-mix(in srgb, var(--outline-variant) 55%, transparent);
-  background: color-mix(in srgb, var(--surface-container-lowest) 82%, transparent);
+  gap: 10px;
 }
 
 .sanctuary-hub__metric {
+  display: block;
   padding: 12px 14px;
-  border-right: 1px solid color-mix(in srgb, var(--outline-variant) 45%, transparent);
+  border: 0;
+  background: color-mix(in srgb, var(--surface-container-lowest) 88%, transparent);
+  box-shadow: 0 12px 30px rgba(51, 44, 34, 0.08);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
 }
 
-.sanctuary-hub__metric:last-child {
-  border-right: 0;
+.sanctuary-hub__metric:hover,
+.sanctuary-hub__metric:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(51, 44, 34, 0.12);
+  outline: 2px solid color-mix(in srgb, var(--primary) 40%, transparent);
+  outline-offset: 2px;
 }
 
 .sanctuary-hub__metric strong,
@@ -129,11 +138,12 @@
 
 .sanctuary-room--outdoor {
   z-index: 0;
-  border-radius: 42% 58% 44% 56% / 36% 42% 58% 64%;
+  border-radius: 36% 64% 42% 58% / 44% 36% 64% 56%;
   border: 0;
   background:
-    radial-gradient(circle at 22% 62%, rgba(18, 68, 56, 0.2), transparent 18%),
-    radial-gradient(circle at 74% 42%, rgba(18, 68, 56, 0.16), transparent 20%),
+    radial-gradient(circle at 12% 18%, rgba(18, 68, 56, 0.18), transparent 18%),
+    radial-gradient(circle at 22% 72%, rgba(18, 68, 56, 0.2), transparent 18%),
+    radial-gradient(circle at 78% 44%, rgba(18, 68, 56, 0.16), transparent 20%),
     linear-gradient(135deg, #dbe8cf, #c7ddb9 62%, #e4ead3);
   box-shadow:
     inset 0 0 0 2px rgba(18, 68, 56, 0.12),
@@ -223,7 +233,29 @@
   bottom: 14%;
   width: 36%;
   height: 24%;
-  background: linear-gradient(90deg, #d9cfc0, #efe8dc);
+  border-radius: 5px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.36), transparent 50%),
+    linear-gradient(90deg, #cdbfae, #efe8dc);
+  box-shadow: 0 8px 18px rgba(75, 63, 45, 0.1);
+}
+
+.fixture--pillow {
+  left: 13%;
+  bottom: 29%;
+  width: 12%;
+  height: 8%;
+  border-radius: 6px;
+  background: #f9f5ef;
+}
+
+.fixture--side-table {
+  left: 48%;
+  bottom: 18%;
+  width: 10%;
+  height: 10%;
+  border-radius: 50%;
+  background: #bba891;
 }
 
 .fixture--rug {
@@ -240,7 +272,34 @@
   right: 8%;
   width: 16%;
   height: 58%;
-  background: #d7cab7;
+  background:
+    repeating-linear-gradient(180deg, #d7cab7 0 18px, #c8baa5 18px 20px),
+    #d7cab7;
+  box-shadow: inset 6px 0 rgba(255, 255, 255, 0.22);
+}
+
+.fixture--drawer {
+  right: 9%;
+  width: 14%;
+  height: 8%;
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(80, 98, 92, 0.22);
+}
+
+.fixture--drawer-a {
+  top: 34%;
+}
+
+.fixture--drawer-b {
+  top: 48%;
+}
+
+.fixture--cabinet {
+  top: 16%;
+  left: 12%;
+  width: 34%;
+  height: 12%;
+  background: repeating-linear-gradient(90deg, #d9c9b3 0 24px, #c8b69e 24px 26px);
 }
 
 .fixture--table {
@@ -257,7 +316,9 @@
   bottom: 16%;
   width: 38%;
   height: 18%;
-  background: #d5ddd4;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent),
+    #d5ddd4;
 }
 
 .fixture--console {
@@ -266,6 +327,14 @@
   width: 22%;
   height: 14%;
   background: rgba(18, 68, 56, 0.12);
+}
+
+.fixture--task-board {
+  right: 10%;
+  top: 18%;
+  width: 22%;
+  height: 10%;
+  background: repeating-linear-gradient(90deg, rgba(18, 68, 56, 0.08) 0 8px, rgba(18, 68, 56, 0.16) 8px 10px);
 }
 
 .fixture--pond {
@@ -292,6 +361,125 @@
 .fixture--tree-b {
   right: 16%;
   top: 22%;
+}
+
+.fixture--garden-bed {
+  width: 18%;
+  height: 12%;
+  border-radius: 999px;
+  background: repeating-linear-gradient(90deg, rgba(107, 39, 0, 0.14) 0 8px, rgba(18, 68, 56, 0.12) 8px 16px);
+}
+
+.fixture--garden-bed-a {
+  left: 24%;
+  top: 26%;
+}
+
+.fixture--garden-bed-b {
+  right: 24%;
+  bottom: 18%;
+}
+
+.sanctuary-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(27, 28, 25, 0.24);
+  backdrop-filter: blur(4px);
+}
+
+.sanctuary-popup__panel {
+  width: min(560px, 100%);
+  max-height: min(720px, 86vh);
+  overflow: auto;
+  padding: 22px;
+  background: color-mix(in srgb, var(--surface) 96%, white);
+  box-shadow: 0 28px 80px rgba(27, 28, 25, 0.22);
+}
+
+.sanctuary-popup__panel > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.sanctuary-popup__panel h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: var(--primary);
+}
+
+.sanctuary-popup__panel header button,
+.sanctuary-popup__actions button {
+  border: 0;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 10px 14px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.sanctuary-popup__agent {
+  display: grid;
+  gap: 12px;
+}
+
+.sanctuary-popup__agent > div,
+.sanctuary-popup__list article {
+  padding: 14px;
+  background: var(--surface-container-low);
+}
+
+.sanctuary-popup__agent strong,
+.sanctuary-popup__agent span,
+.sanctuary-popup__list span,
+.sanctuary-popup__list strong,
+.sanctuary-popup__list em {
+  display: block;
+  letter-spacing: 0;
+}
+
+.sanctuary-popup__kicker,
+.sanctuary-popup__list span {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--outline);
+}
+
+.sanctuary-popup__agent strong,
+.sanctuary-popup__list strong {
+  margin-top: 4px;
+  color: var(--on-surface);
+}
+
+.sanctuary-popup__agent span:not(.sanctuary-popup__kicker),
+.sanctuary-popup__list em {
+  margin-top: 2px;
+  color: var(--on-surface-variant);
+  font-style: normal;
+}
+
+.sanctuary-popup__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sanctuary-popup__list {
+  display: grid;
+  gap: 10px;
 }
 
 @media (max-width: 900px) {

@@ -60,7 +60,12 @@ export function App() {
       {/* Main Content */}
       <main className="app-main flex-grow w-full relative">
         {activeTab === 'hub' && (
-          <SanctuaryHub agents={agents} ws={ws} onSelectAgent={setSelectedAgentId} />
+          <SanctuaryHub
+            agents={agents}
+            ws={ws}
+            onSelectAgent={setSelectedAgentId}
+            onNavigateAgents={() => setActiveTab('agents')}
+          />
         )}
         {activeTab === 'zones' && (
           <ZonesView agents={agents} ws={ws} />

@@ -58,13 +58,14 @@ describe('createSanctuaryHouseLayout', () => {
     expect(area(roomById(busy.rooms, 'kitchen'))).toBeGreaterThan(area(roomById(base.rooms, 'kitchen')));
   });
 
-  it('adds and enlarges task rooms when task count exceeds room capacity', () => {
+  it('adds and enlarges task rooms when planned task capacity exceeds room capacity', () => {
     const input: SanctuaryHouseLayoutInput = {
       agents: [
         { id: 'worker-1', state: 'working' },
         { id: 'worker-2', state: 'tasking' },
       ],
       tasks: Array.from({ length: 13 }, (_, index) => ({ id: `task-${index + 1}` })),
+      plannedTaskCapacity: 16,
       taskRoomCapacity: 4,
     };
 
@@ -98,5 +99,45 @@ describe('createSanctuaryHouseLayout', () => {
     expect(taskRooms.reduce((sum, room) => sum + room.capacity, 0)).toBeGreaterThanOrEqual(80);
     expect(bedroom.bounds.width).toBeGreaterThan(20);
     expect(kitchen.bounds.width).toBeGreaterThan(20);
+  });
+
+  it('keeps room count stable when only live task volume changes', () => {
+    const agents = [
+      { id: 'agent-1', state: 'working' },
+      { id: 'agent-2', state: 'idle' },
+      { id: 'agent-3', state: 'feeding' },
+    ];
+    const quiet = createSanctuaryHouseLayout({
+      agents,
+      tasks: [],
+      taskRoomCapacity: 4,
+    });
+    const busy = createSanctuaryHouseLayout({
+      agents,
+      tasks: Array.from({ length: 80 }, (_, index) => ({ id: `task-${index}` })),
+      taskRoomCapacity: 4,
+    });
+
+    expect(busy.rooms.filter((room) => room.role === 'task').length).toBe(
+      quiet.rooms.filter((room) => room.role === 'task').length,
+    );
+    expect(busy.rooms.map((room) => room.id)).toEqual(quiet.rooms.map((room) => room.id));
+  });
+
+  it('increases bedroom and office area when planned agent capacity grows', () => {
+    const small = createSanctuaryHouseLayout({
+      agents: [{ id: 'agent-1', state: 'idle' }],
+      taskRoomCapacity: 4,
+    });
+    const expanded = createSanctuaryHouseLayout({
+      agents: Array.from({ length: 8 }, (_, index) => ({
+        id: `agent-${index}`,
+        state: index % 2 === 0 ? 'idle' : 'working',
+      })),
+      taskRoomCapacity: 4,
+    });
+
+    expect(area(roomById(expanded.rooms, 'bedroom'))).toBeGreaterThan(area(roomById(small.rooms, 'bedroom')));
+    expect(area(roomById(expanded.rooms, 'office'))).toBeGreaterThan(area(roomById(small.rooms, 'office')));
   });
 });

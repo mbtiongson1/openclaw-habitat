@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { ZONES, type SanctuaryTask, type ZoneTaskSummary } from '@habitat/shared';
+import React, { useMemo, useState } from 'react';
+import { ZONES, type AgentHeartbeat, type SanctuaryTask, type ZoneTaskSummary } from '@habitat/shared';
 import { type Agent } from '../../hooks/useAgents';
 import { useWebSocket } from '../../hooks/useWebSocket';
 import { useSanctuaryOperations } from '../../hooks/useSanctuaryOperations';
@@ -16,9 +16,15 @@ interface SanctuaryHubProps {
   agents: Agent[];
   ws: ReturnType<typeof useWebSocket>;
   onSelectAgent: (id: string) => void;
+  onNavigateAgents?: () => void;
 }
 
 type RoomAgentMap = Record<string, Agent[]>;
+type SanctuaryPopup =
+  | { kind: 'agent'; agentId: string }
+  | { kind: 'tasks' }
+  | { kind: 'heartbeats' }
+  | null;
 
 const ROOM_COLORS: Record<string, string> = {
   bedroom: '#efe8dc',
@@ -28,7 +34,8 @@ const ROOM_COLORS: Record<string, string> = {
   garden: '#dbe8cf',
 };
 
-export function SanctuaryHub({ agents, ws, onSelectAgent }: SanctuaryHubProps) {
+export function SanctuaryHub({ agents, ws, onSelectAgent, onNavigateAgents }: SanctuaryHubProps) {
+  const [popup, setPopup] = useState<SanctuaryPopup>(null);
   const operations = useSanctuaryOperations(ws, {
     agentIds: agents.map(agent => agent.config.id),
     taskLimit: 80,
@@ -50,6 +57,10 @@ export function SanctuaryHub({ agents, ws, onSelectAgent }: SanctuaryHubProps) {
   const world = useMemo(() => getWorldBounds(layout.rooms), [layout.rooms]);
   const roomAgents = useMemo(() => groupAgentsByRoom(agents, layout.rooms), [agents, layout.rooms]);
   const roomTasks = useMemo(() => groupTasksByRoom(operations.tasks, layout.rooms), [operations.tasks, layout.rooms]);
+  const selectedAgent = popup?.kind === 'agent'
+    ? agents.find(agent => agent.config.id === popup.agentId)
+    : undefined;
+  const heartbeats = useMemo(() => flattenHeartbeats(operations.heartbeatsByAgent), [operations.heartbeatsByAgent]);
 
   return (
     <div className="sanctuary-hub animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -59,9 +70,9 @@ export function SanctuaryHub({ agents, ws, onSelectAgent }: SanctuaryHubProps) {
           <h2>Sanctuary Floor Plan</h2>
         </div>
         <div className="sanctuary-hub__summary">
-          <Metric label="Agents" value={agents.length} />
-          <Metric label="Tasks" value={operations.tasks.length} />
-          <Metric label="Heartbeats" value={countHeartbeats(operations.heartbeatsByAgent)} />
+          <Metric label="Agents" value={agents.length} ariaLabel="Open agents page" onClick={onNavigateAgents} />
+          <Metric label="Tasks" value={operations.tasks.length} ariaLabel="View task queue" onClick={() => setPopup({ kind: 'tasks' })} />
+          <Metric label="Heartbeats" value={heartbeats.length} ariaLabel="View heartbeat panel" onClick={() => setPopup({ kind: 'heartbeats' })} />
         </div>
       </div>
 
@@ -83,19 +94,119 @@ export function SanctuaryHub({ agents, ws, onSelectAgent }: SanctuaryHubProps) {
             agents={roomAgents[room.id] ?? []}
             tasks={roomTasks[room.id] ?? []}
             summary={findSummary(room, operations.zoneSummaries)}
-            onSelectAgent={onSelectAgent}
+            onSelectAgent={(agentId) => setPopup({ kind: 'agent', agentId })}
           />
         ))}
       </section>
+
+      {selectedAgent && (
+        <SanctuaryDialog
+          label={`${selectedAgent.config.name} agent`}
+          title={selectedAgent.config.name}
+          onClose={() => setPopup(null)}
+        >
+          <div className="sanctuary-popup__agent">
+            <div>
+              <span className="sanctuary-popup__kicker">Current room</span>
+              <strong>{selectedAgent.zone}</strong>
+              <span>{selectedAgent.state}</span>
+            </div>
+            <div>
+              <span className="sanctuary-popup__kicker">Model strategy</span>
+              <strong>Planning, quick, fallback</strong>
+              <span>{selectedAgent.config.personality}</span>
+            </div>
+            <div>
+              <span className="sanctuary-popup__kicker">Activity</span>
+              <strong>{findAgentTask(operations.tasks, selectedAgent.config.id)?.title ?? 'No active task'}</strong>
+              <span>{selectedAgent.stats.tasksCompleted} tasks complete</span>
+            </div>
+          </div>
+          <div className="sanctuary-popup__actions">
+            <button type="button" onClick={() => { onSelectAgent(selectedAgent.config.id); setPopup(null); }}>
+              Open full details
+            </button>
+            <button type="button" onClick={() => setPopup({ kind: 'tasks' })}>
+              View tasks
+            </button>
+          </div>
+        </SanctuaryDialog>
+      )}
+
+      {popup?.kind === 'tasks' && (
+        <SanctuaryDialog label="Task queue" title="Task Queue" onClose={() => setPopup(null)}>
+          <div className="sanctuary-popup__list">
+            {operations.tasks.length === 0 ? (
+              <p>No queued or active tasks.</p>
+            ) : operations.tasks.slice(0, 10).map(task => (
+              <article key={task.id}>
+                <span>{task.roomIntent}</span>
+                <strong>{task.title}</strong>
+                <em>{task.status} - {task.progressPct}%</em>
+              </article>
+            ))}
+          </div>
+        </SanctuaryDialog>
+      )}
+
+      {popup?.kind === 'heartbeats' && (
+        <SanctuaryDialog label="Heartbeat panel" title="Heartbeat Panel" onClose={() => setPopup(null)}>
+          <div className="sanctuary-popup__list">
+            {heartbeats.length === 0 ? (
+              <p>No heartbeats received yet.</p>
+            ) : heartbeats.slice(0, 12).map((heartbeat, index) => (
+              <article key={`${heartbeat.agentId}-${heartbeat.lastSeenAt}-${index}`}>
+                <span>{heartbeat.zone}</span>
+                <strong>{heartbeat.agentId}</strong>
+                <em>{heartbeat.status} - {heartbeat.latencyMs ?? 0} ms</em>
+              </article>
+            ))}
+          </div>
+        </SanctuaryDialog>
+      )}
     </div>
   );
 }
 
-function Metric({ label, value }: { label: string; value: number }) {
+function Metric({
+  label,
+  value,
+  ariaLabel,
+  onClick,
+}: {
+  label: string;
+  value: number;
+  ariaLabel: string;
+  onClick?: () => void;
+}) {
   return (
-    <div className="sanctuary-hub__metric">
+    <button type="button" className="sanctuary-hub__metric" aria-label={ariaLabel} onClick={onClick}>
       <strong>{value}</strong>
       <span>{label}</span>
+    </button>
+  );
+}
+
+function SanctuaryDialog({
+  label,
+  title,
+  children,
+  onClose,
+}: {
+  label: string;
+  title: string;
+  children: React.ReactNode;
+  onClose: () => void;
+}) {
+  return (
+    <div className="sanctuary-popup" role="dialog" aria-label={label}>
+      <div className="sanctuary-popup__panel">
+        <header>
+          <h3>{title}</h3>
+          <button type="button" aria-label="Close popup" onClick={onClose}>close</button>
+        </header>
+        {children}
+      </div>
     </div>
   );
 }
@@ -190,6 +301,8 @@ function renderFurniture(room: SanctuaryRoom) {
     return (
       <>
         <span className="fixture fixture--bed" />
+        <span className="fixture fixture--pillow" />
+        <span className="fixture fixture--side-table" />
         <span className="fixture fixture--rug" />
       </>
     );
@@ -198,6 +311,9 @@ function renderFurniture(room: SanctuaryRoom) {
     return (
       <>
         <span className="fixture fixture--counter" />
+        <span className="fixture fixture--drawer fixture--drawer-a" />
+        <span className="fixture fixture--drawer fixture--drawer-b" />
+        <span className="fixture fixture--cabinet" />
         <span className="fixture fixture--table" />
       </>
     );
@@ -208,6 +324,8 @@ function renderFurniture(room: SanctuaryRoom) {
         <span className="fixture fixture--pond" />
         <span className="fixture fixture--tree fixture--tree-a" />
         <span className="fixture fixture--tree fixture--tree-b" />
+        <span className="fixture fixture--garden-bed fixture--garden-bed-a" />
+        <span className="fixture fixture--garden-bed fixture--garden-bed-b" />
       </>
     );
   }
@@ -215,6 +333,7 @@ function renderFurniture(room: SanctuaryRoom) {
     <>
       <span className="fixture fixture--desk" />
       <span className="fixture fixture--console" />
+      <span className="fixture fixture--task-board" />
     </>
   );
 }
@@ -293,6 +412,10 @@ function toWorldStyle(bounds: SanctuaryBounds, world: SanctuaryBounds): React.CS
   };
 }
 
-function countHeartbeats(heartbeatsByAgent: Record<string, unknown[]>): number {
-  return Object.values(heartbeatsByAgent).reduce((sum, heartbeats) => sum + heartbeats.length, 0);
+function flattenHeartbeats(heartbeatsByAgent: Record<string, AgentHeartbeat[]>): AgentHeartbeat[] {
+  return Object.values(heartbeatsByAgent).flat();
+}
+
+function findAgentTask(tasks: SanctuaryTask[], agentId: string): SanctuaryTask | undefined {
+  return tasks.find(task => task.agentId === agentId && (task.status === 'active' || task.status === 'queued'));
 }
