@@ -13,30 +13,15 @@ export function ConnectionBadge({ connected, reconnecting }: { connected: boolea
   }
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 'var(--space-md)',
-      left: 'var(--space-md)',
-      zIndex: 1000,
-      display: 'flex',
-      alignItems: 'center',
-      gap: '8px',
-      background: 'var(--surface-container-high)',
-      padding: '4px 12px',
-      borderRadius: '0px',
-      border: '1px solid var(--outline-variant)',
-      fontSize: '0.75rem',
-      fontWeight: 'bold',
-      textTransform: 'uppercase',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-    }}>
-      <div style={{
+    <div className="connection-badge">
+      <span style={{
         width: '8px',
         height: '8px',
+        flex: '0 0 auto',
         backgroundColor: color,
         boxShadow: `0 0 8px ${color}`
       }} />
-      <span style={{ color: 'var(--on-surface)' }}>{status}</span>
+      <span className="connection-badge__label" style={{ color: 'var(--on-surface)' }}>{status}</span>
     </div>
   );
 }

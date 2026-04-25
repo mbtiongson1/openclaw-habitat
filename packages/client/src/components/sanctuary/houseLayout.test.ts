@@ -79,4 +79,24 @@ describe('createSanctuaryHouseLayout', () => {
       area(roomById(createSanctuaryHouseLayout({ agents: [], tasks: [] }).rooms, 'office')),
     );
   });
+
+  it('caps visible task rooms for large queues while preserving total capacity', () => {
+    const layout = createSanctuaryHouseLayout({
+      agents: [
+        { id: 'worker-1', state: 'working' },
+        { id: 'feed-1', state: 'feeding', pendingSnacks: Array.from({ length: 30 }, (_, index) => ({ id: `snack-${index}` })) },
+      ],
+      tasks: Array.from({ length: 80 }, (_, index) => ({ id: `task-${index + 1}` })),
+      taskRoomCapacity: 4,
+    });
+
+    const taskRooms = layout.rooms.filter((room) => room.role === 'task');
+    const bedroom = roomById(layout.rooms, 'bedroom');
+    const kitchen = roomById(layout.rooms, 'kitchen');
+
+    expect(taskRooms.length).toBeLessThanOrEqual(6);
+    expect(taskRooms.reduce((sum, room) => sum + room.capacity, 0)).toBeGreaterThanOrEqual(80);
+    expect(bedroom.bounds.width).toBeGreaterThan(20);
+    expect(kitchen.bounds.width).toBeGreaterThan(20);
+  });
 });

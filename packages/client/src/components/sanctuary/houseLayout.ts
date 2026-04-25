@@ -56,6 +56,8 @@ const DEFAULT_TASK_ROOM_CAPACITY = 4;
 const HOUSE_WIDTH = 100;
 const BASE_HOUSE_HEIGHT = 72;
 const GARDEN_GAP = 8;
+const MAX_VISIBLE_TASK_ROOMS = 6;
+const MAX_VISUAL_SNACKS = 8;
 
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.max(minimum, Math.min(maximum, value));
@@ -95,6 +97,11 @@ function splitWidth(totalWidth: number, leftWeight: number, rightWeight: number)
   return totalWidth * (leftWeight / totalWeight);
 }
 
+function taskRoomCountForPressure(taskPressure: number, taskRoomCapacity: number) {
+  if (taskPressure <= 0) return 1;
+  return clamp(Math.ceil(taskPressure / taskRoomCapacity), 1, MAX_VISIBLE_TASK_ROOMS);
+}
+
 export function createSanctuaryHouseLayout(input: SanctuaryHouseLayoutInput = {}): SanctuaryHouseLayout {
   const agents = input.agents ?? [];
   const taskRoomCapacity = Math.max(1, Math.floor(input.taskRoomCapacity ?? DEFAULT_TASK_ROOM_CAPACITY));
@@ -105,13 +112,15 @@ export function createSanctuaryHouseLayout(input: SanctuaryHouseLayoutInput = {}
   const snacks = countSnacks(agents, input.snackCount);
   const activeTasks = Math.max(0, input.activeTaskCount ?? explicitTasks);
   const taskPressure = Math.max(activeTasks, explicitTasks) + workingAgents;
-  const taskRoomCount = Math.max(1, Math.ceil(taskPressure / taskRoomCapacity));
+  const taskRoomCount = taskRoomCountForPressure(taskPressure, taskRoomCapacity);
+  const visualTaskPressure = Math.min(taskPressure, taskRoomCount * taskRoomCapacity);
+  const roomCapacity = Math.max(taskRoomCapacity, Math.ceil(taskPressure / taskRoomCount));
 
   const bedroomWeight = 1 + restAgents * 0.55 + agents.length * 0.08;
-  const kitchenWeight = 1 + feedingAgents * 0.5 + snacks * 0.3;
-  const taskWeight = 1 + taskPressure * 0.22;
+  const kitchenWeight = 1 + feedingAgents * 0.5 + Math.min(snacks, MAX_VISUAL_SNACKS) * 0.18;
+  const taskWeight = 1 + visualTaskPressure * 0.22;
 
-  const houseHeight = BASE_HOUSE_HEIGHT + clamp(agents.length * 2 + taskRoomCount * 4 + taskPressure * 0.8, 0, 46);
+  const houseHeight = BASE_HOUSE_HEIGHT + clamp(agents.length * 2 + taskRoomCount * 5 + visualTaskPressure * 0.55, 0, 46);
   const topRowHeight = clamp(30 + (bedroomWeight + kitchenWeight - 2) * 4, 30, houseHeight * 0.56);
   const taskWingHeight = houseHeight - topRowHeight;
   const bedroomWidth = splitWidth(HOUSE_WIDTH, bedroomWeight, kitchenWeight);
@@ -147,7 +156,7 @@ export function createSanctuaryHouseLayout(input: SanctuaryHouseLayoutInput = {}
   for (let index = 0; index < taskRoomCount; index += 1) {
     const column = index % taskColumns;
     const row = Math.floor(index / taskColumns);
-    const tasksInRoom = Math.max(0, Math.min(taskRoomCapacity, taskPressure - index * taskRoomCapacity));
+    const tasksInRoom = Math.max(0, Math.min(roomCapacity, taskPressure - index * roomCapacity));
     const roomWeight = taskWeight / taskRoomCount + tasksInRoom * 0.1;
 
     rooms.push(createRoom({
@@ -162,7 +171,7 @@ export function createSanctuaryHouseLayout(input: SanctuaryHouseLayoutInput = {}
         height: cellHeight,
       },
       weight: roomWeight,
-      capacity: taskRoomCapacity,
+      capacity: roomCapacity,
     }));
   }
 

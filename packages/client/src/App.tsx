@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWebSocket } from './hooks/useWebSocket';
 import { useAgents } from './hooks/useAgents';
 import { BottomNav, TabId } from './components/ui/BottomNav';
@@ -26,14 +26,16 @@ export function App() {
   const [showCreator, setShowCreator] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
+
   if (!ws.connected && agents.length === 0) {
     return <LoadingScreen reconnecting={ws.reconnecting} />;
   }
 
   return (
-    <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col bg-grid-pattern relative pb-24 md:pb-0 pt-16 md:pt-20 font-body">
-      <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
-      
+    <div className="app-shell bg-surface text-on-surface antialiased min-h-screen flex flex-col bg-grid-pattern relative font-body">
       {/* TopAppBar */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10">
         <div className="flex items-center gap-4">
@@ -41,6 +43,7 @@ export function App() {
           <h1 className="text-xl font-black text-primary-container tracking-tight uppercase font-headline">Digital Sanctuary</h1>
         </div>
         <div className="flex items-center gap-4">
+          <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
           <span className="material-symbols-outlined text-outline hover:text-primary transition-colors duration-200 cursor-pointer">notifications</span>
           <div className="text-xs uppercase tracking-wider font-headline text-primary-container font-bold border border-outline-variant px-3 py-1 bg-surface-container-low">
             Health: 99%
@@ -55,7 +58,7 @@ export function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:pr-[22rem] py-8 relative">
+      <main className="app-main flex-grow w-full relative">
         {activeTab === 'hub' && (
           <SanctuaryHub agents={agents} ws={ws} onSelectAgent={setSelectedAgentId} />
         )}
