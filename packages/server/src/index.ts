@@ -17,6 +17,8 @@ import { ModelOperationsLogService } from './intelligence/ModelOperationsLogServ
 import { RuntimeMetricsService } from './intelligence/RuntimeMetricsService.js';
 import { OllamaAdapter, StaticCloudProviderAdapter } from './intelligence/adapters.js';
 import { type ModelOperationEvent } from '@habitat/shared';
+import { TaskHeartbeatService } from './tasks/TaskHeartbeatService.js';
+import { OpenClawCommandService } from './commands/OpenClawCommandService.js';
 
 const app = express();
 app.use(express.json());
@@ -25,6 +27,8 @@ app.use(express.json());
 const configStore = new ConfigStore();
 const stateManager = new AgentStateManager(configStore);
 const feedingEngine = new FeedingEngine(stateManager);
+const taskHeartbeatService = new TaskHeartbeatService(stateManager);
+const commandService = new OpenClawCommandService();
 const modelOperationsLogService = new ModelOperationsLogService(configStore.getStorageDir());
 const modelCatalogService = new ModelCatalogService(
   [
@@ -54,7 +58,15 @@ const intelligenceService = new AgentIntelligenceService(
 const mockGateway = new MockGateway(stateManager, intelligenceService);
 
 // REST API
-app.use('/api', createRoutes(stateManager, feedingEngine, configStore, intelligenceService, modelOperationsLogService));
+app.use('/api', createRoutes(
+  stateManager,
+  feedingEngine,
+  configStore,
+  intelligenceService,
+  modelOperationsLogService,
+  taskHeartbeatService,
+  commandService
+));
 
 // Health check
 app.get('/health', (_req, res) => {
@@ -76,7 +88,9 @@ async function bootstrap(): Promise<void> {
   // Wire events: state manager changes → bridge broadcasts
   stateManager.on('agent_update', (agent) => {
     intelligenceService.getSnapshot(agent.config.id);
+    const heartbeat = taskHeartbeatService.recordHeartbeat(agent);
     bridge.broadcast({ type: 'agent_update', payload: agent });
+    bridge.broadcast({ type: 'agent_heartbeat', payload: heartbeat });
   });
   stateManager.on('zone_transition', (event) => {
     bridge.broadcast({ type: 'zone_transition', payload: event });
@@ -113,6 +127,8 @@ async function bootstrap(): Promise<void> {
 
   // Wire task completions → feeding engine snack generation
   stateManager.on('task_complete', (event: any) => {
+    const task = taskHeartbeatService.recordTaskCompletion(event);
+    bridge.broadcast({ type: 'task_update', payload: task });
     const snack = feedingEngine.grantSnack(event.agentId, event.taskDescription, event.score, event.nodeType);
     console.log(`🍬 Snack granted to ${event.agentId}: ${snack.tier} (score: ${event.score}/10, node: ${event.nodeType || 'none'})`);
   });

@@ -1,31 +1,514 @@
-.hub {
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* Allow panning if needed on small screens */
-  background: var(--surface);
+.sanctuary-hub {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
 
-.hub__grid {
+.sanctuary-hub__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-lg);
+}
+
+.sanctuary-hub__eyebrow {
+  margin: 0 0 4px;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--outline);
+}
+
+.sanctuary-hub__header h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.08;
+  color: var(--primary);
+}
+
+.sanctuary-hub__summary {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  width: 200%; /* Make grid larger than viewport to encourage panning */
-  height: 200%;
-  min-width: 800px; /* Minimum size to see the quadrants clearly */
-  min-height: 800px;
-  transform-origin: top left;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-width: min(100%, 380px);
+  gap: 10px;
 }
 
-@media (min-width: 768px) {
-  .hub__grid {
+.sanctuary-hub__metric {
+  display: block;
+  padding: 12px 14px;
+  border: 0;
+  background: color-mix(in srgb, var(--surface-container-lowest) 88%, transparent);
+  box-shadow: 0 12px 30px rgba(51, 44, 34, 0.08);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.sanctuary-hub__metric:hover,
+.sanctuary-hub__metric:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(51, 44, 34, 0.12);
+  outline: 2px solid color-mix(in srgb, var(--primary) 40%, transparent);
+  outline-offset: 2px;
+}
+
+.sanctuary-hub__metric strong,
+.sanctuary-hub__metric span {
+  display: block;
+  letter-spacing: 0;
+}
+
+.sanctuary-hub__metric strong {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--on-surface);
+}
+
+.sanctuary-hub__metric span {
+  font-size: 0.72rem;
+  color: var(--on-surface-variant);
+}
+
+.sanctuary-map {
+  position: relative;
+  width: min(100%, 980px);
+  min-height: 620px;
+  margin: 0 auto;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 52% 92%, rgba(18, 68, 56, 0.12), transparent 36%),
+    linear-gradient(180deg, #f7f3ea 0%, #efe9dd 56%, #dbe8cf 100%);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 65%, transparent);
+  box-shadow: 0 30px 80px rgba(27, 28, 25, 0.16);
+}
+
+.sanctuary-map::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(112, 121, 117, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(112, 121, 117, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, black 0 58%, transparent 76%);
+  pointer-events: none;
+}
+
+.sanctuary-map__house-shell,
+.sanctuary-room,
+.sanctuary-map__garden-path {
+  position: absolute;
+}
+
+.sanctuary-map__house-shell {
+  background: rgba(80, 98, 92, 0.18);
+  border: 10px solid rgba(80, 98, 92, 0.82);
+  box-shadow:
+    0 24px 50px rgba(27, 28, 25, 0.14),
+    inset 0 0 0 2px rgba(251, 249, 244, 0.45);
+  pointer-events: none;
+}
+
+.sanctuary-map__roof-line {
+  position: absolute;
+  inset: -20px -18px auto;
+  height: 20px;
+  background: linear-gradient(90deg, #39544b, #50625c);
+  clip-path: polygon(4% 100%, 12% 0, 88% 0, 96% 100%);
+}
+
+.sanctuary-map__garden-path {
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(150, 127, 88, 0.28), rgba(150, 127, 88, 0.1));
+  border: 1px dashed rgba(107, 39, 0, 0.18);
+  border-radius: 999px;
+}
+
+.sanctuary-room {
+  --sanctuary-room-color: var(--surface-container-low);
+  z-index: 2;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 28%),
+    var(--sanctuary-room-color);
+  border: 2px solid rgba(80, 98, 92, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(251, 249, 244, 0.48);
+}
+
+.sanctuary-room--outdoor {
+  z-index: 0;
+  border-radius: 36% 64% 42% 58% / 44% 36% 64% 56%;
+  border: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(18, 68, 56, 0.18), transparent 18%),
+    radial-gradient(circle at 22% 72%, rgba(18, 68, 56, 0.2), transparent 18%),
+    radial-gradient(circle at 78% 44%, rgba(18, 68, 56, 0.16), transparent 20%),
+    linear-gradient(135deg, #dbe8cf, #c7ddb9 62%, #e4ead3);
+  box-shadow:
+    inset 0 0 0 2px rgba(18, 68, 56, 0.12),
+    0 20px 42px rgba(18, 68, 56, 0.1);
+}
+
+.sanctuary-room__texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.58;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  background-image:
+    linear-gradient(45deg, rgba(112, 121, 117, 0.08) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(112, 121, 117, 0.08) 75%);
+  background-size: 22px 22px;
+}
+
+.sanctuary-room--garden .sanctuary-room__texture {
+  background-image:
+    radial-gradient(circle at 18px 22px, rgba(18, 68, 56, 0.13) 2px, transparent 3px),
+    radial-gradient(circle at 44px 38px, rgba(107, 39, 0, 0.12) 2px, transparent 4px);
+  background-size: 56px 52px;
+}
+
+.sanctuary-room__header {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+}
+
+.sanctuary-room__header span,
+.sanctuary-room__counts span {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sanctuary-room__header span {
+  font-size: 0.58rem;
+  color: var(--outline);
+}
+
+.sanctuary-room__header h3 {
+  margin: 2px 0 0;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--primary);
+}
+
+.sanctuary-room__counts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.sanctuary-room__counts span {
+  padding: 4px 6px;
+  background: color-mix(in srgb, var(--surface-container-lowest) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--outline-variant) 45%, transparent);
+  font-size: 0.56rem;
+  color: var(--on-surface-variant);
+}
+
+.sanctuary-room__agents,
+.sanctuary-room__furniture {
+  position: absolute;
+  inset: 0;
+}
+
+.sanctuary-room__agents {
+  z-index: 5;
+}
+
+.fixture {
+  position: absolute;
+  display: block;
+  background: rgba(80, 98, 92, 0.16);
+  border: 1px solid rgba(80, 98, 92, 0.16);
+}
+
+.fixture--bed {
+  left: 10%;
+  bottom: 14%;
+  width: 36%;
+  height: 24%;
+  border-radius: 5px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.36), transparent 50%),
+    linear-gradient(90deg, #cdbfae, #efe8dc);
+  box-shadow: 0 8px 18px rgba(75, 63, 45, 0.1);
+}
+
+.fixture--pillow {
+  left: 13%;
+  bottom: 29%;
+  width: 12%;
+  height: 8%;
+  border-radius: 6px;
+  background: #f9f5ef;
+}
+
+.fixture--side-table {
+  left: 48%;
+  bottom: 18%;
+  width: 10%;
+  height: 10%;
+  border-radius: 50%;
+  background: #bba891;
+}
+
+.fixture--rug {
+  right: 16%;
+  bottom: 16%;
+  width: 24%;
+  height: 18%;
+  border-radius: 50%;
+  background: rgba(140, 59, 15, 0.12);
+}
+
+.fixture--counter {
+  top: 24%;
+  right: 8%;
+  width: 16%;
+  height: 58%;
+  background:
+    repeating-linear-gradient(180deg, #d7cab7 0 18px, #c8baa5 18px 20px),
+    #d7cab7;
+  box-shadow: inset 6px 0 rgba(255, 255, 255, 0.22);
+}
+
+.fixture--drawer {
+  right: 9%;
+  width: 14%;
+  height: 8%;
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(80, 98, 92, 0.22);
+}
+
+.fixture--drawer-a {
+  top: 34%;
+}
+
+.fixture--drawer-b {
+  top: 48%;
+}
+
+.fixture--cabinet {
+  top: 16%;
+  left: 12%;
+  width: 34%;
+  height: 12%;
+  background: repeating-linear-gradient(90deg, #d9c9b3 0 24px, #c8b69e 24px 26px);
+}
+
+.fixture--table {
+  left: 18%;
+  bottom: 18%;
+  width: 26%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(107, 39, 0, 0.12);
+}
+
+.fixture--desk {
+  left: 10%;
+  bottom: 16%;
+  width: 38%;
+  height: 18%;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent),
+    #d5ddd4;
+}
+
+.fixture--console {
+  right: 10%;
+  top: 34%;
+  width: 22%;
+  height: 14%;
+  background: rgba(18, 68, 56, 0.12);
+}
+
+.fixture--task-board {
+  right: 10%;
+  top: 18%;
+  width: 22%;
+  height: 10%;
+  background: repeating-linear-gradient(90deg, rgba(18, 68, 56, 0.08) 0 8px, rgba(18, 68, 56, 0.16) 8px 10px);
+}
+
+.fixture--pond {
+  left: 42%;
+  top: 42%;
+  width: 24%;
+  height: 22%;
+  border-radius: 50%;
+  background: rgba(45, 92, 79, 0.16);
+}
+
+.fixture--tree {
+  width: 36px;
+  height: 48px;
+  border-radius: 50% 50% 44% 44%;
+  background: rgba(18, 68, 56, 0.18);
+}
+
+.fixture--tree-a {
+  left: 16%;
+  bottom: 18%;
+}
+
+.fixture--tree-b {
+  right: 16%;
+  top: 22%;
+}
+
+.fixture--garden-bed {
+  width: 18%;
+  height: 12%;
+  border-radius: 999px;
+  background: repeating-linear-gradient(90deg, rgba(107, 39, 0, 0.14) 0 8px, rgba(18, 68, 56, 0.12) 8px 16px);
+}
+
+.fixture--garden-bed-a {
+  left: 24%;
+  top: 26%;
+}
+
+.fixture--garden-bed-b {
+  right: 24%;
+  bottom: 18%;
+}
+
+.sanctuary-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(27, 28, 25, 0.24);
+  backdrop-filter: blur(4px);
+}
+
+.sanctuary-popup__panel {
+  width: min(560px, 100%);
+  max-height: min(720px, 86vh);
+  overflow: auto;
+  padding: 22px;
+  background: color-mix(in srgb, var(--surface) 96%, white);
+  box-shadow: 0 28px 80px rgba(27, 28, 25, 0.22);
+}
+
+.sanctuary-popup__panel > header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.sanctuary-popup__panel h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: var(--primary);
+}
+
+.sanctuary-popup__panel header button,
+.sanctuary-popup__actions button {
+  border: 0;
+  background: var(--primary);
+  color: var(--on-primary);
+  padding: 10px 14px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.sanctuary-popup__agent {
+  display: grid;
+  gap: 12px;
+}
+
+.sanctuary-popup__agent > div,
+.sanctuary-popup__list article {
+  padding: 14px;
+  background: var(--surface-container-low);
+}
+
+.sanctuary-popup__agent strong,
+.sanctuary-popup__agent span,
+.sanctuary-popup__list span,
+.sanctuary-popup__list strong,
+.sanctuary-popup__list em {
+  display: block;
+  letter-spacing: 0;
+}
+
+.sanctuary-popup__kicker,
+.sanctuary-popup__list span {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--outline);
+}
+
+.sanctuary-popup__agent strong,
+.sanctuary-popup__list strong {
+  margin-top: 4px;
+  color: var(--on-surface);
+}
+
+.sanctuary-popup__agent span:not(.sanctuary-popup__kicker),
+.sanctuary-popup__list em {
+  margin-top: 2px;
+  color: var(--on-surface-variant);
+  font-style: normal;
+}
+
+.sanctuary-popup__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.sanctuary-popup__list {
+  display: grid;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .sanctuary-hub__header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .sanctuary-hub__summary {
     width: 100%;
-    height: 100%;
-    min-width: auto;
-    min-height: auto;
+  }
+
+  .sanctuary-map {
+    min-height: 560px;
   }
 }
 
-.hub__quadrant {
-  position: relative;
-  /* Visual separators removed per DESIGN.md: "no 1px borders" */
+@media (max-width: 640px) {
+  .sanctuary-map {
+    width: 100%;
+    min-height: 520px;
+  }
+
+  .sanctuary-room__header {
+    padding: 10px;
+  }
+
+  .sanctuary-room__counts span {
+    display: none;
+  }
 }

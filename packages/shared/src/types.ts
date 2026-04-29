@@ -47,6 +47,12 @@ export interface AgentConfig {
   installedAt: number;
 }
 
+export interface AgentConfigPatch {
+  name?: string;
+  personality?: string;
+  svgParts?: Partial<SVGParts>;
+}
+
 export interface Agent {
   config: AgentConfig;
   zone: ZoneType;
@@ -258,6 +264,85 @@ export interface SubAgentTaskCompleteEvent {
   nodeType?: string;
 }
 
+export type SanctuaryRoomIntent = 'rest' | 'feeding' | 'task' | 'garden' | 'social';
+
+export type SanctuaryTaskStatus = 'queued' | 'active' | 'blocked' | 'completed' | 'failed';
+
+export interface TaskStep {
+  id: string;
+  label: string;
+  status: SanctuaryTaskStatus;
+  updatedAt: number;
+}
+
+export interface SanctuaryTask {
+  id: string;
+  title: string;
+  description: string;
+  agentId?: string;
+  zone: ZoneType;
+  roomIntent: SanctuaryRoomIntent;
+  nodeType?: string;
+  status: SanctuaryTaskStatus;
+  progressPct: number;
+  priority: number;
+  score?: number;
+  createdAt: number;
+  updatedAt: number;
+  heartbeatAt?: number;
+  steps: TaskStep[];
+}
+
+export interface SanctuaryTaskFilter {
+  zone?: ZoneType;
+  status?: SanctuaryTaskStatus;
+  agentId?: string;
+  limit?: number;
+}
+
+export interface AgentHeartbeat {
+  agentId: string;
+  zone: ZoneType;
+  state: AgentStateType;
+  roomIntent: SanctuaryRoomIntent;
+  activeTaskId?: string;
+  status: 'online' | 'stale' | 'offline';
+  source: 'mock_gateway' | 'openclaw_gateway' | 'manual';
+  lastSeenAt: number;
+  latencyMs?: number;
+}
+
+export interface HeartbeatFilter {
+  agentId?: string;
+  zone?: ZoneType;
+  staleAfterMs?: number;
+}
+
+export interface ZoneTaskSummary {
+  zone: ZoneType;
+  roomIntent: SanctuaryRoomIntent;
+  agents: number;
+  activeTasks: number;
+  queuedTasks: number;
+  completedTasks: number;
+  staleHeartbeats: number;
+}
+
+export type GlobalCommandGroup = 'session' | 'model' | 'visibility' | 'power_user' | 'thinking';
+
+export interface GlobalCommandDescriptor {
+  id: string;
+  command: string;
+  label: string;
+  group: GlobalCommandGroup;
+  sourceLabel: 'GitHub' | 'OpenClaw' | 'Openclawlaunch' | 'Openclawcn';
+  description: string;
+  enabled: boolean;
+  requiresOptIn: boolean;
+  dangerLevel: 'safe' | 'privileged' | 'dangerous';
+  argsHint?: string;
+}
+
 export interface ConfigSnapshot {
   version: string;
   timestamp: number;
@@ -280,7 +365,9 @@ export type WSMessageType =
   | 'local_model_pull_progress'
   | 'model_operation_logged'
   | 'model_recovery_required'
-  | 'model_usability_changed';
+  | 'model_usability_changed'
+  | 'task_update'
+  | 'agent_heartbeat';
 
 export interface WSMessageEnvelope<T = any> {
   type: WSMessageType;

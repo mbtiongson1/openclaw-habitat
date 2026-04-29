@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useWebSocket } from './hooks/useWebSocket';
 import { useAgents } from './hooks/useAgents';
 import { BottomNav, TabId } from './components/ui/BottomNav';
@@ -11,6 +11,8 @@ import { AgentCreator } from './components/agent/AgentCreator';
 import { LoadingScreen } from './components/ui/LoadingScreen';
 import { ConnectionBadge } from './components/ui/ConnectionBadge';
 import { AgentPage } from './components/agent/AgentPage';
+import { GlobalCommandRail } from './components/controls/GlobalCommandRail';
+import { useGlobalCommands } from './hooks/useGlobalCommands';
 
 const WS_URL = import.meta.env.PROD 
   ? `ws://${window.location.host}/ws`
@@ -19,25 +21,35 @@ const WS_URL = import.meta.env.PROD
 export function App() {
   const ws = useWebSocket(WS_URL);
   const { agents, selectedAgent, selectedAgentId, setSelectedAgentId, feedAgent, createAgent } = useAgents(ws);
+  const { commands } = useGlobalCommands();
   const [activeTab, setActiveTab] = useState<TabId>('hub');
   const [showCreator, setShowCreator] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const goToSanctuary = () => setActiveTab('hub');
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [activeTab]);
 
   if (!ws.connected && agents.length === 0) {
     return <LoadingScreen reconnecting={ws.reconnecting} />;
   }
 
   return (
-    <div className="bg-surface text-on-surface antialiased min-h-screen flex flex-col bg-grid-pattern relative pb-24 md:pb-0 pt-16 md:pt-20 font-body">
-      <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
-      
+    <div className="app-shell bg-surface text-on-surface antialiased min-h-screen flex flex-col bg-grid-pattern relative font-body">
       {/* TopAppBar */}
       <header className="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant/10">
+        <button
+          type="button"
+          aria-label="Go to Sanctuary"
+          className="flex items-center gap-3 min-w-0 text-left text-primary-container transition-colors hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          onClick={goToSanctuary}
+        >
+          <span aria-hidden="true" className="material-symbols-outlined text-2xl">home</span>
+          <h1 className="text-lg sm:text-xl font-black tracking-tight uppercase font-headline truncate">Digital Sanctuary</h1>
+        </button>
         <div className="flex items-center gap-4">
-          <span className="material-symbols-outlined text-primary-container text-2xl">grid_view</span>
-          <h1 className="text-xl font-black text-primary-container tracking-tight uppercase font-headline">Digital Sanctuary</h1>
-        </div>
-        <div className="flex items-center gap-4">
+          <ConnectionBadge connected={ws.connected} reconnecting={ws.reconnecting} />
           <span className="material-symbols-outlined text-outline hover:text-primary transition-colors duration-200 cursor-pointer">notifications</span>
           <div className="text-xs uppercase tracking-wider font-headline text-primary-container font-bold border border-outline-variant px-3 py-1 bg-surface-container-low">
             Health: 99%
@@ -52,12 +64,17 @@ export function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+      <main className="app-main flex-grow w-full relative">
         {activeTab === 'hub' && (
-          <SanctuaryHub agents={agents} onSelectAgent={setSelectedAgentId} />
+          <SanctuaryHub
+            agents={agents}
+            ws={ws}
+            onSelectAgent={setSelectedAgentId}
+            onNavigateAgents={() => setActiveTab('agents')}
+          />
         )}
         {activeTab === 'zones' && (
-          <ZonesView agents={agents} />
+          <ZonesView agents={agents} ws={ws} />
         )}
         {activeTab === 'agents' && (
           <AgentsListView agents={agents} onSelectAgent={setSelectedAgentId} />
@@ -65,13 +82,6 @@ export function App() {
         {activeTab === 'analytics' && (
           <AnalyticsView />
         )}
-        {activeTab === 'settings' && (
-          <div className="flex flex-col gap-4">
-             <h2 className="text-3xl font-headline font-black text-on-background">Settings</h2>
-             <button className="btn btn--primary max-w-xs" onClick={() => setShowSettings(true)}>Open System Config</button>
-          </div>
-        )}
-
         {/* Floating Action Button */}
         <button 
           aria-label="Create Agent" 
@@ -104,6 +114,10 @@ export function App() {
           <SettingsModal onClose={() => setShowSettings(false)} />
         )}
       </main>
+
+      <div className="hidden xl:block fixed top-24 right-6 bottom-8 w-72 overflow-y-auto z-30">
+        <GlobalCommandRail commands={commands} />
+      </div>
 
       <BottomNav activeTab={activeTab} onChange={setActiveTab} />
     </div>

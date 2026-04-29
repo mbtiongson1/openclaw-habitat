@@ -340,6 +340,7 @@
 }
 
 .agent-page__strategy-grid,
+.agent-page__character-form,
 .agent-page__resource-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -352,6 +353,7 @@
   gap: 8px;
 }
 
+.agent-page__strategy-field input,
 .agent-page__strategy-field select,
 .agent-page__search-row input,
 .chat-input {
@@ -361,6 +363,12 @@
   color: var(--on-surface);
   padding: 12px 14px;
   font-family: inherit;
+}
+
+.agent-page__form-actions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 .agent-page__rule-grid {
