@@ -7,6 +7,7 @@
     "packages/*"
   ],
   "scripts": {
+    "run": "./scripts/run.sh",
     "dev": "concurrently \"npm run dev -w packages/server\" \"npm run dev -w packages/client\"",
     "build": "npm run build -w packages/shared && npm run build -w packages/server && npm run build -w packages/client",
     "start": "npm run start -w packages/server",

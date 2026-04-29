@@ -9,4 +9,6 @@ A Tamagotchi-style mobile interface for Openclaw AI agents. Agents appear as dig
 
 ## Setup
 1. `npm install`
-2. `npm run dev:mock` (for demo) or `npm run dev` (with live Openclaw)
+2. `npm run run` to start the local Habitat server and Vite client
+
+Existing alternatives: `npm run dev:mock` (demo script) or `npm run dev` (workspace dev scripts).
