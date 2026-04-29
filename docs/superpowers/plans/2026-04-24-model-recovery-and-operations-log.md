@@ -1,12 +1,14 @@
 # Model Recovery and Operations Log Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox syntax for tracking.
 
 **Goal:** Make model usability truthful and enforceable, add structured recovery for unusable models, and persist an auditable model-operations log in both per-agent and global UI surfaces.
 
 **Architecture:** Add a backend-owned usability/recovery layer in the server, then wire all manual and automatic model transitions through it. Persist operational events in a dedicated log service and expose them through REST and websocket updates. Split the client intelligence panel so recovery prompts and recent-events rendering are isolated from the data hook.
 
 **Tech Stack:** TypeScript, Express, ws, React, Vite, node:test/tsx, Vitest + Testing Library for new client tests
+
+**Completion status:** Completed on `main`. The delivered work includes the model usability service, recovery responses, automatic fallback logging, operations-log APIs/websocket events, recovery-aware client hook state, recovery prompt UI, recent/global operations UI, and the updated Agent Intelligence architecture note. Verified after integration with `npm run build`, `npm run test -w packages/client`, and `npm run test -w packages/server`.
 
 ---
 
@@ -73,7 +75,7 @@
 - Modify: `packages/shared/src/types.ts`
 - Modify: `packages/server/src/intelligence/intelligence.test.ts`
 
-- [ ] **Step 1: Write the failing server tests for unusable-model classification**
+- [x] **Step 1: Write the failing server tests for unusable-model classification**
 
 ```ts
 test('ollama-installed model is runtime_unreachable when runtime probe fails', async () => {
@@ -95,13 +97,13 @@ test('cloud model is usable when installed, reachable, and quota not exhausted',
 });
 ```
 
-- [ ] **Step 2: Run the server tests to confirm the gap**
+- [x] **Step 2: Run the server tests to confirm the gap**
 
 Run: `npm run test -w packages/server`
 
 Expected: FAIL with at least one assertion showing local models are still treated as reachable/usable when the runtime probe fails.
 
-- [ ] **Step 3: Add shared usability types and implement the new service**
+- [x] **Step 3: Add shared usability types and implement the new service**
 
 ```ts
 export interface ModelUsability {
@@ -131,7 +133,7 @@ export class ModelUsabilityService {
 }
 ```
 
-- [ ] **Step 4: Fix the Ollama adapter to stop forcing reachability**
+- [x] **Step 4: Fix the Ollama adapter to stop forcing reachability**
 
 ```ts
 const modelReachable = reachable;
@@ -141,13 +143,13 @@ return Array.from(this.installed).map(id =>
 );
 ```
 
-- [ ] **Step 5: Re-run the server tests**
+- [x] **Step 5: Re-run the server tests**
 
 Run: `npm run test -w packages/server`
 
 Expected: PASS for the new usability tests and no regression in existing server tests.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/shared/src/types.ts \
@@ -168,7 +170,7 @@ git commit -m "fix: add truthful model usability classification"
 - Modify: `packages/server/src/api/routes.ts`
 - Modify: `packages/server/src/intelligence/intelligence.test.ts`
 
-- [ ] **Step 1: Write failing tests for manual switch rejection**
+- [x] **Step 1: Write failing tests for manual switch rejection**
 
 ```ts
 test('setActiveModel returns recovery_required for runtime_unreachable model', () => {
@@ -188,13 +190,13 @@ test('active-model route returns 409 for recovery_required payload', async () =>
 });
 ```
 
-- [ ] **Step 2: Run server tests and confirm failure**
+- [x] **Step 2: Run server tests and confirm failure**
 
 Run: `npm run test -w packages/server`
 
 Expected: FAIL because `setActiveModel()` currently returns a full snapshot instead of a recovery payload for unusable models.
 
-- [ ] **Step 3: Add recovery types and branch manual-switch behavior**
+- [x] **Step 3: Add recovery types and branch manual-switch behavior**
 
 ```ts
 export interface RecoveryOption {
@@ -226,7 +228,7 @@ if (model.usability.status !== 'usable') {
 }
 ```
 
-- [ ] **Step 4: Update the route contract**
+- [x] **Step 4: Update the route contract**
 
 ```ts
 const result = intelligenceService.setActiveModel(req.params.id, parsed.data.modelId);
@@ -238,13 +240,13 @@ if ('result' in result && result.result === 'recovery_required') {
 return res.json(result);
 ```
 
-- [ ] **Step 5: Re-run server tests**
+- [x] **Step 5: Re-run server tests**
 
 Run: `npm run test -w packages/server`
 
 Expected: PASS with new route and service behavior covered.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/shared/src/types.ts \
@@ -267,7 +269,7 @@ git commit -m "fix: return structured recovery for unusable manual switches"
 - Modify: `packages/server/src/index.ts`
 - Modify: `packages/shared/src/types.ts`
 
-- [ ] **Step 1: Write failing tests for fallback logging and persistence**
+- [x] **Step 1: Write failing tests for fallback logging and persistence**
 
 ```ts
 test('automatic fallback logs a warning event and switches the agent', () => {
@@ -283,13 +285,13 @@ test('operations log survives reload with bounded retention', () => {
 });
 ```
 
-- [ ] **Step 2: Run server tests and confirm failure**
+- [x] **Step 2: Run server tests and confirm failure**
 
 Run: `npm run test -w packages/server`
 
 Expected: FAIL because there is no log service, no persistence, and no automatic fallback handler entrypoint.
 
-- [ ] **Step 3: Implement the log service with bounded retention**
+- [x] **Step 3: Implement the log service with bounded retention**
 
 ```ts
 export class ModelOperationsLogService {
@@ -301,7 +303,7 @@ export class ModelOperationsLogService {
 }
 ```
 
-- [ ] **Step 4: Add explicit automatic-fallback handling**
+- [x] **Step 4: Add explicit automatic-fallback handling**
 
 ```ts
 handleModelFailure(agentId: string, currentModelId: string, reasonCode: string) {
@@ -324,7 +326,7 @@ handleModelFailure(agentId: string, currentModelId: string, reasonCode: string) 
 }
 ```
 
-- [ ] **Step 5: Wire websocket emission from the new log service**
+- [x] **Step 5: Wire websocket emission from the new log service**
 
 ```ts
 operationsLogService.on('event_logged', (event) => {
@@ -332,13 +334,13 @@ operationsLogService.on('event_logged', (event) => {
 });
 ```
 
-- [ ] **Step 6: Re-run server tests**
+- [x] **Step 6: Re-run server tests**
 
 Run: `npm run test -w packages/server`
 
 Expected: PASS for fallback handling, event persistence, and retention behavior.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```bash
 git add packages/server/src/intelligence/ModelOperationsLogService.ts \
@@ -360,7 +362,7 @@ git commit -m "feat: add automatic fallback logging and operations persistence"
 - Modify: `packages/shared/src/types.ts`
 - Modify: `packages/server/src/intelligence/intelligence.test.ts`
 
-- [ ] **Step 1: Write failing tests for event-log endpoints**
+- [x] **Step 1: Write failing tests for event-log endpoints**
 
 ```ts
 test('agent model-events endpoint returns recent agent events', async () => {
@@ -376,13 +378,13 @@ test('global model-operations endpoint supports severity filters', async () => {
 });
 ```
 
-- [ ] **Step 2: Run server tests and confirm failure**
+- [x] **Step 2: Run server tests and confirm failure**
 
 Run: `npm run test -w packages/server`
 
 Expected: FAIL because these endpoints and websocket message types do not exist yet.
 
-- [ ] **Step 3: Add the endpoints and websocket contracts**
+- [x] **Step 3: Add the endpoints and websocket contracts**
 
 ```ts
 router.get('/agents/:id/model-events', (req, res) => {
@@ -402,13 +404,13 @@ export type WSMessageType =
   | ...;
 ```
 
-- [ ] **Step 4: Re-run server tests**
+- [x] **Step 4: Re-run server tests**
 
 Run: `npm run test -w packages/server`
 
 Expected: PASS with API surface covered.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add packages/server/src/api/routes.ts \
@@ -429,7 +431,7 @@ git commit -m "feat: expose model operations log APIs and websocket events"
 - Modify: `packages/client/src/hooks/useAgentIntelligence.ts`
 - Create: `packages/client/src/hooks/useAgentIntelligence.test.ts`
 
-- [ ] **Step 1: Add failing hook tests for recovery payloads and empty-query refresh**
+- [x] **Step 1: Add failing hook tests for recovery payloads and empty-query refresh**
 
 ```ts
 it('stores recovery prompt state when active-model API returns 409 recovery_required', async () => {
@@ -449,7 +451,7 @@ it('re-runs local search after pull completion even when the query is empty', as
 });
 ```
 
-- [ ] **Step 2: Add the client test toolchain**
+- [x] **Step 2: Add the client test toolchain**
 
 ```json
 {
@@ -476,13 +478,13 @@ export default defineConfig({
 });
 ```
 
-- [ ] **Step 3: Run the client tests to confirm the hook gap**
+- [x] **Step 3: Run the client tests to confirm the hook gap**
 
 Run: `npm run test -w packages/client`
 
 Expected: FAIL because the hook has no recovery-state handling and skips empty-query refresh on completed pulls.
 
-- [ ] **Step 4: Implement recovery-aware hook state**
+- [x] **Step 4: Implement recovery-aware hook state**
 
 ```ts
 const [recoveryState, setRecoveryState] = useState<RecoveryResponse | null>(null);
@@ -500,13 +502,13 @@ if (msg.payload.status === 'completed') {
 }
 ```
 
-- [ ] **Step 5: Re-run client tests**
+- [x] **Step 5: Re-run client tests**
 
 Run: `npm run test -w packages/client`
 
 Expected: PASS for recovery-state and empty-query-refresh coverage.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add packages/client/package.json \
@@ -529,7 +531,7 @@ git commit -m "test: add client recovery hook coverage"
 - Modify: `packages/client/src/components/agent/AgentPage.css`
 - Modify: `design/agent_intelligence_panel/ARCHITECTURE.md`
 
-- [ ] **Step 1: Write failing component tests for prompt priority and recent events**
+- [x] **Step 1: Write failing component tests for prompt priority and recent events**
 
 ```tsx
 it('renders fallback as the primary recovery action', async () => {
@@ -554,13 +556,13 @@ it('renders recent events in reverse chronological order', () => {
 });
 ```
 
-- [ ] **Step 2: Run client tests to confirm failure**
+- [x] **Step 2: Run client tests to confirm failure**
 
 Run: `npm run test -w packages/client`
 
 Expected: FAIL because the recovery prompt and event log components do not exist yet.
 
-- [ ] **Step 3: Create isolated UI components**
+- [x] **Step 3: Create isolated UI components**
 
 ```tsx
 export function ModelRecoveryPrompt({ recoveryState, onUseFallback, onRetry, onDownload }: Props) {
@@ -590,7 +592,7 @@ export function AgentEventLog({ events }: { events: ModelOperationEvent[] }) {
 }
 ```
 
-- [ ] **Step 4: Integrate the new UI into `AgentPage`**
+- [x] **Step 4: Integrate the new UI into `AgentPage`**
 
 ```tsx
 {recoveryState && (
@@ -605,7 +607,7 @@ export function AgentEventLog({ events }: { events: ModelOperationEvent[] }) {
 <AgentEventLog events={snapshot?.recentEvents ?? []} />
 ```
 
-- [ ] **Step 5: Update the architecture note to match the delivered code**
+- [x] **Step 5: Update the architecture note to match the delivered code**
 
 ```md
 - `PATCH /api/agents/:id/active-model`
@@ -614,13 +616,13 @@ export function AgentEventLog({ events }: { events: ModelOperationEvent[] }) {
   - returns recent per-agent operations log entries
 ```
 
-- [ ] **Step 6: Re-run client tests**
+- [x] **Step 6: Re-run client tests**
 
 Run: `npm run test -w packages/client`
 
 Expected: PASS for prompt priority and event-log rendering.
 
-- [ ] **Step 7: Run the full verification suite**
+- [x] **Step 7: Run the full verification suite**
 
 Run: `npm run test -w packages/server && npm run test -w packages/client && npm run build`
 
@@ -629,7 +631,7 @@ Expected:
 - client tests: PASS
 - workspace build: PASS
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add packages/client/src/components/agent/ModelRecoveryPrompt.tsx \
@@ -656,4 +658,3 @@ git commit -m "feat: add model recovery prompt and operations log UI"
   - No `TBD`, `TODO`, or deferred implementation placeholders remain.
 - Type consistency
   - `ModelUsability`, `RecoveryResponse`, and `ModelOperationEvent` are introduced in shared types before later tasks depend on them.
-
