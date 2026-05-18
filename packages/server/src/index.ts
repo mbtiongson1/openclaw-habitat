@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import { BRIDGE_PORT } from '@habitat/shared';
 import { BridgeServer } from './bridge/BridgeServer.js';
-import { MockGateway } from './gateway/MockGateway.js';
+import { OpenclawClient } from './gateway/OpenclawClient.js';
 import { AgentStateManager } from './bridge/AgentStateManager.js';
 import { FeedingEngine } from './bridge/FeedingEngine.js';
 import { ConfigStore } from './config/ConfigStore.js';
@@ -55,7 +55,7 @@ const intelligenceService = new AgentIntelligenceService(
   new RuntimeMetricsService(),
   modelOperationsLogService
 );
-const mockGateway = new MockGateway(stateManager, intelligenceService);
+const openclawClient = new OpenclawClient(stateManager, intelligenceService);
 
 // REST API
 app.use('/api', createRoutes(
@@ -83,7 +83,7 @@ async function bootstrap(): Promise<void> {
   await intelligenceService.initialize();
 
   // Start mock gateway event loop
-  mockGateway.start();
+  openclawClient.connect();
 
   // Wire events: state manager changes → bridge broadcasts
   stateManager.on('agent_update', (agent) => {
@@ -139,7 +139,7 @@ async function bootstrap(): Promise<void> {
   server.listen(BRIDGE_PORT, () => {
     console.log(`🏠 Digital Sanctuary bridge running on http://localhost:${BRIDGE_PORT}`);
     console.log(`📡 WebSocket ready on ws://localhost:${BRIDGE_PORT}`);
-    console.log(`🎮 Mock gateway active — ${stateManager.getAgentCount()} agents spawned`);
+    console.log(`🎮 Openclaw Client active — waiting for agents`);
   });
 }
 
